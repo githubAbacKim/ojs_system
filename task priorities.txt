@@ -1,0 +1,11 @@
+Account security edit
+
+Expenses
+ - manage miscelanious expenses
+ - manage production expenses
+ - manage stock expenses
+
+Sales Report
+
+Monthly Income Statement
+
