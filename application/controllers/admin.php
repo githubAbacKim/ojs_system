@@ -7,7 +7,7 @@ class Admin extends CI_Controller {
 		date_default_timezone_set('Asia/Manila');
 		$this->is_log_in();
 	}
-	
+
 /* frontdesk admin funtions*/
 	function index(){
 		$data['title'] = "Administrator";
@@ -33,13 +33,12 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/newnav',$data);
 		$this->load->view('admin/testpanel',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function propertyInfo(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Property Info Page";
-		$data['page'] = 'Frontdesk';		
+		$data['page'] = 'Frontdesk';
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -119,7 +118,7 @@ class Admin extends CI_Controller {
 			return $value->property_id;
 		}
 	}
-	
+
 	function update_security(){
 		$this->form_validation->set_rules('adminuname','Username','required');
 		$this->form_validation->set_rules('npassword','New Password','required');
@@ -155,7 +154,7 @@ class Admin extends CI_Controller {
 		}
 
 		echo json_encode($msg);
-	}	
+	}
 
 /*floor management methods*/
 	function floor_management(){
@@ -165,7 +164,7 @@ class Admin extends CI_Controller {
 
 		$data['record'] = $this->admin_model->property_info();
 
-		
+
 		$data['floor_record'] = $this->admin_model->get_table_record('floor',false,false,false);
 
 		$this->load->view('admin/header',$data);
@@ -270,8 +269,8 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->salary_term();
 		}else{
-			$data = array(		
-				"salary_term_name"=>ucwords(set_value('name')),				
+			$data = array(
+				"salary_term_name"=>ucwords(set_value('name')),
 				"salary_term_description"=>set_value('description')
 				);
 			$table_name = 'salary_term';
@@ -293,7 +292,7 @@ class Admin extends CI_Controller {
 			}else{
 				redirect('admin/salary_term/duplicate/true');
 			}
-			
+
 		}
 	}
 	function update_salary_term(){
@@ -303,8 +302,8 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->salary_term();
 		}else{
-			$data = array(		
-				"salary_term_name"=>ucwords(set_value('name')),				
+			$data = array(
+				"salary_term_name"=>ucwords(set_value('name')),
 				"salary_term_description"=>set_value('description')
 				);
 			$table_name = 'salary_term';
@@ -342,15 +341,15 @@ class Admin extends CI_Controller {
 
 		$data['record'] = $this->admin_model->property_info();
 
-		
+
 		$main_table = "job_position";
 		$array = array(
 			array('salary_term',$main_table,'salary_term_id')
 			);
 		$data['job_position'] = $this->admin_model->join_record($main_table, $array, false);
-		
+
 		$data['salary_term'] = $this->admin_model->get_table_record('salary_term',false,false,false);
- 
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
 		$this->load->view('admin/body_header',$data);
@@ -367,8 +366,8 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->job_position();
 		}else{
-			$data = array(		
-				"job_position_name"=>ucwords(set_value('name')),				
+			$data = array(
+				"job_position_name"=>ucwords(set_value('name')),
 				"salary_rate"=>set_value('rate'),
 				"salary_term_id"=>set_value('salary_term')
 				);
@@ -391,7 +390,7 @@ class Admin extends CI_Controller {
 			}else{
 				redirect('admin/job_position/duplicate/true');
 			}
-			
+
 		}
 	}
 	function update_job_position(){
@@ -402,8 +401,8 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->job_position();
 		}else{
-			$data = array(		
-				"job_position_name"=>ucwords(set_value('name')),				
+			$data = array(
+				"job_position_name"=>ucwords(set_value('name')),
 				"salary_rate"=>set_value('rate'),
 				"salary_term_id"=>set_value('salary_term')
 				);
@@ -444,7 +443,7 @@ class Admin extends CI_Controller {
 		$main_table1 = "job_position";
 		$array1 = array(
 			array('salary_term',$main_table1,'salary_term_id')
-			);		
+			);
 		$data['job_position'] = $this->admin_model->join_record($main_table1, $array1, false);
 
 		$main_table2 = "employee";
@@ -490,8 +489,8 @@ class Admin extends CI_Controller {
 			$first = substr(date('Y'), 2,2);
 			$second = substr(set_value('bdate'), 5,2);
 			$third = substr(set_value('bdate'), 2,2);
-			
-			$data = array(	
+
+			$data = array(
 				"emp_code"=>$first.$second.$third.$lastnum,
 				"emp_lname"=>ucwords(set_value('lname')),
 				"emp_mname"=>ucwords(set_value('mname')),
@@ -524,7 +523,7 @@ class Admin extends CI_Controller {
 			}else{
 				redirect('admin/employee_registration/duplicate/true');
 			}
-			
+
 		}
 	}
 	function update_employee(){
@@ -541,7 +540,7 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->employee_registration();
 		}else{
-			$data = array(		
+			$data = array(
 				"emp_lname"=>ucwords(set_value('lname')),
 				"emp_mname"=>ucwords(set_value('mname')),
 				"emp_fname"=>ucwords(set_value('fname')),
@@ -568,14 +567,14 @@ class Admin extends CI_Controller {
 		$id = $this->uri->segment(3);
 		$table_name = 'employee';
 		$table_id = 'emp_id';
-		
+
 		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
 
 		if ($delete == true) {
 			redirect('admin/employee_registration/delete/true');
 		}else{
 			redirect('admin/employee_registration/delete/false');
-		}		
+		}
 	}
 
 	/*start of employee account method*/
@@ -614,15 +613,15 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->employee_account();
 		}else{
-			$data = array(	
-				"emp_id"=>set_value('employee'),	
+			$data = array(
+				"emp_id"=>set_value('employee'),
 				"emp_username"=>set_value('username'),
-				"emp_password"=>sha1(set_value('password'))				
+				"emp_password"=>sha1(set_value('password'))
 				);
 			$table_name = 'emp_accounts';
 
 			$array = array(
-				"emp_id"=>set_value('employee'),	
+				"emp_id"=>set_value('employee'),
 				"emp_username"=>set_value('username')
 				);
 			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$array);
@@ -638,7 +637,7 @@ class Admin extends CI_Controller {
 			}else{
 				redirect('admin/employee_account/duplicate/true');
 			}
-			
+
 		}
 	}
 	function update_account(){
@@ -656,9 +655,9 @@ class Admin extends CI_Controller {
 				);
 			$confirmation = $this->admin_model->check_multi_duplicate($table_name,$array);
 			if ($confirmation == true) {
-				$data = array(	
+				$data = array(
 				"emp_username"=>set_value('username'),
-				"emp_password"=>sha1(set_value('password'))				
+				"emp_password"=>sha1(set_value('password'))
 				);
 				$table_name = 'emp_accounts';
 				$table_id = 'emp_account_id';
@@ -726,10 +725,10 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->employee_shift();
 		}else{
-			$data = array(	
-				"emp_id"=>set_value('employee'),	
+			$data = array(
+				"emp_id"=>set_value('employee'),
 				"start_time"=>set_value('start_time'),
-				"end_time"=>set_value('end_time')				
+				"end_time"=>set_value('end_time')
 				);
 			$table_name = 'emp_shift';
 
@@ -748,7 +747,7 @@ class Admin extends CI_Controller {
 				}
 			}else{
 				redirect('admin/employee_shift/duplicate/true');
-			}			
+			}
 		}
 	}
 	function update_shift(){
@@ -758,9 +757,9 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->employee_shift();
 		}else{
-			$data = array(	
+			$data = array(
 				"start_time"=>set_value('start_time'),
-				"end_time"=>set_value('end_time')				
+				"end_time"=>set_value('end_time')
 				);
 			$table_name = 'emp_shift';
 			$table_id = 'emp_shift_id';
@@ -815,10 +814,10 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->overtime_type();
 		}else{
-			$data = array(	
-				"ot_type_name"=>set_value('name'),	
+			$data = array(
+				"ot_type_name"=>set_value('name'),
 				"ot_type_term"=>set_value('term'),
-				"ot_rate"=>set_value('rate')				
+				"ot_rate"=>set_value('rate')
 				);
 			$table_name = 'overtime_type';
 
@@ -837,7 +836,7 @@ class Admin extends CI_Controller {
 				}
 			}else{
 				redirect('admin/overtime_type/duplicate/true');
-			}			
+			}
 		}
 	}
 
@@ -849,10 +848,10 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->overtime_type();
 		}else{
-			$data = array(	
-				"ot_type_name"=>set_value('name'),	
+			$data = array(
+				"ot_type_name"=>set_value('name'),
 				"ot_type_term"=>set_value('term'),
-				"ot_rate"=>set_value('rate')				
+				"ot_rate"=>set_value('rate')
 				);
 			$table_name = 'overtime_type';
 			$table_id = 'ot_type_id';
@@ -921,21 +920,21 @@ class Admin extends CI_Controller {
 					'punch_by'=>$this->session->userdata('current_id')
 					);
 
-					
+
 				}elseif(set_value('punch_type') == 'out'){
 					$data = array(
 					'emp_id'=>$value->emp_id,
 					'time_out'=>str_replace('T', ' ', set_value('date')),
 					'punch_by'=>$this->session->userdata('current_id')
-					);					
-				}		
+					);
+				}
 			}
 
 			if (set_value('punch_type') == 'in') {
 				$like2 = array('time_in'=>substr(set_value('date'), 0, 10));
 				$where = array('emp_id'=>$this->session->userdata('current_id'));
-				$check = $this->project_model->check_multi_duplicate('emp_attendance',$where,$return=false,$like2);			
-				if ($check == false) {				
+				$check = $this->project_model->check_multi_duplicate('emp_attendance',$where,$return=false,$like2);
+				if ($check == false) {
 
 					$in = $this->project_model->insert('emp_attendance',$data);
 					if ($in == true) {
@@ -953,19 +952,19 @@ class Admin extends CI_Controller {
 				$like2 = array('time_in'=>$datetime);
 				$where = array('emp_id'=>$value->emp_id,'time_out'=>null);
 
-				$check = $this->project_model->check_multi_duplicate('emp_attendance',$where,'emp_attendance_id',$like2);			
-				if ($check[0] == true) {	
+				$check = $this->project_model->check_multi_duplicate('emp_attendance',$where,'emp_attendance_id',$like2);
+				if ($check[0] == true) {
 					$out = $this->project_model->update('emp_attendance','emp_attendance_id',$data,$check[1]);
 					if ($out == true) {
 						redirect('admin/punch_in/update/'.true.'/attendance');
 					}else{
 						redirect('admin/punch_in/update/'.false.'/attendance');
-					}					
+					}
 				}else{
 					redirect('admin/punch_in/duplicate/'.true.'/attendance');
 				}
 			}
-			
+
 		}
 	}
 	function process_ot(){
@@ -989,15 +988,15 @@ class Admin extends CI_Controller {
 					'from'=>str_replace('T', ' ', set_value('date')),
 					'ot_type_id'=>set_value('ot_type'),
 					'punch_by'=>$this->session->userdata('current_id')
-					);					
-				}		
+					);
+				}
 			}
 
 			if (set_value('punch_type') == 'start') {
 				$like2 = array('from'=>substr(set_value('date'), 0, 10));
 				$where = array('emp_id'=>$this->session->userdata('current_id'));
-				$check = $this->project_model->check_multi_duplicate('emp_overtime',$where,$return=false,$like2);			
-				if ($check == false) {				
+				$check = $this->project_model->check_multi_duplicate('emp_overtime',$where,$return=false,$like2);
+				if ($check == false) {
 
 					$in = $this->project_model->insert('emp_overtime',$data);
 					if ($in == true) {
@@ -1018,10 +1017,10 @@ class Admin extends CI_Controller {
 					'to'=>null
 				);
 
-				$check = $this->project_model->check_multi_duplicate('emp_overtime',$where,'emp_overtime_id',$like2);			
+				$check = $this->project_model->check_multi_duplicate('emp_overtime',$where,'emp_overtime_id',$like2);
 				if ($check[0] == true) {
 					$where2 = array('emp_overtime_id'=>$check[1]);
-					$record = $this->project_model->select('emp_overtime',false,$where2);	
+					$record = $this->project_model->select('emp_overtime',false,$where2);
 
 					foreach ($record as $value2) {
 						$date1 = new DateTime($value2->from);
@@ -1039,12 +1038,12 @@ class Admin extends CI_Controller {
 						redirect('admin/punch_in/update/'.true.'/overtime');
 					}else{
 						redirect('admin/punch_in/update/'.false.'/overtime');
-					}					
+					}
 				}else{
 					redirect('admin/punch_in/duplicate/'.true.'/overtime');
 				}
 			}
-			
+
 		}
 	}
 
@@ -1053,9 +1052,9 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Manage Store Menu";
 		$data['page'] = 'Stock';
-		
+
 		$data['menu'] = $this->admin_model->get_table_record('store_menu',false,false,false);
-		
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
 		$this->load->view('admin/body_header',$data);
@@ -1068,17 +1067,17 @@ class Admin extends CI_Controller {
 		$result = array('data' => array());
 
 		$data = $this->project_model->select('store_menu');
-		
+
 		foreach ($data as $key => $value) {
 			$buttons = '
 				<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->menu_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
 				<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->menu_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-			';			
+			';
 			$result['data'][$key] = array(
 				$value->menu_name,
 				$buttons
 			);
-		} 
+		}
 
 		echo json_encode($result);
 	}
@@ -1091,14 +1090,14 @@ class Admin extends CI_Controller {
 			foreach ($data as $key => $value) {
 				$buttons = '
 					<a href="javascript:;" class="btn btn-success copy-category" data="'.$value->stockCat_id.'" title="Cancel"> <i class="fa fa-angle-double-left"></i></a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$buttons,
 					$value->stockCat_name
 				);
 			}
 		}
-			
+
 		echo json_encode($result);
 	}
 
@@ -1107,7 +1106,7 @@ class Admin extends CI_Controller {
 			'menu_name'=>ucwords($this->input->post('menu'))
 		);
 		$where = array('menu_name'=>$this->input->post('menu'));
-		
+
 		$process = $this-> processAddMenu($data,$where);
 		$msg['type'] = 'add';
 		if ($process != false) {
@@ -1138,7 +1137,7 @@ class Admin extends CI_Controller {
 		echo json_encode($result);
 	}
 
-	function updateMenu(){	
+	function updateMenu(){
 		$msg['type'] = 'update';
 		$data = array(
 			'menu_name'=>$this->input->post('menu')
@@ -1209,14 +1208,14 @@ class Admin extends CI_Controller {
 	}
 
 /*====== Store Item =========*/
-	
+
 	function menu_item(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Manage Store Item";
 		$data['page'] = 'Stock';
-		
+
 		$data['menu'] = $this->admin_model->get_table_record('store_menu',false,false,false);
-		
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
 		$this->load->view('admin/body_header',$data);
@@ -1238,7 +1237,7 @@ class Admin extends CI_Controller {
 				$buttons = '
 					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->menu_item_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
 					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->menu_item_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$value->menu_name,
 					$value->item_name,
@@ -1249,7 +1248,7 @@ class Admin extends CI_Controller {
 					$tcost,
 					$buttons
 				);
-			} 
+			}
 		}
 		echo json_encode($result);
 	}
@@ -1261,7 +1260,7 @@ class Admin extends CI_Controller {
 		echo json_encode($result);
 	}
 
-	function updateMenuItem(){	
+	function updateMenuItem(){
 		$msg['type'] = 'update';
 		$type = $this->input->post('stock_type');
 		if ($type == "instock") {
@@ -1368,12 +1367,12 @@ class Admin extends CI_Controller {
 			$msg['success'] = false;
 		}
 
-		echo json_encode($msg);	 
+		echo json_encode($msg);
 	}
 	private function processLoadRestuItem($id){
 		//get cat info
 		$where1 = array("stockCat_id"=>$id);
-		$menu = $this->project_model->select('stockcategory',false,$where1);		
+		$menu = $this->project_model->select('stockcategory',false,$where1);
 		foreach ($menu as $value) {
 			$name = $value->stockCat_name;
 			$where2 = array('menu_name'=>$name);
@@ -1395,8 +1394,8 @@ class Admin extends CI_Controller {
 							"unit"=>$value->stock_unit,
 							"stock"=>0,
 							"item_price"=>$value->stockCost	,
-							"stock_type"=>'instock'			
-							);					
+							"stock_type"=>'instock'
+							);
 						}
 
 						$result = $this->project_model->insert_batch('menu_item',$data);
@@ -1405,7 +1404,7 @@ class Admin extends CI_Controller {
 							return true;
 						}else{
 							return "error insert";
-						}	
+						}
 					}else{
 						return "error item";
 					}
@@ -1450,7 +1449,7 @@ class Admin extends CI_Controller {
 
 		if ($tempData) {
 			foreach ($tempData as $value) {
-				$where_not_in[] = $value->menu_name;			
+				$where_not_in[] = $value->menu_name;
 			}
 		}else{
 			$where_not_in[] = "";
@@ -1482,7 +1481,7 @@ class Admin extends CI_Controller {
 					if ($stock > 0) {
 						$where2 = array('stock_name'=>$name);
 						$getstock = $this->project_model->select('stockitem',false,$where2);
-						if ($getstock != false) {					
+						if ($getstock != false) {
 							foreach ($getstock as $value2) {
 								$item = $value2->stock_id;
 								$newstock = $value2->stock_qqty+$stock;
@@ -1506,7 +1505,7 @@ class Admin extends CI_Controller {
 									return "error update";
 								}
 							}
-							
+
 						}else{
 							return "error get stock";
 						}
@@ -1519,7 +1518,7 @@ class Admin extends CI_Controller {
 							return "error delete";
 						}
 					}
-						
+
 				}else{
 					$where = array('menu_item_id'=>$id);
 					$delete = $this->project_model->deleteNew('menu_item',$where);
@@ -1529,7 +1528,7 @@ class Admin extends CI_Controller {
 						return false;
 					}
 				}
-					
+
 			}
 		}else{
 			return false;
@@ -1550,7 +1549,7 @@ class Admin extends CI_Controller {
 					if ($stock != 0) {
 						$where2 = array('stock_name'=>$name);
 						$getstock = $this->project_model->select('stockitem',false,$where2);
-						if ($getstock != false) {					
+						if ($getstock != false) {
 							foreach ($getstock as $value2) {
 								$item = $value2->stock_id;
 								$newstock = $value2->stock_qqty+$stock;
@@ -1569,7 +1568,7 @@ class Admin extends CI_Controller {
 									echo "error 1";
 								}
 							}
-							
+
 						}else{
 							//return false;
 							echo "error 2";
@@ -1578,11 +1577,11 @@ class Admin extends CI_Controller {
 						$i++;
 					}
 
-						
+
 				}else{
 					$i++;
 				}
-					
+
 			}
 
 			if ($i == $count ) {
@@ -1615,7 +1614,7 @@ class Admin extends CI_Controller {
 				$where_not_in[] = $val->item_name;
 			}
 		}
-		
+
 		$wni_column = "stock_name";
 		$join = array(
 			array('stockcategory','stockitem','stockCat_id')
@@ -1623,9 +1622,9 @@ class Admin extends CI_Controller {
 		$data = $this->project_model->select_join("stockitem",$join,$like=false,$where=false,$order=false,$group=false,$or_where=false,$or_like=false,$where_not_in,$wni_column,$where_in = false);
 		if ($data != false) {
 			foreach ($data as $key => $value) {
-				$buttons = '					
+				$buttons = '
 					<a href="javascript:;" class="item-add btn btn-success" data="'.$value->stock_id.'"> <i class="fa fa-plus fa-fw"></i> add</a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$buttons,
 					$value->stockCat_name,
@@ -1634,7 +1633,7 @@ class Admin extends CI_Controller {
 					$value->stock_qqty
 				);
 			}
-		}			 
+		}
 		echo json_encode($result);
 	}
 
@@ -1651,7 +1650,7 @@ class Admin extends CI_Controller {
 		echo json_encode($msg);
 	}
 
-	private function processmanualAddRestu($id){		
+	private function processmanualAddRestu($id){
 		$where = array("stock_id"=>$id);
 		$join = array(
 				array("stockcategory","stockitem","stockCat_id")
@@ -1666,9 +1665,9 @@ class Admin extends CI_Controller {
 					"item_name"=>$get->stock_name,
 					"unit"=>$get->stock_unit,
 					"stock"=>0,
-					"item_price"=>$get->stockCost				
+					"item_price"=>$get->stockCost
 				);
-			
+
 				$where2 = array('item_name'=>$get->stock_name);
 				$check = $this->project_model->check_multi_duplicate("menu_item",$where2);
 				if($check != true){
@@ -1705,11 +1704,11 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/footer',$data);
 	}
 
-	function bill_record_form(){		
+	function bill_record_form(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Reprinted Unofficial Receipt';
-		
+
 		$where = array(
 			"check_in_bill.check_in_id"=>$this->uri->segment(3)
 		);
@@ -1729,7 +1728,7 @@ class Admin extends CI_Controller {
 			array('ordered_item',$main_table2,'order_id')
 			);
 		$data['restaurant_charges'] = $this->admin_model->join_record($main_table2, $array2, false,$where2);
-		
+
 		$where3 = array('check_in_id'=>$this->uri->segment(3));
 		$data['charges']= $this->admin_model->get_table_record('check_in_charges',$where3,false,false);
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
@@ -1743,11 +1742,11 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Reprinted Purchase Receipt';
-		
+
 		$where = array(
 			"order.order_id"=>$this->uri->segment(3)
 		);
-		
+
 		$main_table = "order";
 		$array = array(
 			array('employee',$main_table,'emp_id')
@@ -1766,7 +1765,7 @@ class Admin extends CI_Controller {
 
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$data['employee'] = false;
-		
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('content/receipt_form',$data);
 		$this->load->view('admin/footer',$data);
@@ -1777,11 +1776,11 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Swimming Profit Report';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
-		$date = $year.'-'.$month;				
-		
+		$date = $year.'-'.$month;
+
 		$main_table = "swimming_ticket";
 		$array = array(
 			array('employee',$main_table,'emp_id')
@@ -1802,11 +1801,11 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Restaurant Sales Report';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
-		$date = $year.'-'.$month;				
-		
+		$date = $year.'-'.$month;
+
 		$main_table = "order";
 		$array = array(
 			array('employee',$main_table,'emp_id')
@@ -1815,7 +1814,7 @@ class Admin extends CI_Controller {
 			"order.order_date"=>$date
 		);
 		$data['bill'] = $this->admin_model->select_join($main_table,$array,$like);
-		
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/restaurant_bill_list',$data);
@@ -1826,19 +1825,19 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Payment Record';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
 		$guest = $this->uri->segment(5);
 		$date = $year.'-'.$month;
-				
+
 		if($guest == 'all'){
 			$main_table = "check_in_bill";
 			$array = array(
 				array('check_in',$main_table,'check_in_id'),
 				array('guest','check_in','guest_id')
 				);
-			
+
 			$like = array("check_in_bill.bill_payment_date"=>$date);
 			$data['bill'] = $this->admin_model->join_record($main_table,$array,false,false,$like);
 		}else{
@@ -1853,23 +1852,23 @@ class Admin extends CI_Controller {
 			$like = array("check_in_bill.bill_payment_date"=>$date);
 			$data['bill'] = $this->admin_model->join_record($main_table,$array,false,$where,$like);
 		}
-		
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/bill_record_list',$data);
 		$this->load->view('admin/footer',$data);
-		
+
 	}
-	
+
 	function balance_record_list(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Balance Record';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
 		$guest = $this->uri->segment(5);
-				
+
 		if($guest == 'all'){
 			$main_table = "check_in_bill";
 			$array = array(
@@ -1894,24 +1893,24 @@ class Admin extends CI_Controller {
 			$like = array("check_in_bill.balance_payment_date"=>$year.'-'.$month);
 			$data['bill'] = $this->admin_model->join_record($main_table, $array, false,$where,$like);
 		}
-		
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/balance_record_list',$data);
 		$this->load->view('admin/footer',$data);
-		
+
 	}
 
 	function ot_record_list(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Employee Overtime Record';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
 		$employee = $this->uri->segment(5);
 		$date = $year.'-'.$month;
-				
+
 		if($employee == 'all'){
 			$main_table = "emp_overtime";
 			$array = array(
@@ -1940,23 +1939,23 @@ class Admin extends CI_Controller {
 			);
 			$data['ot'] = $this->admin_model->join_record($main_table, $array, false,$where,$like);;
 		}
-		
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/emp_ot_record',$data);
 		$this->load->view('admin/footer',$data);
 	}
-	
+
 	function credit_record_list(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Employee Credit Record';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
 		$employee = $this->uri->segment(5);
 		$date = $year.'-'.$month;
-				
+
 		if($employee == 'all'){
 			$main_table = "emp_credits";
 			$array = array(
@@ -1983,7 +1982,7 @@ class Admin extends CI_Controller {
 			);
 			$data['credit'] = $this->admin_model->join_record($main_table, $array, false,$where,$like);
 		}
-		
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/credit_record_list',$data);
@@ -1995,12 +1994,12 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Employee Attendance Record';
-		
+
 		$month = $this->uri->segment(3);
 		$year = $this->uri->segment(4);
 		$employee = $this->uri->segment(5);
 		$date = $year.'-'.$month;
-				
+
 		if($employee == 'all'){
 			$main_table = "emp_attendance";
 			$array = array(
@@ -2013,7 +2012,7 @@ class Admin extends CI_Controller {
 				"emp_attendance.time_in"=>$date
 			);
 			$data['attend'] = $this->admin_model->join_record($main_table, $array, false,$where,$like);
-		}else{ 
+		}else{
 			$main_table = "emp_attendance";
 			$array = array(
 				array('employee',$main_table,'emp_id')
@@ -2027,19 +2026,19 @@ class Admin extends CI_Controller {
 			);
 			$data['attend'] = $this->admin_model->join_record($main_table, $array, false,$where,$like);
 		}
-		
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/attendance_list',$data);
 		$this->load->view('admin/footer',$data);
-		
+
 	}
 
 	function attendance_sheet(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Attendance Sheet';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/attendance_sheet',$data);
@@ -2050,7 +2049,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Employee Credit Sheet';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/credit_sheet',$data);
@@ -2060,7 +2059,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Employee Sales Form';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/empsales_form',$data);
@@ -2072,7 +2071,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Overtime Sheet';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/overtime_sheet',$data);
@@ -2083,7 +2082,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Miscellaneous Expenses';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/misc_sheet',$data);
@@ -2094,7 +2093,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Production Item';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/prod_sheet',$data);
@@ -2105,7 +2104,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Equipment Expenses';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/equip_sheet',$data);
@@ -2116,7 +2115,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Stock Expenses';
-		 
+
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
 		$this->load->view('print_form/stocks_sheet',$data);
@@ -2127,7 +2126,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Stock Inventory';
-		
+
 		$order = array('stockCat_id','ASC');
 		$join = array(
 			array('stockcategory','stockitem','stockCat_id')
@@ -2138,7 +2137,7 @@ class Admin extends CI_Controller {
 		$this->load->view('print_form/stocklist',$data);
 		$this->load->view('admin/footer',$data);
 	}
-	
+
 	private function is_log_in(){
 		if($this->session->userdata('isposadmin_log') == false){
 			redirect('main');
@@ -2151,12 +2150,12 @@ class Admin extends CI_Controller {
 			redirect('main');
 		}
 	}
-	
+
 	function backup_db(){
 		$this->load->library('ota_mysql_backup');
- 
+
 		$result = $this->ota_mysql_backup->backup();
-		 
+
 		// Return in string and force client to download the file
 		$this->load->helper('download');
 		$filename = 'backup-db-'.date('Y-m-d').'.sql';
@@ -2168,7 +2167,7 @@ class Admin extends CI_Controller {
 			"data"=>null,
 			);
 		$this->session->unset_userdata($sess_array);
-		
+
 		if ($this->uri->segment(3) == "rooms") {
 			redirect('admin/rooms/session/true/cleared');
 		}
@@ -2178,7 +2177,7 @@ class Admin extends CI_Controller {
 		if ($this->uri->segment(3) == "extra_charges") {
 			redirect('admin/extra_charges/session/true/cleared');
 		}
-		
+
 	}
 
 /*====== Stock Settings*/
@@ -2187,7 +2186,7 @@ class Admin extends CI_Controller {
 		$data['sub_heading'] = "Stock Activity Overview";
 		$data['page'] = 'monitoring';
 
-		$data['record'] = $this->admin_model->property_info();		
+		$data['record'] = $this->admin_model->property_info();
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -2204,7 +2203,7 @@ class Admin extends CI_Controller {
 		$data['category'] = $this->project_model->select('stockcategory');
 		$data['stockclass'] = $this->project_model->select('stock_class');
 		$data['record'] = $this->admin_model->property_info();
-		
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
 		$this->load->view('admin/body_header',$data);
@@ -2218,7 +2217,7 @@ class Admin extends CI_Controller {
 		$data['page'] = 'Stock';
 
 		$data['record'] = $this->admin_model->property_info();
-		
+
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -2233,7 +2232,7 @@ class Admin extends CI_Controller {
 		$data['page'] = 'Stock';
 
 		$data['record'] = $this->admin_model->property_info();
-		
+
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -2250,7 +2249,7 @@ class Admin extends CI_Controller {
 
 		$data['category'] = $this->project_model->select('stockcategory');
 		$data['record'] = $this->admin_model->property_info();
-		
+
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -2278,7 +2277,7 @@ class Admin extends CI_Controller {
 
 		if ($tempData) {
 			foreach ($tempData as $value) {
-				$where_not_in[] = $value->stockCat_name;			
+				$where_not_in[] = $value->stockCat_name;
 			}
 		}else{
 			$where_not_in[] = "";
@@ -2296,7 +2295,7 @@ class Admin extends CI_Controller {
 
 		$data['category'] = $this->project_model->select('stockcategory');
 		$data['record'] = $this->admin_model->property_info();
-		
+
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -2324,7 +2323,7 @@ class Admin extends CI_Controller {
 
 		if ($tempData) {
 			foreach ($tempData as $value) {
-				$where_not_in[] = $value->stockCat_name;			
+				$where_not_in[] = $value->stockCat_name;
 			}
 		}else{
 			$where_not_in[] = "";
@@ -2339,7 +2338,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Production Expenses List";
 		$data['page'] = 'Stock';
-		
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
 		$this->load->view('admin/body_header',$data);
@@ -2359,7 +2358,7 @@ class Admin extends CI_Controller {
 				$buttons = '
 					<a href="javascript:;" class="item-edit" title="edit" data="'.$value->expguide_id.'"><i class="fa fa-pencil fa-2x"></i></a>
 					<a href="javascript:;" title="delete" class="item-delete" data="'.$value->expguide_id.'"><i class="fa fa-trash fa-2x"></i></a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$value->stockCat_name,
 					$value->expguide_desc,
@@ -2382,7 +2381,7 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$msg['error'] = validation_errors();
 			$msg['success'] = false;
-		}else{			
+		}else{
 			$data = array(
 				'expguide_desc'=>ucwords(set_value('desc')),
 				'expguide_unit'=>set_value('unit'),
@@ -2396,7 +2395,7 @@ class Admin extends CI_Controller {
 			}else{
 				$msg['success'] = false;
 				$msg['error'] = 'Error adding data.';
-			}			
+			}
 		}
 		$msg['type'] = 'Add';
 		echo json_encode($msg);
@@ -2407,20 +2406,20 @@ class Admin extends CI_Controller {
 		$result = array('data' => array());
 
 		$data = $this->project_model->select('stockcategory');
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$buttons = '
 					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->stockCat_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
 					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->stockCat_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$value->stockCat_name,
 					$buttons
 				);
-			} 
+			}
 		}
-			
+
 
 		echo json_encode($result);
 	}
@@ -2430,7 +2429,7 @@ class Admin extends CI_Controller {
 			'stockCat_name'=>ucwords($this->input->post('category'))
 			);
 		$process = $this->processAddCategory($data,$where);
-		
+
 		$msg['type'] = 'add';
 		if ($process != false) {
 			$msg['success'] = true;
@@ -2458,7 +2457,7 @@ class Admin extends CI_Controller {
 		$result = $this->project_model->single_select('stockcategory',$where);
 		echo json_encode($result);
 	}
-	function updateCategory(){	
+	function updateCategory(){
 		$msg['type'] = 'update';
 		$data = array(
 			'stockCat_name'=>$this->input->post('category')
@@ -2499,7 +2498,7 @@ class Admin extends CI_Controller {
 				$buttons = '
 					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->stock_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
 					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->stock_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$value->stockCat_name,
 					$value->stock_name,
@@ -2510,37 +2509,37 @@ class Admin extends CI_Controller {
 					$buttons
 				);
 			}
-		}		
+		}
 		echo json_encode($result);
 	}
 	function createItem(){
-			
+
 		$data = array(
 			"stockCat_id"=>$this->input->post('category'),
 			"stock_name"=>ucwords($this->input->post('name')),
 			"stock_unit"=>$this->input->post('unit'),
 			"stock_qqty"=>$this->input->post('qty'),
-			"stockCost"=>$this->input->post('cost')				
+			"stockCost"=>$this->input->post('cost')
 		);
-		$result = $this->project_model->insert('stockitem',$data); 
+		$result = $this->project_model->insert('stockitem',$data);
 
 		$msg['type'] = 'add';
 		if ($result) {
 			$msg['success'] = true;
 		}else{
 			$msg['success'] = false;
-		}		
+		}
 
 		echo json_encode($msg);
 	}
 	function editStock(){
-		
+
 		$id = $this->input->get('id');
 		$where = array("stock_id"=>$id);
 		$result = $this->project_model->single_select('stockitem',$where);
 		echo json_encode($result);
 	}
-	function updateItem(){	
+	function updateItem(){
 		$msg['type'] = 'update';
 		$data = array(
 			"stockCat_id"=>$this->input->post('category'),
@@ -2578,20 +2577,20 @@ class Admin extends CI_Controller {
 		$result = array('data' => array());
 
 		$data = $this->project_model->select('stock_class');
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$buttons = '
 					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->stockclass_id.'" title="Print"><i class="fa fa-pencil"></i></a>
 					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->stockclass_id.'" title="Select"><i class="fa fa-times"></i></a>
-				';			
+				';
 				$result['data'][$key] = array(
 					$value->stockclass_name,
 					$buttons
 				);
-			} 
+			}
 		}
-			
+
 		echo json_encode($result);
 	}
 	function addClass(){
@@ -2627,7 +2626,7 @@ class Admin extends CI_Controller {
 		$result = $this->project_model->single_select('stock_class',$where);
 		echo json_encode($result);
 	}
-	function updateClass(){	
+	function updateClass(){
 		$msg['type'] = 'update';
 		$data = array(
 			'stockclass_name'=>$this->input->post('class')
@@ -2667,7 +2666,7 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/body_header',$data);
 		$this->load->view('storage/stockRoomMonitoring',$data);
 		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);	
+		$this->load->view('admin/footer',$data);
 	}
 
 	function fetchStockRoom(){
@@ -2688,7 +2687,7 @@ class Admin extends CI_Controller {
 						$value->lastStock
 					);
 				}
-			} 
+			}
 
 		echo json_encode($result);
 	}
@@ -2726,9 +2725,9 @@ class Admin extends CI_Controller {
 						$value->unit,
 						$value->stock,
 						$value->stock_dispose
-					);	
+					);
 				}
-							
+
 			}
 		}
 		echo json_encode($result);
@@ -2753,15 +2752,15 @@ class Admin extends CI_Controller {
 		$result = array('data' => array());
 		$where = array("offitem_dispose >"=>0);
 		$data= $this->project_model->select('officeitems',false,$where);
-		
+
 		if ($data != false) {
-			foreach ($data as $key => $value) {			
+			foreach ($data as $key => $value) {
 				$result['data'][$key] = array(
 					$value->offitem_name,
 					$value->offitem_unit,
 					$value->offitem_stock,
 					$value->offitem_dispose
-				);			
+				);
 			}
 		}
 
@@ -2788,7 +2787,7 @@ class Admin extends CI_Controller {
 
 		$where = array("proditem_dispose >"=>0);
 		$data = $this->project_model->select('productionitems',false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$result['data'][$key] = array(
@@ -2796,7 +2795,7 @@ class Admin extends CI_Controller {
 					$value->proditem_unit,
 					$value->proditem_stock,
 					$value->proditem_dispose
-				);					
+				);
 			}
 		}
 		echo json_encode($result);
@@ -2852,7 +2851,7 @@ class Admin extends CI_Controller {
 			foreach ($office as $value) {
 				$thotstock = $thotstock + $value->offitem_stock;
 				$data['thotstock'] = $thotstock;
-				
+
 				$inithotcost = $value->offitem_stock * $value->offitem_cost;
 				$thotstockcost = $thotstockcost + $inithotcost;
 				$data['thotstockcost'] = $this->cart->format_number($thotstockcost);
@@ -2866,7 +2865,7 @@ class Admin extends CI_Controller {
 			foreach ($resto as $value) {
 				$trestostock = $trestostock + $value->stock;
 				$data['trestostock'] = $trestostock;
-				
+
 				$initrestocost = $value->stock * $value->item_price;
 				$trestostockcost = $trestostockcost + $initrestocost;
 				$data['trestostockcost'] = $this->cart->format_number($trestostockcost);
@@ -2896,19 +2895,19 @@ class Admin extends CI_Controller {
 			);
 		$where = array("releasing_status"=>"released");
 		$data = $this->project_model->select_join('releasecart',$join,false,$where);
-		
+
 		if ($data != false) {
-			foreach ($data as $key => $value) {			
+			foreach ($data as $key => $value) {
 				$link = base_url('admin/printReleaseItem/'.$value->releaseCart_id);
 				$buttons = '<a href="javascript:;" class="print" data="'.$link.'"><i class="fa fa-print fa-2x"></i></a>';
-							
+
 				$result['data'][$key] = array(
 					$value->release_code,
 					$value->channel_name,
-					$value->release_date,				
+					$value->release_date,
 					$buttons
 				);
-			} 
+			}
 		}
 
 		echo json_encode($result);
@@ -2918,7 +2917,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Store";
 		$data['page'] = 'Release Item Report';
-		
+
 		$id = $this->uri->segment(3);
 		$where = array("releaseditem.releaseCart_id " => $id);
 		$join = array(
@@ -2952,17 +2951,17 @@ class Admin extends CI_Controller {
 
 	function getrestockCart(){
 		$result = array('data' => array());
-		
+
 		$where = array('restock_status'=>"stocked");
 		$join = array(
 			array('stockchannel','restockcart','channel_id')
 		);
 		$data = $this->project_model->select_join('restockcart',$join,false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-primary view-item" data="'.$value->restock_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-					<a href="javascript:;" class="btn btn-danger delete" data="'.$value->restock_id.'" title="Select"><i class="fa fa-trash"></i></a>';		
+					<a href="javascript:;" class="btn btn-danger delete" data="'.$value->restock_id.'" title="Select"><i class="fa fa-trash"></i></a>';
 				$result['data'][$key] = array(
 					$value->channel_name,
 					$value->restock_code,
@@ -2970,7 +2969,7 @@ class Admin extends CI_Controller {
 					$link
 				);
 			}
-		}			 
+		}
 
 		echo json_encode($result);
 	}
@@ -3055,11 +3054,11 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Restock Cart Items';
-		
+
 		$where = array(
 			"restock_items.restock_id"=>$this->uri->segment(3)
 		);
-		
+
 		$main_table = "restock_items";
 		$array = array(
 			array('restockcart',$main_table,'restock_id')
@@ -3077,7 +3076,7 @@ class Admin extends CI_Controller {
 
 		$data['property']= $this->project_model->select('property_info');
 		$data['employee'] = false;
-		
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('stockMan/restockCartItems',$data);
 		$this->load->view('admin/footer',$data);
@@ -3085,7 +3084,7 @@ class Admin extends CI_Controller {
 
 	function deleteCartHistory(){
 		$id = $this->input->get('id');
-		
+
 		if ($this->processdelCartHistory($id)) {
 			$msg['success'] = true;
 		}else{
@@ -3118,7 +3117,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Hotel Restockable Items';
-		
+
 		$where = array("hotelitem_used >" => 0);
 		$join = array(
 			array("stockcategory","hotelitems","stockCat_id")
@@ -3136,7 +3135,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Kitchen Restockable Items';
-		
+
 		$where = array("kitchenitem_dispose >" => 0);
 		$join = array(
 			array("stockcategory","kitchenitems","stockCat_id")
@@ -3154,7 +3153,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Restaurant Restockable Items';
-		
+
 		$where = array("stock_dispose >" => 0);
 		$join = array(
 			array("store_menu","menu_item","menu_id")
@@ -3172,7 +3171,7 @@ class Admin extends CI_Controller {
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Stock Room Restockable Items';
-		
+
 		$where = array("stockDispose >" => 0);
 		$join = array(
 			array("stockcategory","stockitem","stockCat_id")
@@ -3194,7 +3193,7 @@ class Admin extends CI_Controller {
 
 		$data['category'] = $this->project_model->select('stockcategory');
 		$data['record'] = $this->admin_model->property_info();
-		
+
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -3266,17 +3265,17 @@ class Admin extends CI_Controller {
 
 	function fetchRestockCart(){
 		$result = array('data' => array());
-		
+
 		$where = array('restock_status'=>"restocking");
 		$join = array(
 			array('stockchannel','restockcart','channel_id')
 		);
 		$data = $this->project_model->select_join('restockcart',$join,false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->restock_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->restock_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';		
+				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->restock_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
 				$result['data'][$key] = array(
 					$value->channel_name,
 					$value->restock_code,
@@ -3284,7 +3283,7 @@ class Admin extends CI_Controller {
 				);
 			}
 		}
-			 
+
 
 		echo json_encode($result);
 	}
@@ -3320,7 +3319,7 @@ class Admin extends CI_Controller {
 
 		echo json_encode($msg);
 	}
-	
+
 	function fetchRestockable(){
 		$result = array('data' => array());
 
@@ -3406,14 +3405,14 @@ class Admin extends CI_Controller {
 					}
 				}
 
-					
+
 				$data = $this->project_model->select_join($table,$join,false,$where,$order=false,$group=false,$where_or=false,$limit=false,$or_like=false,$list,$id);
 				if ($data !== false) {
 					foreach ($data as $key => $value) {
 						$tstock = $value->$stock + $value->$dispose;
 						if ($value->$stock < $tstock) {
 							$link = '<a href="javascript:;" class="btn btn-success addToCart" data="'.$value->$id.'" title="Select"><i class="fa fa-angle-double-left"></i></a>
-							';		
+							';
 							$result['data'][$key] = array(
 								$value->$cat,
 								$value->$name,
@@ -3422,9 +3421,9 @@ class Admin extends CI_Controller {
 								$link
 							);
 						}
-					} 
+					}
 				}
-					
+
 
 			}
 		}
@@ -3437,7 +3436,7 @@ class Admin extends CI_Controller {
 		$id = $this->session->userdata('regCart');
 		$where = array('restock_id'=>$id);
 		$data = $this->project_model->select('restock_items',false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-danger delete-cartitem" data="'.$value->restockitem_id.'" title="Select"><i class="fa fa-times"></i></a>';
@@ -3449,12 +3448,12 @@ class Admin extends CI_Controller {
 				);
 			}
 		}
-			 
+
 
 		echo json_encode($result);
 	}
 
-	function addCartItem(){		
+	function addCartItem(){
 		$id  = $this->input->get('id');
 		$process = $this->processAddCartItem($id);
 		if ($process !== false) {
@@ -3490,10 +3489,10 @@ class Admin extends CI_Controller {
 		$item = $this->project_model->select($table,false,$where);
 		if ($item != false) {
 			foreach ($item as $value) {
-				if ($this->session->userdata('table') == "menu_item") {	
-					$newstock = $value->stock_dispose + $value->stock;	
+				if ($this->session->userdata('table') == "menu_item") {
+					$newstock = $value->stock_dispose + $value->stock;
 					$name = $value->item_name;
-					$dispose = $value->stock_dispose;		
+					$dispose = $value->stock_dispose;
 					$data = array(
 						"stockCat_id"=>$value->menu_id,
 						"restockitem_name"=>$value->item_name,
@@ -3565,12 +3564,12 @@ class Admin extends CI_Controller {
 						"stock_qqty"=>$newstock,
 						"stockDispose"=>'0'
 					);
-					$where = array("stock_id"=>$value->stock_id);					
+					$where = array("stock_id"=>$value->stock_id);
 				}
 
 				$insert = $this->project_model->insert('restock_items',$data);
 
-				if ($insert != false) {	
+				if ($insert != false) {
 					$update = $this->project_model->updateNew($this->session->userdata('table'),$where,$updateData);
 					if ($update != false) {
 						if ($this->session->userdata('table') !== "stockitem") {
@@ -3631,14 +3630,14 @@ class Admin extends CI_Controller {
 		$where = array('restockitem_id'=>$id);
 		$get = $this->project_model->select('restock_items',false,$where);
 		if ($get !== false) {
-			foreach ($get as $value) {				
-				if ($this->session->userdata('table') == "menu_item") {					
+			foreach ($get as $value) {
+				if ($this->session->userdata('table') == "menu_item") {
 					$updateData = array(
 						"stock"=>$value->left_stock,
 						"stock_dispose"=>$value->restock_qqty
 					);
 					$where = array("menu_item_id"=>$value->origin_id);
-				}elseif ($this->session->userdata('table') == "productionitems") {					
+				}elseif ($this->session->userdata('table') == "productionitems") {
 					$updateData = array(
 						"proditem_stock"=>$value->left_stock,
 						"proditem_dispose"=>$value->restock_qqty
@@ -3655,7 +3654,7 @@ class Admin extends CI_Controller {
 						"stock_qqty"=>$value->left_stock,
 						"stockDispose"=>$value->restock_qqty
 					);
-					$where = array("stock_id"=>$value->origin_id);		
+					$where = array("stock_id"=>$value->origin_id);
 				}
 					$dispose = $value->restock_qqty;
 					$name = $value->restockitem_name;
@@ -3699,7 +3698,7 @@ class Admin extends CI_Controller {
 						}
 
 
-										
+
 					}else{
 						return false;
 						//return "update error";
@@ -3815,7 +3814,7 @@ class Admin extends CI_Controller {
 
 		$data['category'] = $this->project_model->select('stockcategory');
 		$data['record'] = $this->admin_model->property_info();
-		
+
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
@@ -3854,8 +3853,8 @@ class Admin extends CI_Controller {
 				$msg['error'] = 'Error creating releasing cart.';
 			}
 		}
-		
-		echo json_encode($msg);		
+
+		echo json_encode($msg);
 	}
 
 	function fetchRelChannelList(){
@@ -3881,21 +3880,21 @@ class Admin extends CI_Controller {
 
 	function fetchRelCart(){
 		$result = array('data' => array());
-		
+
 		$where = array('releasing_status'=>"releasing");
 		$join = array(
 			array('stockchannel','releasecart','channel_id'),
 			array('order','releasecart','order_id')
 		);
 		$data = $this->project_model->select_join('releasecart',$join,false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->releaseCart_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->releaseCart_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';		
+				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->releaseCart_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
 				$result['data'][$key] = array(
 					$value->channel_name,
-					$value->release_code,					
+					$value->release_code,
 					$value->order_code,
 					$link
 				);
@@ -3967,7 +3966,7 @@ class Admin extends CI_Controller {
 
 		echo json_encode($msg);
 	}
-	
+
 	function fetchRelItem(){
 		$result = array('data' => array());
 
@@ -4011,7 +4010,7 @@ class Admin extends CI_Controller {
 				$data = $this->project_model->select_join($table,$join,false,$where);
 				if ($data !== false) {
 					foreach ($data as $key => $value) {
-						$link = '<a href="javascript:;" class="btn btn-success addToCart" data="'.$value->$id.'" title="Cancel"> <i class="fa fa-plus"></i></a>';		
+						$link = '<a href="javascript:;" class="btn btn-success addToCart" data="'.$value->$id.'" title="Cancel"> <i class="fa fa-plus"></i></a>';
 						$result['data'][$key] = array(
 							$value->stockCat_name,
 							$value->$name,
@@ -4019,9 +4018,9 @@ class Admin extends CI_Controller {
 							$value->$stock,
 							$link
 						);
-					} 
+					}
 				}
-					
+
 
 			}
 		}
@@ -4034,7 +4033,7 @@ class Admin extends CI_Controller {
 		$id = $this->session->userdata('relCart');
 		$where = array('releaseCart_id'=>$id);
 		$data = $this->project_model->select('releaseditem',false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-danger delete-cartitem" data="'.$value->release_item_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
@@ -4065,13 +4064,13 @@ class Admin extends CI_Controller {
 
 	function addRelCartItem(){
 		$this->form_validation->set_rules('itemDispId','Item','required');
-		$this->form_validation->set_rules('dispose','Dispose Qty','required');		
+		$this->form_validation->set_rules('dispose','Dispose Qty','required');
 
 		if ($this->form_validation->run() == FALSE) {
 			$msg['error'] = validation_errors();
-			$msg['success'] = false;			
+			$msg['success'] = false;
 		}else{
-			
+
 			$table = $this->session->userdata('reltable');
 			if ($table == "productionitems") {
 				$where = array(
@@ -4126,15 +4125,15 @@ class Admin extends CI_Controller {
 							'releaseitem_name'=>$value->offitem_name,
 							'releasecart.releaseCart_id'=>$cartid
 						);
-					}		
+					}
 					$join = array(
 						array('releasecart','releaseditem','releaseCart_id')
-					);			
+					);
 					$check = $this->project_model->check_multi_duplicate('releaseditem',$wherecheck,'release_item_id',false,$join);
 					if($check[0] != true){
 						$insert = $this->project_model->insert('releaseditem',$data);
 
-						if ($insert != false) {	
+						if ($insert != false) {
 							$update = $this->project_model->updateNew($table,$where,$updateData);
 							if ($update != false) {
 								$msg['success'] = true;
@@ -4155,7 +4154,7 @@ class Admin extends CI_Controller {
 								$dataUpdate = array(
 									'releaseitem_qty'=>$newqty
 								);
-								
+
 								$updateRe = $this->project_model->updateNew("releaseditem",$whereupdate,$dataUpdate);
 								if($updateRe != false){
 									$updateItem = $this->project_model->updateNew($table,$where,$updateData);
@@ -4173,7 +4172,7 @@ class Admin extends CI_Controller {
 						}else{
 							$msg['error'] = "Unable to find release item data.";
 							$msg['success'] = false;
-						}						
+						}
 					}
 				}
 			}else{
@@ -4192,7 +4191,7 @@ class Admin extends CI_Controller {
 		$where = array('release_item_id'=>$id);
 		$get = $this->project_model->select('releaseditem',false,$where);
 		if ($get !== false) {
-			foreach ($get as $value) {				
+			foreach ($get as $value) {
 				if ($table == "productionitems") {
 					$name = $value->releaseitem_name;
 					$where2 = array('proditem_name'=> $name);
@@ -4205,8 +4204,8 @@ class Admin extends CI_Controller {
 							"proditem_dispose"=>$dispose
 						);
 						$where = array("production_id"=>$value2->production_id);
-					}					
-					
+					}
+
 				}elseif ($table == "officeitems") {
 					$name = $value->releaseitem_name;
 					$where2 = array('offitem_name'=> $name);
@@ -4220,7 +4219,7 @@ class Admin extends CI_Controller {
 						);
 						$where = array("office_id"=>$value2->office_id);
 					}
-					
+
 				}
 					$update = $this->project_model->updateNew($table,$where,$updateData);
 					if ($update !== false) {
@@ -4472,8 +4471,8 @@ class Admin extends CI_Controller {
 	function attendance(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Employee Attendance Record";
-		$data['page'] = 'reports';		
-		
+		$data['page'] = 'reports';
+
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav',$data);
 		$this->load->view('admin/body_header',$data);
@@ -4494,7 +4493,7 @@ class Admin extends CI_Controller {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->misc_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->misc_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-					';			
+					';
 					$result['data'][$key] = array(
 						$value->misc_date,
 						$value->misc_desc,
@@ -4505,10 +4504,10 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
-		function addMisc(){		
+		function addMisc(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4520,7 +4519,7 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{			
+			}else{
 				$data = array(
 					'misc_desc'=>ucwords(set_value('desc')),
 					'misc_qty'=>set_value('qty'),
@@ -4536,19 +4535,19 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Add';
-			echo json_encode($msg);	
+			echo json_encode($msg);
 		}
 		function editMisc(){
-			
+
 			$id = $this->input->get('id');
 			$where = array("misc_id"=>$id);
 			$result = $this->project_model->single_select('expenses_misc',$where);
 			echo json_encode($result);
 		}
-		function updateMisc(){			
+		function updateMisc(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4557,11 +4556,11 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules('date','Date','required');
 			$this->form_validation->set_rules('note','Note','required');
 			$this->form_validation->set_rules('id','Id','required');
-			
+
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{		
+			}else{
 				$data = array(
 					'misc_desc'=>ucwords(set_value('desc')),
 					'misc_qty'=>set_value('qty'),
@@ -4579,7 +4578,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -4598,7 +4597,7 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Miscellaneous Expenses';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
@@ -4606,7 +4605,7 @@ class Admin extends CI_Controller {
 				'misc_date'=>$param
 			);
 			$order = array('misc_date','asc');
-			$data['result' ] = $this->project_model->select('expenses_misc',$like,$where=false,$order);		
+			$data['result' ] = $this->project_model->select('expenses_misc',$like,$where=false,$order);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -4627,7 +4626,7 @@ class Admin extends CI_Controller {
 					$tcost = $this->cart->format_number($value->releaseitem_cost * $value->releaseitem_qty);
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->release_item_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-					';			
+					';
 					$result['data'][$key] = array(
 						$value->release_date,
 						$value->order_code,
@@ -4639,10 +4638,10 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
-		function addExpProd(){		
+		function addExpProd(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4654,7 +4653,7 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{			
+			}else{
 				$data = array(
 					'prod_desc'=>ucwords(set_value('desc')),
 					'prod_qty'=>set_value('qty'),
@@ -4670,18 +4669,18 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Add';
-			echo json_encode($msg);	
+			echo json_encode($msg);
 		}
-		function editExpProd(){		
+		function editExpProd(){
 			$id = $this->input->get('id');
 			$where = array("prod_id"=>$id);
 			$result = $this->project_model->single_select('expenses_prod',$where);
 			echo json_encode($result);
 		}
-		function updateExpProd(){			
+		function updateExpProd(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4690,11 +4689,11 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules('date','Date','required');
 			$this->form_validation->set_rules('note','Note','required');
 			$this->form_validation->set_rules('id','Id','required');
-			
+
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{		
+			}else{
 				$data = array(
 					'prod_desc'=>ucwords(set_value('desc')),
 					'prod_qty'=>set_value('qty'),
@@ -4712,7 +4711,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -4734,7 +4733,7 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Production Expenses';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
@@ -4763,7 +4762,7 @@ class Admin extends CI_Controller {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->expequip_id.'" title="Select"><i class="fa fa-times"></i></a>
 						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->expequip_id.'" title="Edit"><i class="fa fa-pencil"></i></a>
-					';			
+					';
 					$result['data'][$key] = array(
 						$value->expequip_date,
 						$value->expequip_desc,
@@ -4774,10 +4773,10 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
-		function addExpEquip(){		
+		function addExpEquip(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4789,7 +4788,7 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{			
+			}else{
 				$data = array(
 					'expequip_desc'=>ucwords(set_value('desc')),
 					'expequip_qty'=>set_value('qty'),
@@ -4805,19 +4804,19 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Add';
 			echo json_encode($msg);
 		}
 		function editExpEquip(){
-			
+
 			$id = $this->input->get('id');
 			$where = array("expequip_id"=>$id);
 			$result = $this->project_model->single_select('expenses_equip',$where);
 			echo json_encode($result);
 		}
-		function updateExpEquip(){			
+		function updateExpEquip(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4826,11 +4825,11 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules('date','Date','required');
 			$this->form_validation->set_rules('note','Note','required');
 			$this->form_validation->set_rules('id','Id','required');
-			
+
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{		
+			}else{
 				$data = array(
 					'expequip_desc'=>ucwords(set_value('desc')),
 					'expequip_qty'=>set_value('qty'),
@@ -4848,7 +4847,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'No changes has been made.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -4867,14 +4866,14 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Equipment Expenses';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
 			$like = array(
 				'expequip_date'=>$param
 			);
-			$data['result' ] = $this->project_model->select('expenses_equip',$like);		
+			$data['result' ] = $this->project_model->select('expenses_equip',$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -4892,7 +4891,7 @@ class Admin extends CI_Controller {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->returns_id.'" title="Select"><i class="fa fa-times"></i></a>
 						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->returns_id.'" title="Edit"><i class="fa fa-pencil"></i></a>
-					';			
+					';
 					$result['data'][$key] = array(
 						$value->returns_date,
 						$value->returns_desc,
@@ -4904,11 +4903,11 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
 		function addExpReturns(){
-			
+
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4921,7 +4920,7 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{			
+			}else{
 				$data = array(
 					'returns_desc'=>ucwords(set_value('desc')),
 					'returns_qty'=>set_value('qty'),
@@ -4938,19 +4937,19 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Add';
-			echo json_encode($msg);		
+			echo json_encode($msg);
 		}
 		function editExpReturns(){
-			
+
 			$id = $this->input->get('id');
 			$where = array("returns_id"=>$id);
 			$result = $this->project_model->single_select('expenses_returns',$where);
 			echo json_encode($result);
 		}
-		function updateExpReturns(){			
+		function updateExpReturns(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -4960,11 +4959,11 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules('type','Type','required');
 			$this->form_validation->set_rules('note','Note','required');
 			$this->form_validation->set_rules('id','Id','required');
-			
+
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{		
+			}else{
 				$data = array(
 					'returns_desc'=>ucwords(set_value('desc')),
 					'returns_qty'=>set_value('qty'),
@@ -4983,7 +4982,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -5002,14 +5001,14 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Return Expenses';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
 			$like = array(
 				'returns_date'=>$param
 			);
-			$data['result' ] = $this->project_model->select('expenses_returns',$like);		
+			$data['result' ] = $this->project_model->select('expenses_returns',$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5026,7 +5025,7 @@ class Admin extends CI_Controller {
 					$tcost = $this->cart->format_number($value->expstocks_price*$value->expstocks_qty);
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->expstocks_id.'" title="Select"><i class="fa fa-times"></i></a>
-						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->expstocks_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';			
+						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->expstocks_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';
 					$result['data'][$key] = array(
 						$value->expstocks_date,
 						$value->expstocks_desc,
@@ -5037,11 +5036,11 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
 		function addExpStocks(){
-			
+
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -5053,7 +5052,7 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{			
+			}else{
 				$data = array(
 					'expstocks_desc'=>ucwords(set_value('desc')),
 					'expstocks_qty'=>set_value('qty'),
@@ -5069,19 +5068,19 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Add';
-			echo json_encode($msg);		
+			echo json_encode($msg);
 		}
 		function editExpStocks(){
-			
+
 			$id = $this->input->get('id');
 			$where = array("expstocks_id"=>$id);
 			$result = $this->project_model->single_select('expenses_stocks',$where);
 			echo json_encode($result);
 		}
-		function updateExpStocks(){			
+		function updateExpStocks(){
 			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
@@ -5090,11 +5089,11 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules('date','Date','required');
 			$this->form_validation->set_rules('note','Note','required');
 			$this->form_validation->set_rules('id','Id','required');
-			
+
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
 				$msg['success'] = false;
-			}else{		
+			}else{
 				$data = array(
 					'expstocks_desc'=>ucwords(set_value('desc')),
 					'expstocks_qty'=>set_value('qty'),
@@ -5112,7 +5111,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error adding data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -5131,14 +5130,14 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Stocks Expenses';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
 			$like = array(
 				'expstocks_date'=>$param
 			);
-			$data['result' ] = $this->project_model->select('expenses_stocks',$like);		
+			$data['result' ] = $this->project_model->select('expenses_stocks',$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5152,7 +5151,7 @@ class Admin extends CI_Controller {
 				array('employee','order','emp_id')
 				);
 			$data = $this->project_model->select_join('order', $join);
-			
+
 			if ($data != false) {
 				foreach ($data as $key => $value) {
 					/*$buttons = '
@@ -5162,7 +5161,7 @@ class Admin extends CI_Controller {
 					$buttons = '<a href="javascript:;" class="btn btn-primary item-print" data="'.$link.'" title="Print"><i class="fa fa-print"></i></a>
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->order_id.'" title="Select"><i class="fa fa-times"></i></a>
 					';
-								
+
 					$result['data'][$key] = array(
 						$value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname,
 						$value->cust_name,
@@ -5173,7 +5172,7 @@ class Admin extends CI_Controller {
 					);
 				}
 			}
-				 
+
 
 			echo json_encode($result);
 		}
@@ -5181,14 +5180,14 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Monthly Sales Report';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
 			$like = array(
 				'order_date'=>$param
 			);
-			$data['result' ] = $this->project_model->select('order',$like);		
+			$data['result' ] = $this->project_model->select('order',$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5208,7 +5207,7 @@ class Admin extends CI_Controller {
 		}
 	/*emp credit*/
 		function fetchEmpCredit(){
-			
+
 			$result = array('data' => array());
 
 			$join = array(
@@ -5220,10 +5219,10 @@ class Admin extends CI_Controller {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_credit_id.'" title="Select"><i class="fa fa-times"></i></a>
 						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_credit_id.'" title="Edit"><i class="fa fa-pencil"></i></a>
-					';	
+					';
 					$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
-					$amount = $value->credit_item_amount * $value->credit_item_qty;	
-					$result['data'][$key] = array(						
+					$amount = $value->credit_item_amount * $value->credit_item_qty;
+					$result['data'][$key] = array(
 						$value->credit_date,
 						$name,
 						$value->credit_item_name,
@@ -5234,7 +5233,7 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
 		function editEmpCredit(){
@@ -5257,8 +5256,8 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['success'] = false;
 				$msg['error'] = validation_errors();
-			}else{				
-				$data = array(	
+			}else{
+				$data = array(
 					"credit_item_name"=>ucwords(set_value('name')),
 					"credit_item_amount"=>set_value('amount'),
 					"credit_item_qty"=>set_value('qty'),
@@ -5283,7 +5282,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = "Duplicate record detected.";
-				}			
+				}
 			}
 			$msg['type'] = "Update";
 			echo json_encode($msg);
@@ -5299,8 +5298,8 @@ class Admin extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$msg['success'] = false;
 				$msg['error'] = validation_errors();
-			}else{				
-				$data = array(	
+			}else{
+				$data = array(
 					"credit_item_name"=>ucwords(set_value('name')),
 					"credit_item_amount"=>set_value('amount'),
 					"credit_item_qty"=>set_value('qty'),
@@ -5319,7 +5318,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error updating data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -5332,7 +5331,7 @@ class Admin extends CI_Controller {
 				'emp_credit_id'=>$id
 			);
 			$delete = $this->project_model->deleteNew($table_name,$where);
-			
+
 			if ($delete != false) {
 				$msg['success'] = true;
 			}else{
@@ -5345,7 +5344,7 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Employee Deduction Record';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$data['emp'] = $this->uri->segment(5);
@@ -5356,7 +5355,7 @@ class Admin extends CI_Controller {
 			$join = array(
 				array('employee','emp_credits','emp_id')
 			);
-			$data['result' ] = $this->project_model->select_join('emp_credits',$join,$like);		
+			$data['result' ] = $this->project_model->select_join('emp_credits',$join,$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5384,8 +5383,8 @@ class Admin extends CI_Controller {
 					$buttons = '
 	                    <a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->salary_id.'" title="Select"><i class="fa fa-times"></i></a>
 						<a href="javascript:;" class="btn btn-primary item-print" data="'.base_url('admin/salary_slip/'.$value->salary_id.'/'.$value->emp_id).'" title="Edit"><i class="fa fa-print"></i></a>
-					';			
-					$result['data'][$key] = array(					
+					';
+					$result['data'][$key] = array(
 						$name,
 						$value->salary_date_start,
 						$value->salary_date_end,
@@ -5395,7 +5394,7 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
 		function create_salary(){
@@ -5420,7 +5419,7 @@ class Admin extends CI_Controller {
 				//credits
 				$credit_where = array(
 					'emp_id'=>set_value('employee')
-				);			
+				);
 				$credit = $this->admin_model->get_table_record('emp_credits',$credit_where);
 				$credit_id = array();
 				$credit_total = 0;
@@ -5474,7 +5473,7 @@ class Admin extends CI_Controller {
 						}
 					}
 				}
-				
+
 				$data = array(
 					'emp_id'=>set_value('employee'),
 					'salary_amount'=>$salary*$days,
@@ -5592,12 +5591,12 @@ class Admin extends CI_Controller {
 				$msg['success'] = false;
 			}
 			echo json_encode($msg);
-		}	
+		}
 		function salary_slip(){
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Salary Slip';
-			
+
 			$salary_where = array('emp_salary.salary_id'=>$this->uri->segment(3));
 			$join = array(
 				array('employee','emp_salary','emp_id'),
@@ -5609,7 +5608,7 @@ class Admin extends CI_Controller {
 			//credits
 			$credit_where = array(
 				'emp_id'=>$this->uri->segment(4)
-			);		
+			);
 			$data['credit'] = $this->project_model->select('emp_credits',false,$credit_where);
 
 			$data['property']= $this->project_model->select('property_info',false,false,false);
@@ -5617,7 +5616,7 @@ class Admin extends CI_Controller {
 			$this->load->view('admin/header',$data);
 			$this->load->view('print_form/salary_slip',$data);
 			$this->load->view('admin/footer',$data);
-		}	
+		}
 	/*employee overtime*/
 		function fetchEmpOT(){
 			$result = array('data' => array());
@@ -5632,9 +5631,9 @@ class Admin extends CI_Controller {
 				foreach ($data as $key => $value) {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_overtime_id.'" title="Select"><i class="fa fa-times"></i></a>
-						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_overtime_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';	
-					$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;	
-					$rate = $value->ot_rate.' / '.$value->ot_type_term;	
+						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_overtime_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';
+					$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
+					$rate = $value->ot_rate.' / '.$value->ot_type_term;
 					$result['data'][$key] = array(
 						$name,
 						$value->date,
@@ -5646,7 +5645,7 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
 		function fetchOtType(){
@@ -5688,7 +5687,7 @@ class Admin extends CI_Controller {
 	            $end = new Datetime(set_value('end_time'));
 
 	            $interval = $start->diff($end);
-				$data = array(	
+				$data = array(
 					"emp_id"=>set_value('employee'),
 					"date"=>set_value('date'),
 					"num_hours"=>$interval->format('%h'),
@@ -5716,7 +5715,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Duplicate record found.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -5737,7 +5736,7 @@ class Admin extends CI_Controller {
 	            $end = new Datetime(set_value('end_time'));
 
 	            $interval = $start->diff($end);
-				$data = array(	
+				$data = array(
 					"emp_id"=>set_value('employee'),
 					"date"=>set_value('date'),
 					"num_hours"=>$interval->format('%h'),
@@ -5757,7 +5756,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error updating data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -5769,7 +5768,7 @@ class Admin extends CI_Controller {
 				'emp_overtime_id'=>$id
 			);
 			$delete = $this->project_model->deleteNew($table_name,$where);
-			
+
 			if ($delete != false) {
 				$msg['success'] = true;
 			}else{
@@ -5782,7 +5781,7 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Employee Overtime Record';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$data['emp'] = $this->uri->segment(5);
@@ -5794,7 +5793,7 @@ class Admin extends CI_Controller {
 				array('employee','emp_overtime','emp_id'),
 				array('overtime_type','emp_overtime','ot_type_id')
 			);
-			$data['result' ] = $this->project_model->select_join('emp_overtime',$join,$like);		
+			$data['result' ] = $this->project_model->select_join('emp_overtime',$join,$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5817,7 +5816,7 @@ class Admin extends CI_Controller {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-primary punch-out" data="'.$value->emp_attendance_id.'" title="Pounch Out"><i class="fa fa-sign-out"></i></a>
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_attendance_id.'" title="Select"><i class="fa fa-times"></i></a>
-						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_attendance_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';	
+						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_attendance_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';
 					$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
 					$timein = new DateTime($value->time_in);
 					$timeout = new DateTime($value->time_out);
@@ -5832,7 +5831,7 @@ class Admin extends CI_Controller {
 						$buttons
 					);
 				}
-			}		
+			}
 			echo json_encode($result);
 		}
 		function add_EmpAttend(){
@@ -5846,7 +5845,7 @@ class Admin extends CI_Controller {
 			}else{
 				$timein = new Datetime(set_value('timein'));
 
-				$data = array(	
+				$data = array(
 					"emp_id"=>set_value('employee'),
 					"attend_date"=>set_value('date'),
 					"time_in"=>$timein->format('h:i A'),
@@ -5872,7 +5871,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Duplicate record found.';
-				}			
+				}
 			}
 			$msg['type'] = 'Add';
 			echo json_encode($msg);
@@ -5884,7 +5883,7 @@ class Admin extends CI_Controller {
 				'emp_attendance_id'=>$id
 			);
 			$delete = $this->project_model->deleteNew($table_name,$where);
-			
+
 			if ($delete != false) {
 				$msg['success'] = true;
 			}else{
@@ -5923,7 +5922,7 @@ class Admin extends CI_Controller {
 			}else{
 				$timein = new Datetime(set_value('timein'));
 
-				$data = array(	
+				$data = array(
 					"emp_id"=>set_value('employee'),
 					"attend_date"=>set_value('date'),
 					"time_in"=>$timein->format('h:i A'),
@@ -5940,7 +5939,7 @@ class Admin extends CI_Controller {
 				}else{
 					$msg['success'] = false;
 					$msg['error'] = 'Error updating data.';
-				}			
+				}
 			}
 			$msg['type'] = 'Update';
 			echo json_encode($msg);
@@ -5954,7 +5953,7 @@ class Admin extends CI_Controller {
 				$msg['error'] = validation_errors();
 			}else{
 				$timeout = new Datetime(set_value('timeout'));
-				$data = array(	
+				$data = array(
 					"time_out"=> $timeout->format('h:i A'),
 					);
 				$table_name = 'emp_attendance';
@@ -5978,7 +5977,7 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Employee Attendance Record';
-			
+
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
 			$data['emp'] = $this->uri->segment(5);
@@ -5991,7 +5990,7 @@ class Admin extends CI_Controller {
 				array('job_position','employee','job_position_id'),
 				array('salary_term','job_position','salary_term_id')
 			);
-			$data['result' ] = $this->project_model->select_join('emp_attendance',$join,$like);		
+			$data['result' ] = $this->project_model->select_join('emp_attendance',$join,$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -6009,7 +6008,7 @@ class Admin extends CI_Controller {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-primary item-print" data="'.$value->statement_id.'" title="Print"><i class="fa fa-print"></i></a>
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->statement_id.'" title="Select"><i class="fa fa-times"></i></a>
-					';			
+					';
 					$result['data'][$key] = array(
 						$value->statement_date,
 						$value->total_sales,
@@ -6031,8 +6030,8 @@ class Admin extends CI_Controller {
                     <th>Deposit Amount</th>
                     <th>Action</th>*/
 				}
-			}	
-			echo json_encode($result);		
+			}
+			echo json_encode($result);
 		}
 		function createIncomeStatement(){
 			$this->form_validation->set_rules('mon','Statement Month','required');
@@ -6049,10 +6048,10 @@ class Admin extends CI_Controller {
 				$like = array(
 				'misc_date'=>$param
 				);
-				$misc = $this->project_model->select('expenses_misc',$like);	
+				$misc = $this->project_model->select('expenses_misc',$like);
 				$misc_amount = 0;
 	            $misc_tamount = 0;
-				if ($misc != false) {	                
+				if ($misc != false) {
 	                foreach ($misc as $item) {
 	                    $misc_amount = $item->misc_qty * $item->misc_price;
 	                    $misc_tamount = $misc_tamount + $misc_amount;
@@ -6159,12 +6158,12 @@ class Admin extends CI_Controller {
 			            $totaltax = $tax + $totaltax;
 			            $tsales = $item->order_bill_amount-$item->order_discount;
 			            $totalSales = $item->order_bill_amount + $totalSales;
-			            $totaldiscount = $item->order_discount + $totaldiscount;    
+			            $totaldiscount = $item->order_discount + $totaldiscount;
 
 			            $tamount = $totalSales-$totaltax-$totaldiscount;
 			        }
 			    }
-                
+
 			    $totalSales = $totalSales-$totaldiscount;
                 $profit = $totalSales - $totaltax - $misc_tamount - $prod_tamount - $tsal - $expequip_tamount - $total_aRefund;
 			    $shop_share = $profit * 0.50;
@@ -6204,7 +6203,7 @@ class Admin extends CI_Controller {
                 }else{
                 	$msg['error'] = "Duplicate record detected.";
                 	$msg['success'] = false;
-                }		            	
+                }
 
 			}
 			echo json_encode($msg);
@@ -6217,7 +6216,7 @@ class Admin extends CI_Controller {
 				'statement_id'=>$id
 			);
 			$delete = $this->project_model->deleteNew($table_name,$where);
-			
+
 			if ($delete != false) {
 				$msg['success'] = true;
 			}else{
@@ -6229,13 +6228,13 @@ class Admin extends CI_Controller {
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
 			$data['page'] = 'Income Statement';
-			
+
 			$id = $this->uri->segment(3);
 
 			$where = array(
 				'statement_id'=>$id
 				);
-			$data['statement'] = $this->project_model->select('incomestatement',false,$where);	
+			$data['statement'] = $this->project_model->select('incomestatement',false,$where);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -6264,10 +6263,10 @@ class Admin extends CI_Controller {
 				$like = array(
 				'misc_date'=>$param
 				);
-				$misc = $this->project_model->select('expenses_misc',$like);	
+				$misc = $this->project_model->select('expenses_misc',$like);
 				$misc_amount = 0;
 	            $misc_tamount = 0;
-				if ($misc != false) {	                
+				if ($misc != false) {
 	                foreach ($misc as $item) {
 	                    $misc_amount = $item->misc_qty * $item->misc_price;
 	                    $misc_tamount = $misc_tamount + $misc_amount;
@@ -6374,12 +6373,12 @@ class Admin extends CI_Controller {
 			            $totaltax = $tax + $totaltax;
 			            $tsales = $item->order_bill_amount-$item->order_discount;
 			            $totalSales = $item->order_bill_amount + $totalSales;
-			            $totaldiscount = $item->order_discount + $totaldiscount;    
+			            $totaldiscount = $item->order_discount + $totaldiscount;
 
 			            $tamount = $totalSales-$totaltax-$totaldiscount;
 			        }
 			    }
-                
+
 			    $totalSales = $totalSales-$totaldiscount;
                 $profit = $totalSales - $totaltax - $misc_tamount - $prod_tamount - $tsal - $expequip_tamount - $total_aRefund;
 
