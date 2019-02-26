@@ -1,4 +1,4 @@
-<div class="row">
+<div class="col-lg-8 col-lg-offset-2" style="margin-top:3%;">
 	<!-- Employees Forms -->
 	<div class="col-lg-4">
 	    <div class="panel panel-default">
@@ -10,16 +10,16 @@
 	            <div class="list-group" style="margin: 0 auto !important;">
 	                <a href="javascript:;" id="printLogForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Attendance Form
-	                </a> 
+	                </a>
 	                <a href="javascript:;" id="printOTForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Overtime Form
 	                </a>
 	                <a href="javascript:;" id="printCreditForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Credit Form
-	                </a> 
+	                </a>
 	                <a href="javascript:;" id="printSalesForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Employee Sales Form
-	                </a>              
+	                </a>
 	            </div>
 	        </div>
 	        <!-- /.panel-body -->
@@ -41,13 +41,13 @@
 	                </a>
 	                <a href="javascript:;" id="printProdForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Production Exp. Form
-	                </a>   
+	                </a>
 	                <a href="javascript:;" id="printEquipForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Equipment Exp. Form
-	                </a> 
+	                </a>
 	                <a href="javascript:;" id="printStockExpForm" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Stocks Exp. Form
-	                </a>	                           
+	                </a>
 	            </div>
 	        </div>
 	        <!-- /.panel-body -->
@@ -62,11 +62,11 @@
 	            <i class="fa fa-cubes fa-2x"></i> Inventory Forms
 	        </div>
 	        <!-- /.panel-heading -->
-	        <div class="panel-body">            
+	        <div class="panel-body">
 	            <div class="list-group">
 	                <a href="javascript:;" id="printStockList" class="list-group-item">
 	                    <i class="fa fa-file-text fa-fw"></i> Stocks List Form
-	                </a>                 
+	                </a>
 	            </div>
 	        </div>
 	        <!-- /.panel-body -->
@@ -86,8 +86,8 @@
 	    $('#conPrint').click(function(){
 	        /*var link =  $(this).attr('data');
 	        window.open(link,"newwindow", "width=1200, height=800");*/
-	         var month = $('select[name=mon2]'); 
-	        var emp = $('select[name=employee2]'); 
+	         var month = $('select[name=mon2]');
+	        var emp = $('select[name=employee2]');
 	        var year = $('input[name=year]');
 	        var url = '<?php echo base_url('admin/attendance_sheet')?>/'  + month.val() + '/' + year.val() + '/' + emp.val();
 	        window.open(url,"newwindow", "width=900, height=600");
@@ -128,5 +128,5 @@
 	        window.open(url,"newwindow", "width=900, height=600");
 	    });
 	});
-		
+
 </script>

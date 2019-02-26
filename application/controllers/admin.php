@@ -32,7 +32,7 @@ class Admin extends CI_Controller {
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/newnav',$data);
-		$this->load->view('admin/testpanel',$data);
+		$this->load->view('admin/index',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function propertyInfo(){
