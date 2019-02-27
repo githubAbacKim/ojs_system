@@ -1,4 +1,4 @@
-<div class="col-lg-8 col-lg-offset-2" style="margin-top:3%;">
+<div class="row">
 	<!-- Employees Forms -->
 	<div class="col-lg-4">
 	    <div class="panel panel-default">
