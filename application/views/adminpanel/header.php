@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/popup/magnific-popup.css');?>">
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/popup/additional-stylesheet.css');?>">
-
+    
     <!-- Datatables CSS -->
     <link href="<?php echo base_url('assets/bower_components/datatables/media/css/dataTables.bootstrap.css');?>" rel="stylesheet">
 
@@ -69,12 +69,12 @@
             preloader: false,
 
             closeOnBgClick: true,
-
+            
             midClick: true,
             removalDelay: 300,
             mainClass: 'my-mfp-zoom-in'
         });
-
+        
         $('.first-popup-link, .second-popup-link').magnificPopup({
             type: 'inline',
             fixedContentPos: false,
@@ -86,7 +86,7 @@
             preloader: false,
 
             closeOnBgClick: false,
-
+            
             midClick: true,
             removalDelay: 300,
             mainClass: 'my-mfp-zoom-in'
@@ -97,23 +97,11 @@
         });
         //printing
         $(".btnPrint").printPage();
-
+        
     });
-
+    
     </script>
 
 </head>
 
 <body>
-  <style scope>
-      #property-box,#setting-box,
-      #check-in-box,
-      #floormanagement-box,
-      #new-box,#edit-floor,#void-box{
-      position: relative;
-      /*padding: 20px;*/
-      width:auto;
-      max-width: 600px;
-      margin: 20px auto !important;
-      }
-  </style>

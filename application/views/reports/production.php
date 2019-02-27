@@ -1,5 +1,11 @@
-<div class="row">
-	<div class="row" style="margin-bottom: 5px;height: 65px;">
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Production Expenses</h2>
+    </div>
+  </div>
+	<div class="row">
+	<div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
 		<div class="col-lg-6">
 			<!-- <div class="messages" ></div> -->
 			<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
@@ -8,9 +14,9 @@
 		<div class="col-lg-6">
 			<!-- <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Expenses</button> -->
 			<button id="btnPrint" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-print fa-2x"></i> Print Record</button>
-		</div>			
+		</div>
 	</div>
-	<div class="col-lg-12">		
+	<div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover" id="prodTable" style="min-height: 150px !important;">
         	<thead>
                 <tr>
@@ -23,11 +29,11 @@
                     <th>Total Cost</th>
                     <th>Action</th>
                 </tr>
-            </thead> 
-        </table>			
+            </thead>
+        </table>
     </div>
 </div>
-
+</div>
 	<!-- add member -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
   <div class="modal-dialog" role="document">
@@ -85,9 +91,9 @@
 						<div class="form-group col-md-6">
 							<label for="qty">Note *</label>
 							<textarea class="form-control" id="note" name="note" style="resize: none;" required></textarea>
-						</div>						
+						</div>
 					</div>
-				</div>	
+				</div>
 	      </div>
       <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -105,7 +111,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
-      
+
           <div class="modal-body">
             <div class="row">
             <form id="printForm" action="" method="post">
@@ -129,7 +135,7 @@
 								<?php
 										}
 									}
-								?>                                
+								?>
                             </select>
                         </div>
                     </fieldset>
@@ -143,9 +149,9 @@
                     </fieldset>
                 </div>
             </form>
-            </div>     
+            </div>
           </div>
-      
+
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" id="conPrint" class="btn btn-primary">Print File</button>
@@ -194,13 +200,13 @@
             'bProcessing': false,
             "scrollY":        "325px",
             "scrollCollapse": true,
-            "paging":         false 
+            "paging":         false
 		});
 
 		// Apply the search
 	    prodTable.columns().every( function () {
 	        var that = this;
-	 
+
 	        $( 'input', this.header() ).on( 'keyup change', function () {
 	            if ( that.search() !== this.value ) {
 	                that
@@ -232,7 +238,7 @@
 	            	var error = response.error;
 	            	var type = response.type;
 	                if (response.success) {
-	                    $('#myForm')[0].reset();	                            
+	                    $('#myForm')[0].reset();
 	                    $('.alert-success').html(type + ' added miscellaneous.').fadeIn().delay(2000).fadeOut('slow');
 	                    prodTable.ajax.reload(null, false);
 	                    if (type == 'Update'){$('#myModal').modal('hide');}
@@ -247,7 +253,7 @@
 	                $('#myModal').modal('hide');
 	            }
 	        });
-				
+
 		});
 
 		//edit
@@ -316,7 +322,7 @@
 	    $('#conPrint').click(function(){
 	        /*var link =  $(this).attr('data');
 	        window.open(link,"newwindow", "width=1200, height=800");*/
-	        var month = $('select[name=mon2]');	
+	        var month = $('select[name=mon2]');
 			var year = $('input[name=year]');
 			var url = '<?php echo base_url('admin/printProdList')?>/'  + month.val() + '/' + year.val();
 	        window.open(url,"newwindow", "width=900, height=600");
@@ -324,6 +330,3 @@
 	});
 
 </script>
-
-
-			

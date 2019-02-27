@@ -8,6 +8,20 @@ class Admin extends CI_Controller {
 		$this->is_log_in();
 	}
 
+	// new panel
+			function newpanel(){
+				$data['title'] = "Administrator";
+				$data['sub_heading'] = "Main Page";
+				$data['page'] = 'Frontdesk';
+
+				$data['record'] = $this->admin_model->property_info();
+
+				$this->load->view('adminpanel/header',$data);
+				$this->load->view('adminpanel/newnav',$data);
+				$this->load->view('adminpanel/home',$data);
+				$this->load->view('adminpanel/footer',$data);
+			}
+
 /* frontdesk admin funtions*/
 	function index(){
 		$data['title'] = "Administrator";
@@ -15,24 +29,9 @@ class Admin extends CI_Controller {
 		$data['page'] = 'Frontdesk';
 
 		$data['record'] = $this->admin_model->property_info();
-
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
-		$this->load->view('admin/index',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-	function newpanel(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Main Page";
-		$data['page'] = 'Frontdesk';
-
-		$data['record'] = $this->admin_model->property_info();
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/newnav',$data);
-		$this->load->view('admin/testpanel',$data);
+		$this->load->view('admin/nav_v2',$data);
+		$this->load->view('admin/home',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function propertyInfo(){
@@ -41,10 +40,12 @@ class Admin extends CI_Controller {
 		$data['page'] = 'Frontdesk';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		// $this->load->view('admin/nav',$data);
+		// $this->load->view('admin/body_header',$data);
+		// $this->load->view('admin/propInfo',$data);
+		// $this->load->view('admin/body_footer',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/propInfo',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function fetch_property(){
@@ -105,10 +106,8 @@ class Admin extends CI_Controller {
 		$data['record'] = $this->admin_model->property_info();
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/adminSec',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -156,94 +155,6 @@ class Admin extends CI_Controller {
 		echo json_encode($msg);
 	}
 
-/*floor management methods*/
-	function floor_management(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Manage Floor or Section";
-		$data['page'] = 'Frontdesk';
-
-		$data['record'] = $this->admin_model->property_info();
-
-
-		$data['floor_record'] = $this->admin_model->get_table_record('floor',false,false,false);
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
-		$this->load->view('admin/floor-management',$data);
-		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-	function update_floor(){
-		$this->form_validation->set_rules('name','Floor Name','required');
-		$this->form_validation->set_rules('description','Floor Description','xss_clean');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->floor_management();
-		}else{
-			$data = array(
-				"floor_name"=>ucwords(set_value('name')),
-				"floor_description"=>set_value('description'));
-			$table_name = 'floor';
-			$table_id = 'floor_id';
-			$id = $this->input->post('id');
-
-			$update = $this->admin_model->update_table_record($data,$id,$table_id,$table_name);
-
-			if ($update == true) {
-				redirect('admin/floor_management/update/true');
-			}else{
-				redirect('admin/floor_management/update/false');
-			}
-		}
-	}
-	function add_floor(){
-		$this->form_validation->set_rules('name','Floor Name','required');
-		$this->form_validation->set_rules('description','Floor Description','xss_clean');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->floor_management();
-		}else{
-			$data = array("floor_name"=>set_value('name'),"floor_description"=>set_value('description'));
-			$table_name = 'floor';
-
-
-			$column_name = 'floor_name';
-			$name = set_value('name');
-
-			/*replace check duplicate*/
-			$check_duplicate = $this->admin_model->check_duplicate($table_name,$column_name,$name);
-
-			if ($check_duplicate != true) {
-				$add = $this->admin_model->add_table_record($data,$table_name);
-
-				if ($add == true) {
-					redirect('admin/floor_management/add/true');
-				}else{
-					redirect('admin/floor_management/add/false');
-				}
-			}else{
-				redirect('admin/floor_management/duplicate/true');
-			}
-		}
-	}
-	function delete_floor(){
-		$id = $this->uri->segment(3);
-		$table_name = 'floor';
-		$table_id = 'floor_id';
-
-		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
-
-		if ($delete == true) {
-			redirect('admin/floor_management/delete/true');
-		}else{
-			redirect('admin/floor_management/delete/false');
-		}
-
-	}
-/*end of floor management methods*/
-
 /*Employee Management*/
 	/*start of salary method*/
 	function salary_term(){
@@ -255,11 +166,9 @@ class Admin extends CI_Controller {
 		$data['term'] = $this->admin_model->get_table_record('salary_term',false,false,false);
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/salary_term',$data);
 		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function add_salary_term(){
@@ -351,11 +260,8 @@ class Admin extends CI_Controller {
 		$data['salary_term'] = $this->admin_model->get_table_record('salary_term',false,false,false);
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/employee_job_position',$data);
-		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function add_job_position(){
@@ -454,11 +360,8 @@ class Admin extends CI_Controller {
 		$data['employee'] = $this->admin_model->join_record($main_table2, $array2, false);
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/employee_registration',$data);
-		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function add_employee(){
@@ -597,11 +500,8 @@ class Admin extends CI_Controller {
 		$data['account'] = $this->admin_model->join_record($main_table2, $array2, false);
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/employee_account',$data);
-		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function add_account(){
@@ -798,11 +698,8 @@ class Admin extends CI_Controller {
 		$data['overtime_type'] = $this->admin_model->get_table_record('overtime_type',false,false,false);
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/overtime_type',$data);
-		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -2205,10 +2102,8 @@ class Admin extends CI_Controller {
 		$data['record'] = $this->admin_model->property_info();
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('storage/stockItems',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function stockCategory(){
@@ -2220,10 +2115,8 @@ class Admin extends CI_Controller {
 
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('storage/stockCategory',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 	function stockClass(){
@@ -2235,10 +2128,8 @@ class Admin extends CI_Controller {
 
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('storage/stockclass',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4344,10 +4235,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/miscellaneous',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4357,10 +4246,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/production',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4370,10 +4257,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/equipment',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4435,7 +4320,7 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
+		$this->load->view('admin/nav_v1',$data);
 		$this->load->view('admin/body_header',$data);
 		$this->load->view('reports/employee_credits',$data);
 		$this->load->view('admin/body_footer',$data);
@@ -6241,8 +6126,8 @@ class Admin extends CI_Controller {
 			$this->load->view('reports/incomeStatementForm',$data);
 			$this->load->view('admin/footer',$data);
 		}
-//testing center
 
+//testing center
 	function testFunction(){
 		/*$where = array("releasecart.releaseCart_id"=>$this->session->userdata('relCart'));
 		$join = array(

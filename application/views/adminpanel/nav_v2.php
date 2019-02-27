@@ -2,7 +2,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="border-bottom:0;margin-bottom: 0;">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="<?php echo base_url("admin/index");?>">LocSH (Local Store Helper) Admin</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -45,11 +45,11 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="<?php echo base_url("")?>">Account Info</a>
+                            <a href="<?php echo base_url("admin/propertyInfo")?>">Account Info</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Account Security</a>
+                            <a href="<?php echo base_url("admin/account_security")?>">Account Security</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->
@@ -60,19 +60,19 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="<?php echo base_url("")?>">Salary</a>
+                            <a href="<?php echo base_url("admin/salary_term")?>">Salary</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Type of Position</a>
+                            <a href="<?php echo base_url("admin/job_position")?>">Type of Position</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Register Employee</a>
+                            <a href="<?php echo base_url("admin/employee_registration")?>">Register Employee</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">System Accounts</a>
+                            <a href="<?php echo base_url("admin/employee_account")?>">System Accounts</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->
@@ -83,15 +83,15 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="<?php echo base_url("")?>">Stock Class</a>
+                            <a href="<?php echo base_url("admin/stockClass")?>">Stock Class</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Stock Category</a>
+                            <a href="<?php echo base_url("admin/stockCategory")?>">Stock Category</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Stock Items</a>
+                            <a href="<?php echo base_url("admin/stockItem")?>">Stock Items</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->
@@ -102,35 +102,35 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="<?php echo base_url("")?>">Miscellanous</a>
+                            <a href="<?php echo base_url("admin/miscExp")?>">Miscellanous</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Product</a>
+                            <a href="<?php echo base_url("admin/prodExp")?>">Product</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Equipment</a>
+                            <a href="<?php echo base_url("admin/equipExp")?>">Equipment</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Returnable</a>
+                            <a href="<?php echo base_url("admin/returnExp")?>">Returnable</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Stocks</a>
+                            <a href="<?php echo base_url("admin/stocksExp")?>">Stocks</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Salary</a>
+                            <a href="<?php echo base_url("admin/employee_salary")?>">Salary</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Overtime</a>
+                            <a href="<?php echo base_url("admin/employee_overtime")?>">Overtime</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Attendance</a>
+                            <a href="<?php echo base_url("admin/attendance")?>">Attendance</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->
@@ -141,11 +141,11 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="<?php echo base_url("")?>">Sales</a>
+                            <a href="<?php echo base_url("admin/salesRep")?>">Sales</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("")?>">Income Statement</a>
+                            <a href="<?php echo base_url("admin/incomeStatement")?>">Income Statement</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->

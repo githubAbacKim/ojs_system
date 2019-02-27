@@ -1,31 +1,37 @@
-<div class="row">
-	<div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
-		<div class="col-lg-6">
-			<!-- <div class="messages" ></div> -->
-			<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-			<div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-		</div>
-		<div class="col-lg-6">
-			<button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Stock Item</button>
-		</div>			
-	</div>
-	<div class="col-lg-12">		
-        <table class="table table-striped table-bordered table-hover" id="stockItems">
-        	<thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Item</th>
-                    <th>Unit</th>
-                    <th>Qtty</th>
-                    <th>Cost</th>
-                    <th>Total Cost</th>
-                    <th>Action</th>
-                </tr>
-            </thead> 
-        </table>			
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Stock Items</h2>
     </div>
+  </div>
+	<div class="row">
+		<div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
+			<div class="col-lg-6">
+				<!-- <div class="messages" ></div> -->
+				<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+				<div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+			</div>
+			<div class="col-lg-6">
+				<button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Stock Item</button>
+			</div>
+		</div>
+		<div class="col-lg-12">
+	        <table class="table table-striped table-bordered table-hover" id="stockItems">
+	        	<thead>
+	                <tr>
+	                    <th>Category</th>
+	                    <th>Item</th>
+	                    <th>Unit</th>
+	                    <th>Qtty</th>
+	                    <th>Cost</th>
+	                    <th>Total Cost</th>
+	                    <th>Action</th>
+	                </tr>
+	            </thead>
+	        </table>
+	    </div>
+	</div>
 </div>
-
 	<!-- add member -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
   <div class="modal-dialog" role="document">
@@ -44,11 +50,11 @@
 		      				<select class="form-control" id="stockclass" name="stockclass" required>
 								<option value="">Select</option>
 								<?php
-									foreach ($stockclass as $value) {										
+									foreach ($stockclass as $value) {
 								?>
 
 								<option value="<?php echo $value->stockclass_id?>"><?php echo $value->stockclass_name?></option>
-								<?php								
+								<?php
 									}
 								?>
 							</select>
@@ -61,7 +67,7 @@
 									foreach ($category as $value1) {
 								?>
 								<option value="<?php echo $value1->stockCat_id?>"><?php echo $value1->stockCat_name?></option>
-								<?php								
+								<?php
 									}
 								?>
 							</select>
@@ -71,7 +77,7 @@
 		      				<select class="form-control" id="stock_type" name="stock_type" required>
 		      					<option value="">Select</option>
 								<option value="nonstock">Non-stock</option>
-								<option value="instock">In-stock</option>								
+								<option value="instock">In-stock</option>
 							</select>
 						</div>
 						<div class="form-group col-md-12">
@@ -89,9 +95,9 @@
 						<div class="form-group col-md-3">
 						<label for="qty">Quantity *</label>
 						<input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
-						</div>						
+						</div>
 					</div>
-				</div>	
+				</div>
 	      </div>
       <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -124,7 +130,7 @@
 <script type="text/javascript">
 	var itemTable;
 	$(document).ready(function() {
-		setInterval(function(){   
+		setInterval(function(){
             itemTable.ajax.reload(null, false);
         },1000);
 		// Setup - add a text input to each footer cell
@@ -144,13 +150,13 @@
             'bProcessing': false,
             "scrollY":        "325px",
             "scrollCollapse": true,
-            "paging":         false 
+            "paging":         false
 		});
 
 		    // Apply the search
 	    itemTable.columns().every( function () {
 	        var that = this;
-	 
+
 	        $( 'input', this.header() ).on( 'keyup change', function () {
 	            if ( that.search() !== this.value ) {
 	                that
@@ -179,7 +185,7 @@
 			var qty = $('input[name=qty]');
 			var stockclass = $('input[name=stockclass]');
 			var stock_type = $('input[name=stock_type]');
-			
+
 			var result = '';
 			if (category.val()=='') {
 				category.parent().parent().addClass('has-error');
@@ -237,7 +243,7 @@
 							$('#myForm')[0].reset();
 							if (response.type=='update') {
 									var type = 'update';
-									$('#myModal').modal('hide');	
+									$('#myModal').modal('hide');
 							}else if(response.type=='add'){
 									var type = 'added';
 							}
@@ -253,7 +259,7 @@
 					}
 				});
 			}
-				
+
 		});
 
 		//edit
@@ -314,6 +320,3 @@
 	});
 
 </script>
-
-
-			
