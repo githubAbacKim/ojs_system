@@ -10,7 +10,7 @@ class ClientPos extends CI_Controller {
 	}
 
 	public function index(){
-		$this->load->view('header');	
+		$this->load->view('header');
 		$this->load->view('content/nav');
 		$this->load->view('content/pos_main');
 		$this->load->view('footer');
@@ -24,7 +24,6 @@ class ClientPos extends CI_Controller {
 			);
 		$data = $this->project_model->select_join('menu_item',$join,false);
 		if ($data != false) {
-		
 			if ($this->session->userdata('posCart') !== FALSE) {
 				if ($data !== false) {
 					$where = array("order_id"=>$this->session->userdata('posCart'));
@@ -38,38 +37,38 @@ class ClientPos extends CI_Controller {
 										$link,
 										$value->menu_name,
 										$value->item_name,
-										$value->item_price						
-									);					
+										$value->item_price
+									);
 								}
-							}								
+							}
 						}else{
 							if ($data != false) {
 								foreach ($data as $key => $value) {
 									if ($value->stock > 0 && $value->stock_type == "instock") {
-										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';	
+										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 									}elseif ($value->stock_type == "nonstock") {
-										
+
 										if ($value->menu_name == "Vinyl Stickers" || $value->menu_name == "Siser Materials" || $value->menu_name == "Tarp") {
-											$link = '<a javascript:; class="btn btn-default addCustItem" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';	
+											$link = '<a javascript:; class="btn btn-default addCustItem" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 										}else{
 											$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 										}
 									}else{
 										$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-plus"></i> Add </a>';
 									}
-										
+
 									$result['data'][$key] = array(
 										$link,
 										$value->menu_name,
 										$value->item_name,
-										$value->item_price						
-									);					
+										$value->item_price
+									);
 								}
 							}
-								
+
 						}
 					}
-										 
+
 				}
 			}else{
 				if ($data !== false) {
@@ -79,9 +78,9 @@ class ClientPos extends CI_Controller {
 							$link,
 							$value->menu_name,
 							$value->item_name,
-							$value->item_price						
-						);					
-					}				 
+							$value->item_price
+						);
+					}
 				}
 			}
 		}
@@ -90,14 +89,14 @@ class ClientPos extends CI_Controller {
 
 	function fetchOrderCart(){
 		$result = array('data' => array());
-		
+
 		$where = array('order_status'=>"not_paid");
 		$data = $this->project_model->select('order',false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->order_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->order_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';		
+				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->order_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
 				$result['data'][$key] = array(
 					$value->order_type,
 					$value->order_code,
@@ -105,7 +104,7 @@ class ClientPos extends CI_Controller {
 					$link
 				);
 			}
-		}			 
+		}
 
 		echo json_encode($result);
 	}
@@ -167,21 +166,21 @@ class ClientPos extends CI_Controller {
 			}else{
 				$msg['success'] = false;
 				$msg['error'] = 'Unable to create cart.';
-			}			
+			}
 		}
 		echo json_encode($msg);
 	}
 
 	function fetchPosCart(){
 		$result = array('data' => array());
-		
+
 		$where = array('order_status'=>"not_paid");
 		$data = $this->project_model->select('order',false,$where);
-		
+
 		if ($data != false) {
 			foreach ($data as $key => $value) {
 				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->order_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->order_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';		
+				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->order_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
 				$result['data'][$key] = array(
 					$value->order_type,
 					$value->order_code,
@@ -190,7 +189,7 @@ class ClientPos extends CI_Controller {
 				);
 			}
 		}
-			 
+
 
 		echo json_encode($result);
 	}
@@ -246,7 +245,7 @@ class ClientPos extends CI_Controller {
 						}else{
 							$link = '<a href="javascript:;" class="btn btn-default delete-cartitem" data="'.$value->order_item_id.'"> <i class="fa fa-hand-cross"></i> Remove </a>';
 						}
-						
+
 						$result['data'][$key] = array(
 							$value->order_name,
 							$value->order_unit,
@@ -254,17 +253,17 @@ class ClientPos extends CI_Controller {
 							$value->order_price,
 							$link
 						);
-					} 
+					}
 				}
 			}
-				
+
 		}
-					 
+
 
 		echo json_encode($result);
 	}
 
-	function addCartItem(){		
+	function addCartItem(){
 		$this->form_validation->set_rules('qty','Quantity','required');
 		$this->form_validation->set_rules('id','Item','required');
 
@@ -274,14 +273,14 @@ class ClientPos extends CI_Controller {
 		}else{
 			$where = array(
 			"menu_item_id"=>set_value('id')
-			);			
+			);
 			$cartid = $this->session->userdata('posCart');
 			$item = $this->project_model->select("menu_item",false,$where);
 			if ($item != false) {
-				foreach ($item as $value) {	
+				foreach ($item as $value) {
 					$name = $value->item_name;
 					$newstock = $value->stock - set_value('qty');
-					$dispose = $value->stock_dispose + set_value('qty');		
+					$dispose = $value->stock_dispose + set_value('qty');
 					$data = array(
 						"order_id"=>$cartid,
 						"order_name"=>$value->item_name,
@@ -314,7 +313,7 @@ class ClientPos extends CI_Controller {
 								$where = array("menu_item_id"=>$value->menu_item_id);
 								$update = $this->project_model->updateNew("menu_item",$where,$updateMData);
 								if ($update != false) {
-									$msg['success'] =  true;						
+									$msg['success'] =  true;
 								}else{
 									$msg['success'] = false;
 									$msg['error'] = 'Error in updating menu_item.';
@@ -333,7 +332,7 @@ class ClientPos extends CI_Controller {
 								$where = array("menu_item_id"=>$value->menu_item_id);
 								$update = $this->project_model->updateNew("menu_item",$where,$updateMData);
 								if ($update != false) {
-									$msg['success'] =  true;						
+									$msg['success'] =  true;
 								}else{
 									$msg['success'] = false;
 									$msg['error'] = 'Error in updating menu_item.';
@@ -345,7 +344,7 @@ class ClientPos extends CI_Controller {
 							$msg['success'] = false;
 							$msg['error'] = "error insert";
 						}
-					}					
+					}
 				}
 			}else{
 				$msg['success'] = false;
@@ -361,14 +360,14 @@ class ClientPos extends CI_Controller {
 		$where = array(
 		"menu_item_id"=>$id
 		);
-		
+
 		$cartid = $this->session->userdata('posCart');
 		$item = $this->project_model->select("menu_item",false,$where);
 		if ($item != false) {
 			foreach ($item as $value) {
-				$newstock = $value->stock_dispose + $value->stock;	
+				$newstock = $value->stock_dispose + $value->stock;
 				$name = $value->item_name;
-				$dispose = $value->stock_dispose;		
+				$dispose = $value->stock_dispose;
 				$data = array(
 					"order_id"=>$cartid,
 					"order_name"=>$value->item_name,
@@ -384,13 +383,13 @@ class ClientPos extends CI_Controller {
 					"stock_dispose"=>'0'
 				);
 				$where = array("menu_item_id"=>$value->menu_item_id);
-				
+
 				$insert = $this->project_model->insert('ordered_item',$data);
 
-				if ($insert != false) {	
+				if ($insert != false) {
 					$update = $this->project_model->updateNew("menu_item",$where,$updateData);
 					if ($update != false) {
-						return true;						
+						return true;
 					}else{
 						//return false;
 						return "error update";
@@ -406,7 +405,7 @@ class ClientPos extends CI_Controller {
 		}
 	} */
 
-	function addCustItem(){		
+	function addCustItem(){
 		$this->form_validation->set_rules('id','Item','required');
 		$this->form_validation->set_rules('quant','Quantity','required');
 		$this->form_validation->set_rules('width','Width','required');
@@ -419,14 +418,14 @@ class ClientPos extends CI_Controller {
 		}else{
 			$where = array(
 			"menu_item_id"=>set_value('id')
-			);	
+			);
 			$cartid = $this->session->userdata('posCart');
 			$item = $this->project_model->select("menu_item",false,$where);
 			if ($item != false) {
 				foreach ($item as $value) {
 					$dimension = set_value('width')*set_value('height');
 					$name = $value->item_name.' ('. set_value('width').'x'.set_value('height').') '.set_value('color').' Color(s)';
-					$rate = $value->item_price*$dimension*set_value('color');				
+					$rate = $value->item_price*$dimension*set_value('color');
 					$newstock = $value->stock - set_value('quant');
 					$dispose = $value->stock_dispose + set_value('quant');
 
@@ -438,7 +437,7 @@ class ClientPos extends CI_Controller {
 								if (set_value('color') == 1) {
 									if ($rate < 55) {
 										$rate = 55;
-									}									
+									}
 								}elseif (set_value('color') == 2) {
 									if ($rate < 75) {
 										$rate = 75;
@@ -464,7 +463,7 @@ class ClientPos extends CI_Controller {
 									}
 							}
 						}
-					}	
+					}
 					$data = array(
 						"order_id"=>$cartid,
 						"order_name"=>$name,
@@ -498,7 +497,7 @@ class ClientPos extends CI_Controller {
 								$where = array("menu_item_id"=>$value->menu_item_id);
 								$update = $this->project_model->updateNew("menu_item",$where,$updateMData);
 								if ($update != false) {
-									$msg['success'] =  true;						
+									$msg['success'] =  true;
 								}else{
 									$msg['success'] = false;
 									$msg['error'] = 'Error in updating menu_item.';
@@ -517,7 +516,7 @@ class ClientPos extends CI_Controller {
 								$where = array("menu_item_id"=>$value->menu_item_id);
 								$update = $this->project_model->updateNew("menu_item",$where,$updateData);
 								if ($update != false) {
-									$msg['success'] =  true;						
+									$msg['success'] =  true;
 								}else{
 									$msg['success'] = false;
 									$msg['error'] = 'Error in updating menu_item.';
@@ -530,10 +529,10 @@ class ClientPos extends CI_Controller {
 							$msg['error'] = "Unable to add new cart item.";
 						}
 					}
-					/* $where = array("menu_item_id"=>$value->menu_item_id);					
+					/* $where = array("menu_item_id"=>$value->menu_item_id);
 					$insert = $this->project_model->insert('ordered_item',$data);
 
-					if ($insert != false) {	
+					if ($insert != false) {
 						$update = $this->project_model->updateNew("menu_item",$where,$updateData);
 						if ($update != false) {
 							$msg['success'] = true;
@@ -560,20 +559,20 @@ class ClientPos extends CI_Controller {
 		$where = array(
 		"menu_item_id"=>$id
 		);
-		
+
 		$cartid = $this->session->userdata('posCart');
 		$item = $this->project_model->select("menu_item",false,$where);
 		if ($item != false) {
 			foreach ($item as $value) {
 				$dimension = $width*$height;
 				$name = $value->item_name.' ('. $width.'x'.$height.') '.$color.' Color(s)';
-				$rate = $value->item_price*$dimension*$color;				
+				$rate = $value->item_price*$dimension*$color;
 				$newstock = $value->stock_dispose + $value->stock;
 				$dispose = $value->stock_dispose;
 
 				if ($rate < 55) {
 					$rate = 55;
-				}		
+				}
 				$data = array(
 					"order_id"=>$cartid,
 					"order_name"=>$name,
@@ -589,13 +588,13 @@ class ClientPos extends CI_Controller {
 					"stock_dispose"=>'0'
 				);
 				$where = array("menu_item_id"=>$value->menu_item_id);
-				
+
 				$insert = $this->project_model->insert('ordered_item',$data);
 
-				if ($insert != false) {	
+				if ($insert != false) {
 					$update = $this->project_model->updateNew("menu_item",$where,$updateData);
 					if ($update != false) {
-						return true;						
+						return true;
 					}else{
 						//return false;
 						return "error update";
@@ -634,10 +633,10 @@ class ClientPos extends CI_Controller {
 				if ($ordereditem->order_stock_type == 'instock') {
 					$item_where = array(
 						'menu_item_id'=>$ordereditem->menu_item_id
-					);					
+					);
 					$item = $this->project_model->select('menu_item',false,$item_where);
 					if ($item != false) {
-						foreach ($item as $item) {				
+						foreach ($item as $item) {
 							$stock_data = array(
 								"stock"=>$item->stock + $ordereditem->order_qty,
 								'stock_dispose'=>$item->stock_dispose-$ordereditem->order_qty
@@ -693,7 +692,7 @@ class ClientPos extends CI_Controller {
 				$item = $this->project_model->select('menu_item',false,$item_where);
 				if ($item != false) {
 					$i2 = 0;
-					foreach ($item as $item) {				
+					foreach ($item as $item) {
 						if ($item->stock_type == "instock") {
 							$stock_data = array(
 								"stock"=>$value->stock+$ordereditem->order_qty,
@@ -768,10 +767,10 @@ class ClientPos extends CI_Controller {
 						if ($ordereditem->order_stock_type == 'instock') {
 							$item_where = array(
 								'menu_item_id'=>$ordereditem->menu_item_id
-							);					
+							);
 							$item = $this->project_model->select('menu_item',false,$item_where);
 							if ($item != false) {
-								foreach ($item as $item) {				
+								foreach ($item as $item) {
 									$stock_data = array(
 										"stock"=>$item->stock + $ordereditem->order_qty,
 										'stock_dispose'=>$item->stock_dispose-$ordereditem->order_qty
@@ -826,13 +825,13 @@ class ClientPos extends CI_Controller {
 					}
 				}else{
 					$msg['success'] = false;
-					$msg['error'] = "Unable to delete order";				
+					$msg['error'] = "Unable to delete order";
 				}
 			}else{
 				$msg['success'] = false;
-				$msg['error'] = "Item counter error.";			
+				$msg['error'] = "Item counter error.";
 			}
-			
+
 		}else{
 			$where = array('order_id'=>$id);
 			$delete = $this->project_model->deleteNew('order',$where);
@@ -884,12 +883,12 @@ class ClientPos extends CI_Controller {
 						return true;
 					}
 				}else{
-					return false;					
+					return false;
 				}
 			}else{
-				return false;				
+				return false;
 			}
-			
+
 		}else{
 			$where = array('order_id'=>$id);
 			$delete = $this->project_model->deleteNew('order',$where);
@@ -953,7 +952,7 @@ class ClientPos extends CI_Controller {
 						'order_discount'=>set_value('discount'),
 						'tax_amount'=>$tax_amount
 					);
-					
+
 					if (set_value('cash') >= $total) {
 						$payment = $this->project_model->update('order','order_id',$payment_data,$this->session->userdata('posCart'));
 						if ($payment != false) {
@@ -974,7 +973,7 @@ class ClientPos extends CI_Controller {
 			}
 		}
 
-			
+
 
 		echo json_encode($data);
 	}
@@ -982,7 +981,7 @@ class ClientPos extends CI_Controller {
 	function fetchcartinfo(){
 		$id = $this->session->userdata('posCart');
 		$where = array("order_id"=>$id);
-		
+
 		$order = $this->project_model->select('order',false,$where);
 		foreach ($order as $value) {
 			$items = $this->project_model->select('ordered_item',false,$where);
@@ -1007,7 +1006,7 @@ class ClientPos extends CI_Controller {
 				$amount = $amount + $taxes;
 				$total = $amount - $downpayment - $value->order_discount;
 			}
-				
+
 			$data['amount'] = $this->cart->format_number($amount);
 			$data['taxes'] = $taxes;
 			$data['total'] = $this->cart->format_number($total);
@@ -1015,7 +1014,7 @@ class ClientPos extends CI_Controller {
 		}
 
 		echo json_encode($data);
-	}	
+	}
 
 	function fetchbillurl(){
 		$id = $this->session->userdata('posCart');
@@ -1072,14 +1071,14 @@ class ClientPos extends CI_Controller {
 				"order.order_id"=>$this->session->userdata('posCart')
 			);
 			$data['bill'] = $this->project_model->select('order',false,$where);
-			
+
 			$where2 = array("order_id"=>$this->session->userdata('posCart'));
 			$data['items']= $this->project_model->select('ordered_item',false,$where2);
 			$data['property']= $this->project_model->select('property_info');
 
 			$where3 = array('emp_id'=>$this->session->userdata('current_id'));
 			$data['employee'] = $this->project_model->select('employee',false,$where3);
-			
+
 			$this->load->view('header',$data);
 			$this->load->view('content/bill_form',$data);
 			$this->load->view('footer');
@@ -1094,14 +1093,14 @@ class ClientPos extends CI_Controller {
 			"order.order_id"=>$this->session->userdata('posCart')
 		);
 		$data['bill'] = $this->project_model->select('order',false,$where);
-		
+
 		$where2 = array("order_id"=>$this->session->userdata('posCart'));
 		$data['items']= $this->project_model->select('ordered_item',false,$where2);
 		$data['property']= $this->project_model->select('property_info');
 
 		$where3 = array('emp_id'=>$this->session->userdata('current_id'));
 		$data['employee'] = $this->project_model->select('employee',false,$where3);
-		
+
 		$this->load->view('header',$data);
 		$this->load->view('content/receipt_form',$data);
 		$this->load->view('footer');
