@@ -1,4 +1,10 @@
-<div class="row">
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Incomestatement</h2>
+    </div>
+  </div>
+	<div class="row">
 	<div class="row" style="margin-bottom: 5px;height: 65px;">
 		<div class="col-lg-6">
 			<!-- <div class="messages" ></div> -->
@@ -7,9 +13,9 @@
 		</div>
 		<div class="col-lg-6">
 			<button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Expenses</button>
-		</div>			
+		</div>
 	</div>
-	<div class="col-lg-12">		
+	<div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover" id="incomeStatement" style="min-height: 150px !important;">
         	<thead>
                 <tr>
@@ -21,13 +27,13 @@
                     <th>Kim Share(60%)</th>
                     <th>Bank Bal.</th>
                     <th>Deposit Amount</th>
-                    <th>Action</th>                
+                    <th>Action</th>
                 </tr>
-            </thead> 
-        </table>			
+            </thead>
+        </table>
     </div>
 </div>
-
+</div>
 	<!-- add member -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
   <div class="modal-dialog" role="document">
@@ -59,7 +65,7 @@
 										<?php
 												}
 											}
-										?>                                
+										?>
 		                            </select>
 		                        </div>
 		                    </fieldset>
@@ -99,7 +105,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
-      
+
           <div class="modal-body">
             <div class="row">
             <form id="printForm" action="" method="post">
@@ -123,7 +129,7 @@
 								<?php
 										}
 									}
-								?>                                
+								?>
                             </select>
                         </div>
                     </fieldset>
@@ -137,9 +143,9 @@
                     </fieldset>
                 </div>
             </form>
-            </div>     
+            </div>
           </div>
-      
+
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" id="conPrint" class="btn btn-primary">Print File</button>
@@ -186,13 +192,13 @@
             'bProcessing': false,
             "scrollY":        "325px",
             "scrollCollapse": true,
-            "paging":         false 
+            "paging":         false
 		});
 
 		// Apply the search
 	    incomeTable.columns().every( function () {
 	        var that = this;
-	 
+
 	        $( 'input', this.header() ).on( 'keyup change', function () {
 	            if ( that.search() !== this.value ) {
 	                that
@@ -223,7 +229,7 @@
 	            success: function(response){
 	            	var error = response.error;
 	                if (response.success) {
-	                    $('#newForm')[0].reset();	                            
+	                    $('#newForm')[0].reset();
 	                    $('.alert-success').html('Income Statement successfully created!').fadeIn().delay(2000).fadeOut('slow');
 	                    incomeTable.ajax.reload(null, false);
 	                }else{
@@ -236,7 +242,7 @@
 	                $('#myModal').modal('hide');
 	            }
 	        });
-				
+
 		});
 
 		$('#incomeStatement').on('click','.item-delete',function(){
@@ -274,6 +280,3 @@
 	});
 
 </script>
-
-
-			

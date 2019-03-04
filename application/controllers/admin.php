@@ -4268,10 +4268,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/returns',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4281,10 +4279,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/stocks',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4294,10 +4290,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/restaurant_receipt',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4307,10 +4301,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/employee_salary',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4333,10 +4325,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/incomeStatement',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4346,10 +4336,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/employee_overtime',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4359,10 +4347,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/attendance',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 

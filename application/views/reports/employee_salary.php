@@ -1,31 +1,37 @@
-<div class="row">
-    <div class="row" style="margin-bottom: 5px;height: 65px;">
-        <div class="col-lg-6">
-            <!-- <div class="messages" ></div> -->
-            <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-            <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-        </div>
-        <div class="col-lg-6">
-            <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> New Salary</button>
-        </div>          
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Salary Expenses</h2>
     </div>
-    <div class="col-lg-12">     
-        <table class="table table-striped table-bordered table-hover" id="employeeSal">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Sal. Amount</th>
-                    <th>Credit Amount</th>
-                    <th>OT Amount</th>
-                    <th>Action</th>
-                </tr>
-            </thead> 
-        </table>            
-    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
+          <div class="col-lg-6">
+              <!-- <div class="messages" ></div> -->
+              <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+              <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+          <div class="col-lg-6">
+              <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> New Salary</button>
+          </div>
+      </div>
+      <div class="col-lg-12">
+          <table class="table table-striped table-bordered table-hover" id="employeeSal">
+              <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Sal. Amount</th>
+                      <th>Credit Amount</th>
+                      <th>OT Amount</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+  </div>
 </div>
-
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -33,7 +39,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
-      
+
           <div class="modal-body">
             <div class="row">
             <form id="myForm" action="" method="post">
@@ -42,7 +48,7 @@
                         <legend>Select Employee</legend>
                         <div class="form-group">
                             <select class="form-control" id="employee" name="employee" required>
-                                <option value="">Select</option>                                
+                                <option value="">Select</option>
                             </select>
                         </div>
                     </fieldset>
@@ -61,9 +67,9 @@
                     </fieldset>
                 </div>
             </form>
-            </div>     
+            </div>
           </div>
-      
+
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
@@ -79,7 +85,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
-      
+
           <div class="modal-body">
             <div class="row">
             <form id="printForm" action="" method="post">
@@ -88,7 +94,7 @@
                         <legend>Select Employee</legend>
                         <div class="form-group">
                             <select class="form-control" id="employee" name="employee" required>
-                                <option value="">Select</option>                                
+                                <option value="">Select</option>
                             </select>
                         </div>
                     </fieldset>
@@ -102,9 +108,9 @@
                     </fieldset>
                 </div>
             </form>
-            </div>     
+            </div>
           </div>
-      
+
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
@@ -136,7 +142,7 @@
     $(document).ready(function() {
         var empSalTable;
         showEmployee();
-        
+
         // Setup - add a text input to each footer cell
         $('#employeeSal thead th').each( function () {
             var title = $(this).text();
@@ -154,13 +160,13 @@
             'bProcessing': false,
             "scrollY":        "325px",
             "scrollCollapse": true,
-            "paging":         false 
+            "paging":         false
         });
 
         // Apply the search
         empSalTable.columns().every( function () {
             var that = this;
-     
+
             $( 'input', this.header() ).on( 'keyup change', function () {
                 if ( that.search() !== this.value ) {
                     that
@@ -191,7 +197,7 @@
                 success: function(response){
                     var error = response.error;
                     if (response.success) {
-                        $('#myForm')[0].reset();                                
+                        $('#myForm')[0].reset();
                         $('.alert-success').html('Successfully created salary!').fadeIn().delay(2000).fadeOut('slow');
                         empSalTable.ajax.reload(null, false);
                     }else{
@@ -203,7 +209,7 @@
                     $('.alert-danger').html('Unable to add record.').fadeIn().delay(2000).fadeOut('slow');
                     $('#myModal').modal('hide');
                 }
-            });             
+            });
         });
 
         //edit
@@ -250,7 +256,7 @@
                 success: function(data){
                     var html = '';
                     var i;
-                    for(i=0; i<data.length; i++) {                      
+                    for(i=0; i<data.length; i++) {
                         var name = data[i].emp_fname+ ' ' +data[i].emp_mname+ ' '+data[i].emp_lname;
                         html +='<option value="'+data[i].emp_id+'">'+ name +'</option>';
                     }
@@ -259,11 +265,8 @@
                 error: function(){
                     $('.alert-danger').html('Server error. Unable to retrieve data.').fadeIn().delay(2000).fadeOut('slow');
                 }
-            });             
+            });
         }
     });
 
 </script>
-
-
-            

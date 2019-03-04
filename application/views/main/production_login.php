@@ -2,7 +2,7 @@
   <div class="row" style="margin-top:10%;">
     <div class="col-lg-6 col-lg-offset-3">
       <div class="col-lg-6">
-        <h1 class="page-header"><i class="fa fa-user fa-fw"></i>Cashier</h1>
+        <h1 class="page-header"><i class="fa fa-cogs fa-fw"></i>Production</h1>
         <h2>LOG-IN</h2>
       </div>
       <div class="col-lg-6" style="border-left: #c0c0c0 solid 1px;">

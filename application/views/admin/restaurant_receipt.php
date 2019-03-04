@@ -1,15 +1,21 @@
-<div class="row">
-    <div class="row" style="margin-bottom: 5px;height: 65px;">
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Sales Report</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
         <div class="col-lg-6">
             <!-- <div class="messages" ></div> -->
             <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
             <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
         </div>
-        <div class="col-lg-6">            
+        <div class="col-lg-6">
             <button id="btnPrint" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> Print Record</button>
-        </div>          
+        </div>
     </div>
-    <div class="col-lg-12">     
+    <div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover" id="receiptList">
             <thead>
                 <tr>
@@ -20,11 +26,11 @@
                     <th>Order Date</th>
                     <th>Action</th>
                 </tr>
-            </thead> 
-        </table>            
+            </thead>
+        </table>
     </div>
 </div>
-
+</div>
 <div class="modal fade" tabindex="-1" role="dialog" id="printModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -32,7 +38,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
-      
+
           <div class="modal-body">
             <div class="row">
             <form id="printForm" action="" method="post">
@@ -56,7 +62,7 @@
                                 <?php
                                         }
                                     }
-                                ?>                                
+                                ?>
                             </select>
                         </div>
                     </fieldset>
@@ -70,9 +76,9 @@
                     </fieldset>
                 </div>
             </form>
-            </div>     
+            </div>
           </div>
-      
+
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" id="conPrint" class="btn btn-primary">Print File</button>
@@ -105,7 +111,7 @@
         setInterval(function(){
             receiptTable.ajax.reload(null, false);
         },3000);
-        
+
         // Setup - add a text input to each footer cell
         $('#receiptList thead th').each( function () {
             var title = $(this).text();
@@ -123,13 +129,13 @@
             'bProcessing': false,
             "scrollY":        "350px",
             "scrollCollapse": true,
-            "paging":         false       
+            "paging":         false
         });
 
             // Apply the search
         receiptTable.columns().every( function () {
             var that = this;
-     
+
             $( 'input', this.header() ).on( 'keyup change', function () {
                 if ( that.search() !== this.value ) {
                     that
@@ -154,7 +160,7 @@
         $('#conPrint').click(function(){
             /*var link =  $(this).attr('data');
             window.open(link,"newwindow", "width=1200, height=800");*/
-            var month = $('select[name=mon2]'); 
+            var month = $('select[name=mon2]');
             var year = $('input[name=year]');
             var url = '<?php echo base_url('admin/printSalesList')?>/'  + month.val() + '/' + year.val();
             window.open(url,"newwindow", "width=900, height=600");
@@ -189,6 +195,3 @@
     });
 
 </script>
-
-
-            

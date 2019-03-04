@@ -13,13 +13,13 @@ class Main extends CI_Controller {
 		} */
 	}
 
-	private function my_mac(){		
+	private function my_mac(){
 		$ip = $_SERVER['REMOTE_ADDR'];
 		ob_start();
 		$arp_output = `arp -a $ip`;
 		ob_clean();
-		$mac = substr($arp_output,101,27);			
-		
+		$mac = substr($arp_output,101,27);
+
 		if (!$mac) {
 			ob_start(); // Turn on output buffering
 			system('ipconfig /all'); //Execute external program to display output
@@ -35,7 +35,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	function index(){		
+	function index(){
 		$mac = str_replace(" ", "", $this->my_mac());
 		$where = array('mac_address'=>$mac);
 		$mac_addresses = $this->project_model->select('assign_access',false,$where);
@@ -51,11 +51,11 @@ class Main extends CI_Controller {
 		$where = array('mac_address'=>$mac);
 		$data = $this->project_model->select('assign_access',$where);
 		if ($data !== false) {
-			return $data;			
+			return $data;
 		}else{
 			return false;
 		}
-		
+
 	}
 
 	function filter_mac(){
@@ -70,7 +70,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	function login_landing(){		
+	function login_landing(){
 		$mac = $this->my_mac();
 		$mac = str_ireplace(" ", "", $mac);
 		$data['useraccts'] = $this->get_accountType($mac);
@@ -82,7 +82,7 @@ class Main extends CI_Controller {
 
 	}
 
-	private function adminLogin(){		
+	private function adminLogin(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = 'Login';
 		$data['error'] = '';
@@ -91,12 +91,21 @@ class Main extends CI_Controller {
 		$this->load->view("footer");
 	}
 
-	private function frontdeskLogin(){		
+	private function frontdeskLogin(){
 		$data['title'] = "Frontdesk Login";
 		$data['sub_heading'] = 'Login';
 		$data['error'] = '';
 		$this->load->view("header",$data);
 		$this->load->view("main/frontdesk_login",$data);
+		$this->load->view("footer");
+	}
+
+	private function productionLogin(){
+		$data['title'] = "Production Login";
+		$data['sub_heading'] = 'Login';
+		$data['error'] = '';
+		$this->load->view("header",$data);
+		$this->load->view("main/production_login",$data);
 		$this->load->view("footer");
 	}
 
@@ -120,7 +129,7 @@ class Main extends CI_Controller {
 			$log = $this->main_model->val_login($table,$where);
 			if ($log == true){
 				$this->session->set_userdata('isposadmin_log',true);
-				redirect('admin');				
+				redirect('admin');
 			}else{
 				$data['title'] = 'Administrator';
 				$data['sub_heading'] = 'Login Error!';
@@ -156,7 +165,7 @@ class Main extends CI_Controller {
 					'current_id'=>$log[1]
 					);
 				$this->session->set_userdata($newdata);
-				redirect('clientPos');				
+				redirect('clientPos');
 			}else{
 				$data['title'] = "Frontdesk Login";
 				$data['sub_heading'] = 'Login Error';
@@ -166,7 +175,43 @@ class Main extends CI_Controller {
 				$this->load->view("footer");
 			}
 		}
-	}	
+	}
+
+	function production_login(){
+		$this->form_validation->set_rules('username','Username','required');
+		$this->form_validation->set_rules('password','Password','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['title'] = 'Production Login';
+			$data['sub_heading'] = 'Validation Error!';
+			$data['error'] = '';
+			$this->load->view('header',$data);
+			$this->load->view('main/production_login',$data);
+			$this->load->view('footer');
+		}else{
+			$table = 'emp_accounts';
+			$where = array(
+				'emp_username'=>set_value('username'),
+				'emp_password'=>sha1(set_value('password'))
+				);
+			$log = $this->main_model->val_login($table,$where,$return=true);
+			if ($log[0] == true){
+				$newdata = array(
+					'ispos_log'=>$log[0],
+					'current_id'=>$log[1]
+					);
+				$this->session->set_userdata($newdata);
+				redirect('clientPos');
+			}else{
+				$data['title'] = "Production Login";
+				$data['sub_heading'] = 'Login Error';
+				$data['error'] = 'match';
+				$this->load->view("header",$data);
+				$this->load->view("main/production_login",$data);
+				$this->load->view("footer");
+			}
+		}
+	}
 
 	function error_page(){
 		$data['title'] = "Error Page";
@@ -189,8 +234,10 @@ class Main extends CI_Controller {
 		$type = $this->uri->segment(3);
 		if ($type == "admin") {
 			$this->adminLogin();
-		}else{
+		}elseif($type == "frontdesk"){
 			$this->frontdeskLogin();
+		}elseif($type == "production"){
+			$this->productionLogin();
 		}
 	}
 
@@ -203,7 +250,7 @@ class Main extends CI_Controller {
 		}else{
 			echo 'false';
 		}
-		
+
 
 		// phase 2 create tables
 
@@ -242,7 +289,7 @@ class Main extends CI_Controller {
 						'NOT NULL' => TRUE
 					),
 				);
-				
+
 				$elements = array(
 					array('assign_access','assign_access_id',$field1),
 					/* array('employee','emp_id',$field1),
@@ -276,7 +323,7 @@ class Main extends CI_Controller {
 					array('stockchannel','channel_id',$field1),
 					array('stockitem','stock_id',$field1),
 					array('store_menu','menu_id',$field1) */
-					
+
 				);
 				$this->porject_model->create_table($fields,$primaryKey,$table,$db);
 			}
@@ -428,7 +475,7 @@ class Main extends CI_Controller {
 				array('stockchannel','channel_id',$field1),
 				array('stockitem','stock_id',$field1),
 				array('store_menu','menu_id',$field1) */
-				
+
 			);
 			if ($this->project_model->create_table($elements) == true) {
 				echo 'table created.';
@@ -450,7 +497,7 @@ class Main extends CI_Controller {
 }
 
 /*
-function index(){		
+function index(){
 		$check_access = $this->main_model->check_access();
 		$check_property = $this->main_model->check_property();
 		if ($check_access != false && $check_property != false) {
@@ -469,13 +516,13 @@ function index(){
 	}
 
 	private function my_mac(){
-		
+
 		$ip = $_SERVER['REMOTE_ADDR'];
 		ob_start();
 		$arp_output = `arp -a $ip`;
 		ob_clean();
-		$mac = substr($arp_output,101,27);			
-		
+		$mac = substr($arp_output,101,27);
+
 		if (!$mac) {
 			ob_start(); // Turn on output buffering
 			system('ipconfig /all'); //Execute external program to display output
@@ -540,7 +587,7 @@ function index(){
 			$log = $this->main_model->val_login($table,$where);
 			if ($log == true){
 				$this->session->set_userdata('isposadmin_log',true);
-				redirect('admin');				
+				redirect('admin');
 			}else{
 				$data['title'] = 'Administrator';
 				$data['sub_heading'] = 'Login Error!';
@@ -576,7 +623,7 @@ function index(){
 					'current_id'=>$log[1]
 					);
 				$this->session->set_userdata($newdata);
-				redirect('receptionist');				
+				redirect('receptionist');
 			}else{
 				$data['title'] = "Frontdesk Login";
 				$data['sub_heading'] = 'Login Error';
@@ -586,7 +633,7 @@ function index(){
 				$this->load->view("footer");
 			}
 		}
-	}	
+	}
 
 	private function is_log_in(){
 		if ($this->session->userdata('isadmin_log') == true && $this->session->userdata('ispos_log') == false) {
@@ -613,7 +660,7 @@ function index(){
 			$this->load->view('main/frontdesk_login',$data);
 			$this->load->view('footer');
 	}
-	
+
 	function get_accountType(){
 		$mac = $this->project_model->select('assign_access');
 		if ($mac != false) {

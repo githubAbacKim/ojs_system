@@ -5,7 +5,7 @@
     </div>
   </div>
 	<div class="row">
-	<div class="row" style="margin-bottom: 5px;height: 65px;">
+	   <div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
 		<div class="col-lg-6">
 			<!-- <div class="messages" ></div> -->
 			<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
@@ -16,7 +16,7 @@
 			<button id="btnPrint" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> Print Record</button>
 		</div>
 	</div>
-	<div class="col-lg-12">
+	   <div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover" id="expEquipItem">
         	<thead>
                 <tr>
@@ -31,7 +31,7 @@
             </thead>
         </table>
     </div>
-</div>
+  </div>
 </div>
 	<!-- add member -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
