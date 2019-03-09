@@ -7,11 +7,11 @@
 	  </div>
 
       <!-- Display this panel body on cart selection -->
-	  <div class="panel-body" id="cartLoaded" style="display:none;">            
+	  <div class="panel-body" id="cartLoaded" style="display:none;">
             <!-- <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> -->
 
             <!-- ordered item list here -->
-    	    <div class="col-lg-12" style="min-height:335px;max-height:335px;" >    	    	
+    	    <div class="col-lg-12" style="min-height:335px;max-height:335px;" >
                 <table id="cartPosItem" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
@@ -21,7 +21,7 @@
                             <th width="20%">Price</th>
                             <th width="20%">Action</th>
                         </tr>
-                    </thead>                
+                    </thead>
                 </table>
     	    </div>
             <!-- total display -->
@@ -36,7 +36,7 @@
 
                 <button id="disabledPayment" class="btn btn-default" style="margin-right: 5px;display: none;"><i class="fa fa-money fa-fx"></i> PAYMENT</button>
                 <button id="btnreceipt" class="btn btn-primary" style="margin-right: 5px;display: none;"><i class="fa fa-print fa-fx"></i> PRINT RECEIPT</button>
-            </div>            
+            </div>
 	  </div>
 
       <!-- Default display panel body -->
@@ -56,7 +56,7 @@
 	  <div class="panel-heading">
 	    <h3 class="panel-title">Products Search</h3>
 	  </div>
-	  <div class="panel-body">        
+	  <div class="panel-body">
         <table id="menuItemTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
@@ -65,7 +65,7 @@
                     <th>Item</th>
                     <th>Price</th>
                 </tr>
-            </thead>          
+            </thead>
         </table>
 	  </div>
 	</div>
@@ -79,7 +79,7 @@
         <button id="" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Void Order</button> -->
         <button id="cartBtn" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-shopping-cart"></i> Cart</button>
         <button id="closeCart" class="btn btn-danger btn-circle" style="margin-right: 5px;"><i class="fa fa-times"> </i></button>
-        <button id="btnneworder" class="btn btn-success btn-circle" style="margin-right: 5px;"><i class="fa fa-plus"> </i></button>  
+        <button id="btnneworder" class="btn btn-success btn-circle" style="margin-right: 5px;"><i class="fa fa-plus"> </i></button>
     </div>
     <div class="col-lg-5">
         <!-- <div class="alert alert-warning text-center">Transaction status here!<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> -->
@@ -88,9 +88,9 @@
     </div>
     <!-- right button -->
     <!-- <div class="col-lg-2">
-        
+
         <button id="closeCart" class="btn btn-danger btn-circle" style="float:right;"><i class="fa fa-times"> </i></button>
-        <button id="btnneworder" class="btn btn-success btn-circle" style="float:right;"><i class="fa fa-plus"> </i></button>  
+        <button id="btnneworder" class="btn btn-success btn-circle" style="float:right;"><i class="fa fa-plus"> </i></button>
     </div> -->
 </div>
 
@@ -161,7 +161,7 @@
                         <th>Customer</th>
                         <th>Action</th>
                     </tr>
-                </thead>            
+                </thead>
             </table>
           <!-- </div> -->
           <div class="modal-footer">
@@ -185,7 +185,7 @@
           </div>
             <form method="post" action="" id="createCart">
               <div class="modal-body">
-                <div class="row">                
+                <div class="row">
                     <div class="col-lg-6 col-md-6 col-xs-12 col-lg-offset-3 col-md-offset-3">
                         <div class="form-group text-center" style="font-size: 14pt;">
                             <label>Order Type:</label>
@@ -213,7 +213,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button id="btnCreate" type="button" class="btn btn-primary">Create Order Cart</button>
               </div>
-            </form> 
+            </form>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
@@ -254,28 +254,28 @@
                         <div class="input-group">
                           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
                           <input type="text" name="cash" class="form-control" placeholder="Cash Amount" aria-describedby="basic-addon1" required>
-                        </div> 
-                    </div>                
-                    
+                        </div>
+                    </div>
+
                     <div class="col-lg-6 col-lg-offset-3 text-center" style="margin-top: 10px;">
                         <!-- <label>DISCOUNT AMOUNT:</label> -->
                         <div class="input-group">
                           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
                           <input type="text" name="discount" class="form-control" placeholder="Discount Amount" aria-describedby="basic-addon1" required>
-                        </div>  
-                    </div>  
-                         
+                        </div>
+                    </div>
+
                 </div>
               </div>
               <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button id="btnPayment" type="button" class="btn btn-primary">Submit Payment</button>
               </div>
-            </form> 
+            </form>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
-<!-- /.modal --> 
+<!-- /.modal -->
 
 <!-- vinyl and siser modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="custoModal">
@@ -321,13 +321,13 @@
                         <input type="text" class="form-control" name="quant" placeholder="Quantity" />
                     </div>
                 </div>
-                    
+
               </div>
               <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button id="btnAddCust" type="button" class="btn btn-primary">Add Item</button>
               </div>
-            </form> 
+            </form>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
@@ -342,18 +342,18 @@
         receipturl();
         checkCart();
         setInterval(function(){
-            checkCart();       
+            checkCart();
             cart.ajax.reload(null, false);
         },1000);
     /*Button events*/
         $('#cartBtn').click(function(){
             $('#cartModal').modal('show');
-            $('#cartModal').find('.modal-title').text("Order Cart");            
+            $('#cartModal').find('.modal-title').text("Order Cart");
         });
         $('#openBtn').click(function(){
             $('#addModal').modal('show');
             $('#addModal').find('.modal-title').text("Please set item quantity.");
-            $('#addForm').attr('action','<?php echo base_url("clientPos/addCartItem")?>');            
+            $('#addForm').attr('action','<?php echo base_url("clientPos/addCartItem")?>');
         });
         $('#btnneworder').click(function(){
             $('#createCart')[0].reset();
@@ -390,7 +390,7 @@
             });
             menuItem.columns().every( function () {
                 var that = this;
-         
+
                 $( 'input', this.header() ).on( 'keyup change', function () {
                     if ( that.search() !== this.value ) {
                         that
@@ -421,7 +421,7 @@
             });
             posCartItem.columns().every( function () {
                 var that = this;
-         
+
                 $( 'input', this.header() ).on( 'keyup change', function () {
                     if ( that.search() !== this.value ) {
                         that
@@ -454,7 +454,7 @@
             // Apply the search
         cart.columns().every( function () {
             var that = this;
-     
+
             $( 'input', this.header() ).on( 'keyup change', function () {
                 if ( that.search() !== this.value ) {
                     that
@@ -470,7 +470,7 @@
                 async:false,
                 dataType:'json',
                 success: function(data){
-                    var info = '';  
+                    var info = '';
                         info +='<li class="col-lg-4 col-md-4 col-xs-12" id="total"> '+
                                     '<span class="text-muted"><strong>Sales w/ VAT: </strong></span>'+
                                     '<span class="text-primary"><strong>Php '+ data.amount +'</strong></span>'+
@@ -488,7 +488,7 @@
                 error: function(){
                     $('.alert-danger').html('Unable to retrieve cart info.').fadeIn().delay(2000).fadeOut('slow');
                 }
-            });             
+            });
         }
     /*end of retrieving functions*/
 
@@ -550,7 +550,7 @@
             var url = $('#createCart').attr('action');
             var data = $('#createCart').serialize();
             //validate form
-           
+
             $.ajax({
                 type:'ajax',
                 method: 'post',
@@ -575,7 +575,7 @@
                     $('.alert-danger').html('Could not create cart.').fadeIn().delay(2000).fadeOut('slow');
                 }
             });
-                
+
         });
 
         function checkCart(){
@@ -591,20 +591,20 @@
                         cart.ajax.reload(null, false);
                         posCartItem.ajax.reload(null, false);
                         showcartinfo();
-                        checkOrderStat();
-                    }else{                        
+	                      checkOrderStat();
+                    }else{
                         $('#cartLoaded').fadeOut('slow');
                         $('#cartFalse').fadeIn('slow');
-                        menuItem.ajax.reload(null, false);
-                        cart.ajax.reload(null, false);
+                        //menuItem.ajax.reload(null, false);
+                        //cart.ajax.reload(null, false);
                     }
-                        
+
                 },
                 error: function(){
                     $('.alert-danger').html('Could not check cart.').fadeIn().delay(2000).fadeOut('slow');
                     //return false;
                 }
-            }); 
+            });
         }
 
         function checkOrderStat(){
@@ -623,7 +623,7 @@
                         posCartItem.ajax.reload(null, false);
                         showcartinfo();
                         getprinturl();
-                    }else{                        
+                    }else{
                         $('#btnpayment').fadeIn('slow');
                         $('#btnbill').fadeIn('slow');
                         $('#disabledPayment').fadeOut('slow');
@@ -631,7 +631,7 @@
                         menuItem.ajax.reload(null, false);
                         receipturl();
                     }
-                        
+
                 },
                 error: function(){
                     $('.alert-danger').html('Could not check order stat.').fadeIn().delay(2000).fadeOut('slow');
@@ -739,7 +739,7 @@
                 error: function(){
                     $('.alert-danger').html('Could not add data.').fadeIn().delay(2000).fadeOut('slow');
                 }
-            });           
+            });
         });
 
         $('#btnAddCust').click(function(){
@@ -750,7 +750,7 @@
             var width = $('input[name=width]');
             var height = $('input[name=height]');
             var color = $('input[name=color]');
-            
+
             var result = '';
             if (quant.val()=='') {
                 quant.parent().parent().addClass('has-error');
@@ -803,7 +803,7 @@
                         $('.alert-danger').html('Could not add data.').fadeIn().delay(2000).fadeOut('slow');
                     }
                 });
-            }   
+            }
         });
 
         $('#cartPosItem').on('click','.delete-cartitem',function(){
@@ -883,7 +883,7 @@
             //validate form
             var cash = $('input[name=cash]');
             var discount = $('input[name=discount]');
-            
+
             var result = '';
 
             if (cash.val()=='') {
@@ -925,7 +925,7 @@
                     }
                 });
             }
-                
+
         });
 
     /*end of processing functions*/

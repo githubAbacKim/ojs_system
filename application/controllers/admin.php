@@ -2404,14 +2404,19 @@ class Admin extends CI_Controller {
 		echo json_encode($result);
 	}
 	function createItem(){
+		$type = $this->input->post('type');
+		if ($type == "instock") {
+			$data = array(
+				"stockCat_id"=>$this->input->post('category'),
+				"stock_name"=>ucwords($this->input->post('name')),
+				"stock_unit"=>$this->input->post('unit'),
+				"stock_qqty"=>$this->input->post('qty'),
+				"stockCost"=>$this->input->post('cost')
+			);
+		}else{
 
-		$data = array(
-			"stockCat_id"=>$this->input->post('category'),
-			"stock_name"=>ucwords($this->input->post('name')),
-			"stock_unit"=>$this->input->post('unit'),
-			"stock_qqty"=>$this->input->post('qty'),
-			"stockCost"=>$this->input->post('cost')
-		);
+		}
+
 		$result = $this->project_model->insert('stockitem',$data);
 
 		$msg['type'] = 'add';

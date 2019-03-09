@@ -20,9 +20,11 @@ class ClientPos extends CI_Controller {
 		$result = array('data' => array());
 
 		$join = array(
-				array("store_menu","menu_item","menu_id")
+				array("stock_class","stockitem","stockclass_id"),
+				array("stockcategory","stockitem","stockCat_id")
 			);
-		$data = $this->project_model->select_join('menu_item',$join,false);
+		$like = array("stock_class.stockclass_name"=>"FINISHED");
+		$data = $this->project_model->select('stockitem',$join,$like);
 		if ($data != false) {
 			if ($this->session->userdata('posCart') !== FALSE) {
 				if ($data !== false) {
@@ -35,9 +37,9 @@ class ClientPos extends CI_Controller {
 								foreach ($data as $key => $value) {
 									$result['data'][$key] = array(
 										$link,
-										$value->menu_name,
-										$value->item_name,
-										$value->item_price
+										$value->stockCat_name,
+										$value->stock_name,
+										$value->stockCost
 									);
 								}
 							}
@@ -45,13 +47,13 @@ class ClientPos extends CI_Controller {
 							if ($data != false) {
 								foreach ($data as $key => $value) {
 									if ($value->stock > 0 && $value->stock_type == "instock") {
-										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
+										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 									}elseif ($value->stock_type == "nonstock") {
 
 										if ($value->menu_name == "Vinyl Stickers" || $value->menu_name == "Siser Materials" || $value->menu_name == "Tarp") {
 											$link = '<a javascript:; class="btn btn-default addCustItem" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 										}else{
-											$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
+											$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 										}
 									}else{
 										$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-plus"></i> Add </a>';
@@ -59,9 +61,9 @@ class ClientPos extends CI_Controller {
 
 									$result['data'][$key] = array(
 										$link,
-										$value->menu_name,
-										$value->item_name,
-										$value->item_price
+										$value->stockCat_name,
+										$value->stock_name,
+										$value->stockCost
 									);
 								}
 							}
@@ -76,9 +78,9 @@ class ClientPos extends CI_Controller {
 					foreach ($data as $key => $value) {
 						$result['data'][$key] = array(
 							$link,
-							$value->menu_name,
-							$value->item_name,
-							$value->item_price
+							$value->stockCat_name,
+							$value->stock_name,
+							$value->stockCost
 						);
 					}
 				}
@@ -111,11 +113,11 @@ class ClientPos extends CI_Controller {
 
 	function getItem(){
 		$id = $this->input->get('id');
-		$where = array("menu_item_id"=>$id);
+		$where = array("stock_id"=>$id);
 		$join = array(
-			array("store_menu","menu_item","menu_id")
+			array("stockcategory","stock_item","stockCat_id")
 		);
-		$result = $this->project_model->single_select("menu_item",$where,$join);
+		$result = $this->project_model->single_select("stock_item",$where,$join);
 		echo json_encode($result);
 	}
 

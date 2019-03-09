@@ -1,4 +1,4 @@
-<div class="col-lg-12">
+lg<div class="col-lg-12">
   <div class="row">
     <div class="col-lg-12">
         <h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Stock Items</h2>
@@ -43,9 +43,9 @@
       <form id="myForm">
 	      <div class="modal-body">
 	      		<div class="row">
-	      			<div class="col-md-12">
+	      			<div class="col-lg-12">
 	      				<input type="hidden" name="id" value="0" >
-	      				<div class="form-group col-md-4">
+	      				<div class="form-group col-lg-4">
 							<label for="stockclass">Class *</label>
 		      				<select class="form-control" id="stockclass" name="stockclass" required>
 								<option value="">Select</option>
@@ -59,7 +59,7 @@
 								?>
 							</select>
 						</div>
-						<div class="form-group col-md-4">
+						<div class="form-group col-lg-4">
 							<label for="category">Category *</label>
 		      				<select class="form-control" id="category" name="category" required>
 								<option value="">Select</option>
@@ -72,30 +72,41 @@
 								?>
 							</select>
 						</div>
-						<div class="form-group col-md-4">
-							<label for="stock_type">Stock Type *</label>
-		      				<select class="form-control" id="stock_type" name="stock_type" required>
-		      					<option value="">Select</option>
-								<option value="nonstock">Non-stock</option>
-								<option value="instock">In-stock</option>
-							</select>
-						</div>
-						<div class="form-group col-md-12">
-						<label for="name">Stock Name *</label>
-						<input type="text" class="form-control" id="name" name="name" placeholder="Stock Name">
-						</div>
-						<div class="form-group col-md-4">
-						<label for="unit">Unit *</label>
-						<input type="text" class="form-control" id="unit" name="unit" placeholder="Unit">
-						</div>
-						<div class="form-group col-md-4">
-						<label for="cost">Cost *</label>
-						<input type="text" class="form-control" id="cost" name="cost" placeholder="Cost">
-						</div>
-						<div class="form-group col-md-3">
-						<label for="qty">Quantity *</label>
-						<input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
-						</div>
+            <div class="form-group col-lg-4">
+                <label for="category">Type *</label>
+                    <div class="col-lg-12">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="stock_type" id="newStockBut" value="instock">InStock
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="stock_type" id="newStockBut" value="nonstock" checked>NonStock
+                            </label>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-lg-12" id="newStockDiv" style="display:none;">
+                <div class="form-group col-lg-4">
+                <label for="unit">Unit *</label>
+                <input type="text" class="form-control" id="unit" name="unit" placeholder="Unit">
+                </div>
+                <div class="form-group col-lg-4">
+                <label for="qty">Quantity *</label>
+                <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
+                </div>
+            </div>
+					  <div class="col-lg-12">
+              <div class="form-group col-lg-8">
+    						<label for="name">Stock Name *</label>
+    						<input type="text" class="form-control" id="name" name="name" placeholder="Stock Name">
+  						</div>
+              <div class="form-group col-lg-4">
+                <label for="cost">Cost *</label>
+                <input type="text" class="form-control" id="cost" name="cost" placeholder="Cost">
+              </div>
+            </div>
 					</div>
 				</div>
 	      </div>
@@ -130,9 +141,19 @@
 <script type="text/javascript">
 	var itemTable;
 	$(document).ready(function() {
+    showField();
 		setInterval(function(){
             itemTable.ajax.reload(null, false);
         },1000);
+      function showField(){
+          $('input#newStockBut').change(function () {
+              if ($(this).attr("value") == "instock") {
+                  $('#newStockDiv').show();
+              }else{
+                  $('#newStockDiv').hide();
+              }
+          });
+      }
 		// Setup - add a text input to each footer cell
 	    $('#stockItems thead th').each( function () {
 	        var title = $(this).text();
