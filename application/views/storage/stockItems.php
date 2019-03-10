@@ -1,4 +1,4 @@
-lg<div class="col-lg-12">
+<div class="col-lg-12">
   <div class="row">
     <div class="col-lg-12">
         <h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Stock Items</h2>
@@ -82,7 +82,7 @@ lg<div class="col-lg-12">
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="stock_type" id="newStockBut" value="nonstock" checked>NonStock
+                                <input type="radio" name="stock_type" id="newStockBut" value="nonstock">NonStock
                             </label>
                         </div>
                     </div>
@@ -304,7 +304,7 @@ lg<div class="col-lg-12">
 					$('input[name=qty]').val(data.stock_qqty);
 					$('input[name=id]').val(data.stock_id);
 					$('select[name=stockclass]').val(data.stockclass_id);
-					$('select[name=stock_type]').val(data.stock_type);
+          $('input[name="stock_type"][value="' + data.stock_type + '"]').prop('checked', true);
 				},
 				error: function(){
 					alert('Could not Edit data');

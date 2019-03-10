@@ -24,7 +24,7 @@ class ClientPos extends CI_Controller {
 				array("stockcategory","stockitem","stockCat_id")
 			);
 		$like = array("stock_class.stockclass_name"=>"FINISHED");
-		$data = $this->project_model->select('stockitem',$join,$like);
+		$data = $this->project_model->select_join('stockitem',$join,$like);
 		if ($data != false) {
 			if ($this->session->userdata('posCart') !== FALSE) {
 				if ($data !== false) {
@@ -46,12 +46,12 @@ class ClientPos extends CI_Controller {
 						}else{
 							if ($data != false) {
 								foreach ($data as $key => $value) {
-									if ($value->stock > 0 && $value->stock_type == "instock") {
+									if ($value->stock_qqty > 0 && $value->stock_type == "instock") {
 										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 									}elseif ($value->stock_type == "nonstock") {
 
-										if ($value->menu_name == "Vinyl Stickers" || $value->menu_name == "Siser Materials" || $value->menu_name == "Tarp") {
-											$link = '<a javascript:; class="btn btn-default addCustItem" data="'.$value->menu_item_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
+										if ($value->stockCat_name == "Vinyl Stickers" || $value->stockCat_name == "Siser Materials" || $value->stockCat_name == "Tarp") {
+											$link = '<a javascript:; class="btn btn-default addCustItem" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 										}else{
 											$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
 										}
@@ -113,11 +113,11 @@ class ClientPos extends CI_Controller {
 
 	function getItem(){
 		$id = $this->input->get('id');
-		$where = array("stock_id"=>$id);
+		$where = array("stockitem.stock_id"=>$id);
 		$join = array(
-			array("stockcategory","stock_item","stockCat_id")
+			array("stockcategory","stockitem","stockCat_id")
 		);
-		$result = $this->project_model->single_select("stock_item",$where,$join);
+		$result = $this->project_model->single_select("stockitem",$where,$join);
 		echo json_encode($result);
 	}
 
@@ -274,32 +274,30 @@ class ClientPos extends CI_Controller {
 			$msg['error'] = validation_errors();
 		}else{
 			$where = array(
-			"menu_item_id"=>set_value('id')
+				"stock_id"=>set_value('id')
 			);
 			$cartid = $this->session->userdata('posCart');
-			$item = $this->project_model->select("menu_item",false,$where);
+			$item = $this->project_model->select("stockitem",false,$where);
 			if ($item != false) {
 				foreach ($item as $value) {
-					$name = $value->item_name;
-					$newstock = $value->stock - set_value('qty');
-					$dispose = $value->stock_dispose + set_value('qty');
+					$name = $value->stock_name;
+					$newstock = $value->stock_qqty - set_value('qty');
 					$data = array(
 						"order_id"=>$cartid,
-						"order_name"=>$value->item_name,
-						"order_price"=>$value->item_price,
+						"order_name"=>$value->stock_name,
+						"order_price"=>$value->stockCost,
 						"order_qty"=>set_value('qty'),
 						"order_date"=>date("Y-m-d"),
 						"order_stock_type"=>$value->stock_type,
-						"menu_item_id"=>$value->menu_item_id,
-						"order_unit"=>$value->unit
+						"stock_id"=>$value->stock_id,
+						"order_unit"=>$value->stock_unit
 					);
 					$updateMData = array(
-						"stock"=>$newstock,
-						"stock_dispose"=>$dispose
+						"stock_qqty"=>$newstock
 					);
 					$wherecheck = array(
 						'order_id'=>$cartid,
-						'menu_item_id'=>$value->menu_item_id,
+						'stock_id'=>$value->stock_id,
 						'order_name'=>$name
 					);
 					$check = $this->project_model->single_select('ordered_item',$wherecheck);
@@ -312,8 +310,8 @@ class ClientPos extends CI_Controller {
 						$updateitem = $this->project_model->updateNew('ordered_item',$where,$updateOData);
 						if ($updateitem != false) {
 							if ($value->stock_type == 'instock') {
-								$where = array("menu_item_id"=>$value->menu_item_id);
-								$update = $this->project_model->updateNew("menu_item",$where,$updateMData);
+								$where = array("stock_id"=>$value->stock_id);
+								$update = $this->project_model->updateNew("stockitem",$where,$updateMData);
 								if ($update != false) {
 									$msg['success'] =  true;
 								}else{
@@ -331,8 +329,8 @@ class ClientPos extends CI_Controller {
 						$insert = $this->project_model->insert('ordered_item',$data);
 						if ($insert != false) {
 							if ($value->stock_type == 'instock') {
-								$where = array("menu_item_id"=>$value->menu_item_id);
-								$update = $this->project_model->updateNew("menu_item",$where,$updateMData);
+								$where = array("stock_id"=>$value->stock_id);
+								$update = $this->project_model->updateNew("stockitem",$where,$updateMData);
 								if ($update != false) {
 									$msg['success'] =  true;
 								}else{
@@ -634,16 +632,15 @@ class ClientPos extends CI_Controller {
 				}
 				if ($ordereditem->order_stock_type == 'instock') {
 					$item_where = array(
-						'menu_item_id'=>$ordereditem->menu_item_id
+						'stock_id'=>$ordereditem->stock_id
 					);
-					$item = $this->project_model->select('menu_item',false,$item_where);
+					$item = $this->project_model->select('stockitem',false,$item_where);
 					if ($item != false) {
 						foreach ($item as $item) {
 							$stock_data = array(
-								"stock"=>$item->stock + $ordereditem->order_qty,
-								'stock_dispose'=>$item->stock_dispose-$ordereditem->order_qty
+								"stock_qqty"=>$item->stock_qqty + $ordereditem->order_qty
 							);
-							$return_stock = $this->project_model->updateNew('menu_item',$item_where,$stock_data);
+							$return_stock = $this->project_model->updateNew('stockitem',$item_where,$stock_data);
 							if ($return_stock != false) {
 								$delete = $this->project_model->deleteNew('ordered_item',$where);
 								if ($delete !== false) {
@@ -1110,11 +1107,63 @@ class ClientPos extends CI_Controller {
 
 /*========= test =======*/
 	function test(){
-		$code = $this->lastCode('order',1,'order_id','order_code');
-		$length = strlen($this->lastCode('order',1,'order_id','order_code'));
-		$couter = substr($this->lastCode('order',1,'order_id','order_code'),7,$length) + 1;
+		$id = 1;
+		$where = array('order_item_id'=>$id);
+		$get = $this->project_model->select('ordered_item',false,$where);
+		if ($get !== false) {
+			foreach ($get as $ordereditem) {
+				$endpost = strpos($ordereditem->order_name, '(');
+				if ($endpost == false) {
+					$name = $ordereditem->order_name;
+				}else{
+					$name = substr($ordereditem->order_name, 0, $endpost);
+				}
+				if ($ordereditem->order_stock_type == 'instock') {
+					$item_where = array(
+						'stock_id'=>$ordereditem->stock_id
+					);
+					$item = $this->project_model->select('stockitem',false,$item_where);
+					if ($item != false) {
+						foreach ($item as $item) {
+							$stock_data = array(
+								"stock_qqty"=>$item->stock_qqty + $ordereditem->order_qty
+							);
+							$return_stock = $this->project_model->updateNew('stockitem',$item_where,$stock_data);
+							if ($return_stock != false) {
+								$delete = $this->project_model->deleteNew('ordered_item',$where);
+								if ($delete !== false) {
+									$msg['success'] =  true;
+								}else{
+									$msg['success'] =  false;
+									$ms['error'] = 'Unable to delete item';
+								}
+							}else{
+								$msg['success'] =  false;
+								$ms['error'] = 'Unable to return stock to menu item.';
+							}
+						}
+					}else{
+						$msg['success'] =  false;
+						$ms['error'] = 'Unable to find menu item.';
+					}
+				}else{
+					$delete = $this->project_model->deleteNew('ordered_item',$where);
+					if ($delete !== false) {
+						$msg['success'] =  true;
+					}else{
+						$msg['success'] =  false;
+						$ms['error'] = 'Unable to directly delete ordered item.';
+					}
+				}
+			}//foreach ordereditem end
+		}else{
+			$msg['success'] =  false;
+			$msg['error'] = 'Unable to find item';
+		}
 
-		echo $couter;
+		echo json_encode($msg);
+
+
 	}
 
 }

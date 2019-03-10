@@ -2404,17 +2404,27 @@ class Admin extends CI_Controller {
 		echo json_encode($result);
 	}
 	function createItem(){
-		$type = $this->input->post('type');
+		$type = $this->input->post('stock_type');
 		if ($type == "instock") {
 			$data = array(
 				"stockCat_id"=>$this->input->post('category'),
 				"stock_name"=>ucwords($this->input->post('name')),
 				"stock_unit"=>$this->input->post('unit'),
 				"stock_qqty"=>$this->input->post('qty'),
-				"stockCost"=>$this->input->post('cost')
+				"stockCost"=>$this->input->post('cost'),
+				"stockclass_id"=>$this->input->post('stockclass'),
+				"stock_type"=>$this->input->post('stock_type')
 			);
 		}else{
-
+			$data = array(
+				"stockCat_id"=>$this->input->post('category'),
+				"stock_name"=>ucwords($this->input->post('name')),
+				"stock_unit"=>'none',
+				"stock_qqty"=>0,
+				"stockclass_id"=>$this->input->post('stockclass'),
+				"stockCost"=>$this->input->post('cost'),
+				"stock_type"=>$this->input->post('stock_type')
+			);
 		}
 
 		$result = $this->project_model->insert('stockitem',$data);
@@ -2437,15 +2447,28 @@ class Admin extends CI_Controller {
 	}
 	function updateItem(){
 		$msg['type'] = 'update';
-		$data = array(
-			"stockCat_id"=>$this->input->post('category'),
-			"stock_name"=>ucwords($this->input->post('name')),
-			"stock_unit"=>$this->input->post('unit'),
-			"stock_qqty"=>$this->input->post('qty'),
-			"stockCost"=>$this->input->post('cost'),
-			"stockclass_id"=>$this->input->post('stockclass'),
-			"stock_type"=>$this->input->post('stock_type')
-		);
+		$type = $this->input->post('stock_type');
+		if ($type == "instock") {
+			$data = array(
+				"stockCat_id"=>$this->input->post('category'),
+				"stock_name"=>ucwords($this->input->post('name')),
+				"stock_unit"=>$this->input->post('unit'),
+				"stock_qqty"=>$this->input->post('qty'),
+				"stockCost"=>$this->input->post('cost'),
+				"stockclass_id"=>$this->input->post('stockclass'),
+				"stock_type"=>$this->input->post('stock_type')
+			);
+		}else{
+			$data = array(
+				"stockCat_id"=>$this->input->post('category'),
+				"stock_name"=>ucwords($this->input->post('name')),
+				"stock_unit"=>'none',
+				"stock_qqty"=>0,
+				"stockclass_id"=>$this->input->post('stockclass'),
+				"stockCost"=>$this->input->post('cost'),
+				"stock_type"=>$this->input->post('stock_type')
+			);
+		}
 		$id = $this->input->post('id');
 		$where = array('stock_id'=>$id);
 		$result = $this->project_model->updateNew('stockitem',$where,$data);

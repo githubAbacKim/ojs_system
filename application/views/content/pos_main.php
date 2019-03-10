@@ -341,10 +341,10 @@
         getprinturl();
         receipturl();
         checkCart();
-        setInterval(function(){
-            checkCart();
-            cart.ajax.reload(null, false);
-        },1000);
+        // setInterval(function(){
+        //     checkCart();
+        //     cart.ajax.reload(null, false);
+        // },1000);
     /*Button events*/
         $('#cartBtn').click(function(){
             $('#cartModal').modal('show');
@@ -506,12 +506,12 @@
                 async: false,
                 dataType: 'json',
                 success: function(data){
-                    $('input[name=id]').val(data.menu_item_id);
-                    $('input[name=category]').val(data.menu_name);
-                    $('input[name=item]').val(data.item_name);
+                    $('input[name=id]').val(data.stock_id);
+                    $('input[name=category]').val(data.stockCat_name);
+                    $('input[name=item]').val(data.stock_name);
                     $('input[name=stocktype]').val(data.stock_type);
-                    $('input[name=price]').val(data.item_price);
-                    $('input[name=instock]').val(data.stock);
+                    $('input[name=price]').val(data.stockCost);
+                    $('input[name=instock]').val(data.stock_qqty);
                 },
                 error: function(){
                     alert('Could not Edit data');
@@ -532,12 +532,12 @@
                 async: false,
                 dataType: 'json',
                 success: function(data){
-                    $('input[name=id]').val(data.menu_item_id);
-                    $('input[name=category]').val(data.menu_name);
-                    $('input[name=item]').val(data.item_name);
+                    $('input[name=id]').val(data.stock_id);
+                    $('input[name=category]').val(data.stockCat_name);
+                    $('input[name=item]').val(data.stock_name);
                     $('input[name=stocktype]').val(data.stock_type);
-                    $('input[name=price]').val(data.item_price);
-                    $('input[name=instock]').val(data.stock);
+                    $('input[name=price]').val(data.stockCost);
+                    $('input[name=instock]').val(data.stock_qqty);
                 },
                 error: function(){
                     alert('Could not Edit data');
@@ -595,8 +595,8 @@
                     }else{
                         $('#cartLoaded').fadeOut('slow');
                         $('#cartFalse').fadeIn('slow');
-                        //menuItem.ajax.reload(null, false);
-                        //cart.ajax.reload(null, false);
+                        menuItem.ajax.reload(null, false);
+                        cart.ajax.reload(null, false);
                     }
 
                 },
