@@ -243,6 +243,106 @@ class Admin extends CI_Controller {
 	/*end of salary method*/
 
 	/*start of salary method*/
+	function fetchtPosition(){
+		$result = array('data' => array());
+		$join = array(
+			array("salary_term","job_position","salary_term_id")
+		);
+		$data = $this->project_model->select_join('job_position',$join);
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_account_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_account_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$name,
+					$value->salary_rate,
+					$value->salary_term_name,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function addAccount(){
+		$this->form_validation->set_rules('username','Username','required');
+		$this->form_validation->set_rules('password','Password','required');
+		$this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
+		$this->form_validation->set_rules('employee','Employee','required');
+		$this->form_validation->set_rules('dept','Department','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$data = array(
+				"emp_id"=>set_value('employee'),
+				"emp_username"=>set_value('username'),
+				"emp_password"=>sha1(set_value('password')),
+				"emp_dept"=>set_value('dept')
+			);
+			$add = $this->project_model->insert('emp_accounts',$data);
+			if ($add != false) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error adding data.';
+			}
+		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
+	}
+	function editAccount(){
+
+		$id = $this->input->get('id');
+		$where = array("emp_account_id"=>$id);
+		$result = $this->project_model->single_select('emp_accounts',$where);
+		echo json_encode($result);
+	}
+	function updateAccount(){
+		$this->form_validation->set_rules('username','Username','required');
+		$this->form_validation->set_rules('password','Password','required');
+		$this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
+		$this->form_validation->set_rules('employee','Employee','required');
+		$this->form_validation->set_rules('dept','Department','required');
+		$this->form_validation->set_rules('id','Data Id','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$data = array(
+				"emp_id"=>set_value('employee'),
+				"emp_username"=>set_value('username'),
+				"emp_password"=>sha1(set_value('password')),
+				"emp_dept"=>set_value('dept')
+			);
+			$id = set_value('id');
+			$where = array('emp_account_id'=>$id);
+			$result = $this->project_model->updateNew('emp_accounts',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error adding data.';
+			}
+		}
+		$msg['type'] = 'Update';
+		echo json_encode($msg);
+	}
+	function deleteAccount(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('emp_accounts','emp_account_id',$id);
+		if ($result) {
+			$msg['success'] = true;
+		}else{
+			$msg['success'] = false;
+		}
+		echo json_encode($msg);
+	}
+
 	function job_position(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Manage Job Position";
@@ -481,212 +581,106 @@ class Admin extends CI_Controller {
 	}
 
 	/*start of employee account method*/
-	function employee_account(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Manage Employee's Account";
-		$data['page'] = 'Frontdesk';
-
-		$data['record'] = $this->admin_model->property_info();
-
-		$where = array('emp_status'=>'active');
-		$order = false;
-		$group = false;
-		$data['employee'] = $this->admin_model->get_table_record('employee',$where,$order,$group);
-
-		$main_table2 = "emp_accounts";
-		$array2 = array(
-			array('employee',$main_table2,'emp_id')
-			);
-		$data['account'] = $this->admin_model->join_record($main_table2, $array2, false);
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav_v2',$data);
-		$this->load->view('admin/employee_account',$data);
-		$this->load->view('admin/footer',$data);
+	function fetchAccount(){
+		$result = array('data' => array());
+		$join = array(
+			array("employee","emp_accounts","emp_id")
+		);
+		$data = $this->project_model->select_join('emp_accounts',$join);
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_account_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_account_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$name,
+					$value->emp_username,
+					$value->emp_dept,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
 	}
-	function add_account(){
+	function addAccount(){
 		$this->form_validation->set_rules('username','Username','required');
 		$this->form_validation->set_rules('password','Password','required');
 		$this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
 		$this->form_validation->set_rules('employee','Employee','required');
+		$this->form_validation->set_rules('dept','Department','required');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->employee_account();
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
 			$data = array(
 				"emp_id"=>set_value('employee'),
 				"emp_username"=>set_value('username'),
-				"emp_password"=>sha1(set_value('password'))
-				);
-			$table_name = 'emp_accounts';
-
-			$array = array(
-				"emp_id"=>set_value('employee'),
-				"emp_username"=>set_value('username')
-				);
-			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$array);
-
-			if ($check_duplicate != true) {
-				$add = $this->admin_model->add_table_record($data,$table_name);
-
-				if ($add == true) {
-					redirect('admin/employee_account/insert/true');
-				}else{
-					redirect('admin/employee_account/insert/false');
-				}
+				"emp_password"=>sha1(set_value('password')),
+				"emp_dept"=>set_value('dept')
+			);
+			$add = $this->project_model->insert('emp_accounts',$data);
+			if ($add != false) {
+				$msg['success'] = true;
 			}else{
-				redirect('admin/employee_account/duplicate/true');
+				$msg['success'] = false;
+				$msg['error'] = 'Error adding data.';
 			}
-
 		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
 	}
-	function update_account(){
+	function editAccount(){
+
+		$id = $this->input->get('id');
+		$where = array("emp_account_id"=>$id);
+		$result = $this->project_model->single_select('emp_accounts',$where);
+		echo json_encode($result);
+	}
+	function updateAccount(){
 		$this->form_validation->set_rules('username','Username','required');
 		$this->form_validation->set_rules('password','Password','required');
-		$this->form_validation->set_rules('admin_password','Admin confirmation','required');
 		$this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
+		$this->form_validation->set_rules('employee','Employee','required');
+		$this->form_validation->set_rules('dept','Department','required');
+		$this->form_validation->set_rules('id','Data Id','required');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->employee_account();
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
-			$table_name = "property_info";
-			$array = array(
-				"admin_password"=>sha1(set_value("admin_password"))
-				);
-			$confirmation = $this->admin_model->check_multi_duplicate($table_name,$array);
-			if ($confirmation == true) {
-				$data = array(
+			$data = array(
+				"emp_id"=>set_value('employee'),
 				"emp_username"=>set_value('username'),
-				"emp_password"=>sha1(set_value('password'))
-				);
-				$table_name = 'emp_accounts';
-				$table_id = 'emp_account_id';
-				$id = $this->input->post('id');
-				$update = $this->admin_model->update_table_record($data,$id,$table_id,$table_name);
-
-				if ($update == true) {
-					redirect('admin/employee_account/update/true');
-				}else{
-					redirect('admin/employee_account/update/false');
-				}
+				"emp_password"=>sha1(set_value('password')),
+				"emp_dept"=>set_value('dept')
+			);
+			$id = set_value('id');
+			$where = array('emp_account_id'=>$id);
+			$result = $this->project_model->updateNew('emp_accounts',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
 			}else{
-				redirect('admin/employee_account/confirm/false');
+				$msg['success'] = false;
+				$msg['error'] = 'Error adding data.';
 			}
 		}
+		$msg['type'] = 'Update';
+		echo json_encode($msg);
 	}
-	function delete_account(){
-		$id = $this->uri->segment(3);
-		$table_name = 'emp_accounts';
-		$table_id = 'emp_account_id';
-
-		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
-
-		if ($delete == true) {
-			redirect('admin/employee_account/delete/true');
+	function deleteAccount(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('emp_accounts','emp_account_id',$id);
+		if ($result) {
+			$msg['success'] = true;
 		}else{
-			redirect('admin/employee_account/delete/false');
+			$msg['success'] = false;
 		}
+		echo json_encode($msg);
 	}
-
 	/*end of employee account method*/
-
-	/*start of employee shift method*/
-	function employee_shift(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Manage Employee's Shift";
-		$data['page'] = 'Frontdesk';
-
-		$data['record'] = $this->admin_model->property_info();
-
-		$where = array('emp_status'=>'active');
-		$order = false;
-		$group = false;
-		$data['employee'] = $this->admin_model->get_table_record('employee',$where,$order,$group);
-
-		$main_table2 = "emp_shift";
-		$array2 = array(
-			array('employee',$main_table2,'emp_id')
-			);
-		$data['shift'] = $this->admin_model->join_record($main_table2, $array2, false);
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
-		$this->load->view('admin/employee_shift',$data);
-		$this->load->view('admin/property-popup',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-	function add_shift(){
-		$this->form_validation->set_rules('start_time','Start time','required');
-		$this->form_validation->set_rules('end_time','End time','required');
-		$this->form_validation->set_rules('employee','Employee','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->employee_shift();
-		}else{
-			$data = array(
-				"emp_id"=>set_value('employee'),
-				"start_time"=>set_value('start_time'),
-				"end_time"=>set_value('end_time')
-				);
-			$table_name = 'emp_shift';
-
-			$array = array(
-				"emp_id"=>set_value('employee')
-				);
-			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$array);
-
-			if ($check_duplicate != true) {
-				$add = $this->admin_model->add_table_record($data,$table_name);
-
-				if ($add == true) {
-					redirect('admin/employee_shift/insert/true');
-				}else{
-					redirect('admin/employee_shift/insert/false');
-				}
-			}else{
-				redirect('admin/employee_shift/duplicate/true');
-			}
-		}
-	}
-	function update_shift(){
-		$this->form_validation->set_rules('start_time','Start time','required');
-		$this->form_validation->set_rules('end_time','End time','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->employee_shift();
-		}else{
-			$data = array(
-				"start_time"=>set_value('start_time'),
-				"end_time"=>set_value('end_time')
-				);
-			$table_name = 'emp_shift';
-			$table_id = 'emp_shift_id';
-			$id = $this->input->post('id');
-			$add = $this->admin_model->update_table_record($data,$id,$table_id,$table_name);
-
-			if ($update == true) {
-				redirect('admin/employee_shift/update/true');
-			}else{
-				redirect('admin/employee_shift/update/false');
-			}
-		}
-	}
-	function delete_shift(){
-		$id = $this->uri->segment(3);
-		$table_name = 'emp_shift';
-		$table_id = 'emp_shift_id';
-
-		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
-
-		if ($delete == true) {
-			redirect('admin/employee_shift/delete/true');
-		}else{
-			redirect('admin/employee_shift/delete/false');
-		}
-	}
-	/*end of employee shift method*/
 
 	/*overtime type method*/
 	function overtime_type(){
@@ -702,7 +696,6 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/overtime_type',$data);
 		$this->load->view('admin/footer',$data);
 	}
-
 	function add_overtime_type(){
 		$this->form_validation->set_rules('name','Overtime Type Name','required');
 		$this->form_validation->set_rules('rate','Rate','required');
@@ -736,7 +729,6 @@ class Admin extends CI_Controller {
 			}
 		}
 	}
-
 	function update_overtime_type(){
 		$this->form_validation->set_rules('name','Overtime Type Name','required');
 		$this->form_validation->set_rules('rate','Rate','required');
@@ -762,7 +754,6 @@ class Admin extends CI_Controller {
 			}
 		}
 	}
-
 	function delete_overtime_type(){
 		$id = $this->uri->segment(3);
 		$table_name = 'overtime_type';
@@ -6143,146 +6134,19 @@ class Admin extends CI_Controller {
 
 //testing center
 	function testFunction(){
-		/*$where = array("releasecart.releaseCart_id"=>$this->session->userdata('relCart'));
-		$join = array(
-			array('releaseditem','releasecart','releaseCart_id')
+		$data = array(
+			"emp_id"=>4,
+			"emp_username"=>"programmer_account",
+			"emp_dept"=>"cashier"
 		);
-		$result = $this->project_model->select_join('releasecart',$join,false,$where);
-
+		$id = 4;
+		$where = array('emp_account_id'=>$id);
+		$result = $this->project_model->updateNew('emp_accounts',$where,$data);
 		if ($result != false) {
-			foreach ($result as $value) {
-				echo $value->releaseitem_cost.'<br />';
-			}
-		}*/
-		/*$time = date("h:i A", strtotime("16:30:00"));
-		echo $time;*/
-		$param = '2018-05';
-
-				/*misc*/
-				$like = array(
-				'misc_date'=>$param
-				);
-				$misc = $this->project_model->select('expenses_misc',$like);
-				$misc_amount = 0;
-	            $misc_tamount = 0;
-				if ($misc != false) {
-	                foreach ($misc as $item) {
-	                    $misc_amount = $item->misc_qty * $item->misc_price;
-	                    $misc_tamount = $misc_tamount + $misc_amount;
-	                }
-            	}
-
-            	/*production*/
-				$like = array(
-					'releasecart.release_date'=>$param
-				);
-				$join = array(
-				array('releasecart','releaseditem','releaseCart_id'),
-				array('order','releasecart','order_id')
-				);
-				$prod = $this->project_model->select_join('releaseditem',$join,$like);
-                $prod_amount = 0;
-                $prod_tamount = 0;
-				if ($prod != false) {
-                    foreach ($prod as $item) {
-                        $prod_amount = $item->releaseitem_qty * $item->releaseitem_cost;
-                        $prod_tamount = $prod_tamount + $prod_amount;
-                    }
-                }
-
-                /*equip*/
-				$like = array(
-				'expequip_date'=>$param
-				);
-				$equip = $this->project_model->select('expenses_equip',$like);
-                $expequip_amount = 0;
-                $expequip_tamount = 0;
-				if ($equip != false) {
-                    foreach ($equip as $item) {
-                        $expequip_amount = $item->expequip_qty * $item->expequip_price;
-                        $expequip_tamount = $expequip_tamount + $expequip_amount;
-                    }
-                }
-
-                /*stocks*/
-				$like = array(
-				'expstocks_date'=>$param
-				);
-				$stocks = $this->project_model->select('expenses_stocks',$like);
-                $expstocks_amount = 0;
-			    $expstocks_tamount = 0;
-			    if ($stocks != false) {
-			        foreach ($stocks as $item) {
-			            $expstocks_amount = $item->expstocks_qty * $item->expstocks_price;
-			            $expstocks_tamount = $expstocks_tamount + $expstocks_amount;
-			        }
-			    }
-
-			    /*salary*/
-				$like = array(
-				'salary_date_start'=>$param
-				);
-				$salary = $this->project_model->select('emp_salary',$like);
-				$tsal = 0;
-			    if ($salary != false) {
-			        foreach ($salary as $value) {
-			            $initsal= $value->salary_amount+$value->overtime_tamount;
-			            $tsal= $initsal + $tsal;
-			        }
-			    }
-
-			    /*returns*/
-				$like = array(
-				'returns_date'=>$param
-				);
-				$return = $this->project_model->select('expenses_returns',$like);
-				$aRefund_amount = 0;
-			    $total_aRefund = 0;
-			    $oRefund_amount = 0;
-			    $total_oRefund = 0;
-			    if ($return != false) {
-			        foreach ($return as $value) {
-			            // account_refund or other_refund
-			            if ($value->return_type == 'account_refund') {
-			                $aRefund_amount = $value->returns_price*$value->returns_qty;
-			                $total_aRefund = $total_aRefund + $aRefund_amount;
-			            }elseif ($value->return_type == 'other_refund'){
-			                $oRefund_amount = $value->returns_price*$value->returns_qty;
-			                $total_oRefund = $total_oRefund + $oRefund_amount;
-			            }
-			        }
-			    }
-
-			    /*sales*/
-				$like = array(
-				'order_date'=>$param
-				);
-				$sales = $this->project_model->select('order',$like);
-				$tax = 0;
-			    $tamount = 0;
-			    $totalSales = 0;
-			    $sale = 0;
-			    $totaltax = 0;
-			    $totaldiscount = 0;
-			    $totalamount = 0;
-			    $tsales = 0;
-			    if ($sales != false) {
-			        foreach ($sales as $item) {
-			            $tax = $item->order_bill_amount * 0.03;
-			            $totaltax = $tax + $totaltax;
-			            $tsales = $item->order_bill_amount-$item->order_discount;
-			            $totalSales = $item->order_bill_amount + $totalSales;
-			            $totaldiscount = $item->order_discount + $totaldiscount;
-
-			            $tamount = $totalSales-$totaltax-$totaldiscount;
-			        }
-			    }
-
-			    $totalSales = $totalSales-$totaldiscount;
-                $profit = $totalSales - $totaltax - $misc_tamount - $prod_tamount - $tsal - $expequip_tamount - $total_aRefund;
-
-                echo $profit;
-	}
-
-
+			$msg['success'] = true;
+		}else{
+			$msg['success'] = false;
+			$msg['error'] = 'Error adding data.';
+		}
+}
 }
