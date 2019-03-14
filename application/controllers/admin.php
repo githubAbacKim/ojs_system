@@ -243,106 +243,6 @@ class Admin extends CI_Controller {
 	/*end of salary method*/
 
 	/*start of salary method*/
-	function fetchtPosition(){
-		$result = array('data' => array());
-		$join = array(
-			array("salary_term","job_position","salary_term_id")
-		);
-		$data = $this->project_model->select_join('job_position',$join);
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
-				$buttons = '
-					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_account_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
-					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_account_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-				';
-				$result['data'][$key] = array(
-					$name,
-					$value->salary_rate,
-					$value->salary_term_name,
-					$buttons
-				);
-			}
-		}
-		echo json_encode($result);
-	}
-	function addAccount(){
-		$this->form_validation->set_rules('username','Username','required');
-		$this->form_validation->set_rules('password','Password','required');
-		$this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
-		$this->form_validation->set_rules('employee','Employee','required');
-		$this->form_validation->set_rules('dept','Department','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$msg['error'] = validation_errors();
-			$msg['success'] = false;
-		}else{
-			$data = array(
-				"emp_id"=>set_value('employee'),
-				"emp_username"=>set_value('username'),
-				"emp_password"=>sha1(set_value('password')),
-				"emp_dept"=>set_value('dept')
-			);
-			$add = $this->project_model->insert('emp_accounts',$data);
-			if ($add != false) {
-				$msg['success'] = true;
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = 'Error adding data.';
-			}
-		}
-		$msg['type'] = 'Add';
-		echo json_encode($msg);
-	}
-	function editAccount(){
-
-		$id = $this->input->get('id');
-		$where = array("emp_account_id"=>$id);
-		$result = $this->project_model->single_select('emp_accounts',$where);
-		echo json_encode($result);
-	}
-	function updateAccount(){
-		$this->form_validation->set_rules('username','Username','required');
-		$this->form_validation->set_rules('password','Password','required');
-		$this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
-		$this->form_validation->set_rules('employee','Employee','required');
-		$this->form_validation->set_rules('dept','Department','required');
-		$this->form_validation->set_rules('id','Data Id','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$msg['error'] = validation_errors();
-			$msg['success'] = false;
-		}else{
-			$data = array(
-				"emp_id"=>set_value('employee'),
-				"emp_username"=>set_value('username'),
-				"emp_password"=>sha1(set_value('password')),
-				"emp_dept"=>set_value('dept')
-			);
-			$id = set_value('id');
-			$where = array('emp_account_id'=>$id);
-			$result = $this->project_model->updateNew('emp_accounts',$where,$data);
-			if ($result != false) {
-				$msg['success'] = true;
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = 'Error adding data.';
-			}
-		}
-		$msg['type'] = 'Update';
-		echo json_encode($msg);
-	}
-	function deleteAccount(){
-		$id = $this->input->get('id');
-		$result = $this->project_model->delete('emp_accounts','emp_account_id',$id);
-		if ($result) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
 	function job_position(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Manage Job Position";
@@ -364,78 +264,113 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/employee_job_position',$data);
 		$this->load->view('admin/footer',$data);
 	}
-	function add_job_position(){
+	function fetchTerm(){
+		$data = $this->project_model->select('salary_term');
+		echo json_encode($data);
+	}
+	function fetchJob(){
+		$result = array('data' => array());
+		$join = array(
+			array("salary_term","job_position","salary_term_id")
+		);
+		$data = $this->project_model->select_join('job_position',$join);
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->job_position_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->job_position_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$value->job_position_name,
+					$value->salary_rate,
+					$value->salary_term_name,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function addJob(){
 		$this->form_validation->set_rules('name','Job Position Name','required');
 		$this->form_validation->set_rules('rate','Salary Rate','required|numeric');
-		$this->form_validation->set_rules('salary_term','Salary Term','required');
+		$this->form_validation->set_rules('term','Salary Term','required');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->job_position();
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
 			$data = array(
 				"job_position_name"=>ucwords(set_value('name')),
 				"salary_rate"=>set_value('rate'),
-				"salary_term_id"=>set_value('salary_term')
+				"salary_term_id"=>set_value('term')
 				);
 			$table_name = 'job_position';
-
-			$column_name = 'job_position_name';
-			$name = set_value('name');
-
-			/*replace check duplicate*/
-			$check_duplicate = $this->admin_model->check_duplicate($table_name,$column_name,$name);
-
+			$cwhere = array(
+				'job_position_name'=>set_value('name')
+			);
+			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$cwhere);
 			if ($check_duplicate != true) {
-				$add = $this->admin_model->add_table_record($data,$table_name);
-
-				if ($add == true) {
-					redirect('admin/job_position/insert/true');
+				$add = $this->project_model->insert('job_position',$data);
+				if ($add != false) {
+					$msg['success'] = true;
 				}else{
-					redirect('admin/job_position/insert/false');
+					$msg['success'] = false;
+					$msg['error'] = 'Error adding data.';
 				}
 			}else{
-				redirect('admin/job_position/duplicate/true');
+				$msg['success'] = false;
+				$msg['error'] = 'Error! Duplicate data detected.';
 			}
-
 		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
 	}
-	function update_job_position(){
+	function editJob(){
+		$id = $this->input->get('id');
+		$where = array("job_position_id"=>$id);
+		$join = array(
+			array("salary_term","job_position","salary_term_id")
+		);
+		$result = $this->project_model->single_select('job_position',$where,$join);
+		echo json_encode($result);
+	}
+	function updateJob(){
 		$this->form_validation->set_rules('name','Job Position Name','required');
 		$this->form_validation->set_rules('rate','Salary Rate','required|numeric');
-		$this->form_validation->set_rules('salary_term','Salary Term','required');
+		$this->form_validation->set_rules('term','Salary Term','required');
+		$this->form_validation->set_rules('id','Data Id','required');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->job_position();
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
 			$data = array(
 				"job_position_name"=>ucwords(set_value('name')),
 				"salary_rate"=>set_value('rate'),
-				"salary_term_id"=>set_value('salary_term')
+				"salary_term_id"=>set_value('term')
 				);
-			$table_name = 'job_position';
-			$table_id = 'job_position_id';
-			$id = $this->input->post('id');
-			$update = $this->admin_model->update_table_record($data,$id,$table_id,$table_name);
-
-			if ($update == true) {
-				redirect('admin/job_position/update/true');
+			$id = set_value('id');
+			$where = array('job_position_id'=>$id);
+			$result = $this->project_model->updateNew('job_position',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
 			}else{
-				redirect('admin/job_position/update/false');
+				$msg['success'] = false;
+				$msg['error'] = 'Error updating data.';
 			}
 		}
+		$msg['type'] = 'Update';
+		echo json_encode($msg);
 	}
-	function delete_job_position(){
-		$id = $this->uri->segment(3);
-		$table_name = 'job_position';
-		$table_id = 'job_position_id';
-
-		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
-
-		if ($delete == true) {
-			redirect('admin/job_position/delete/true');
+	function deleteJob(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('job_position','job_position_id',$id);
+		if ($result) {
+			$msg['success'] = true;
 		}else{
-			redirect('admin/job_position/delete/false');
+			$msg['success'] = false;
 		}
+		echo json_encode($msg);
 	}
 	/*end of salary method*/
 
@@ -581,6 +516,29 @@ class Admin extends CI_Controller {
 	}
 
 	/*start of employee account method*/
+	function employee_account(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "Manage Employee's Account";
+		$data['page'] = 'Frontdesk';
+
+		$data['record'] = $this->admin_model->property_info();
+
+		$where = array('emp_status'=>'active');
+		$order = false;
+		$group = false;
+		$data['employee'] = $this->admin_model->get_table_record('employee',$where,$order,$group);
+
+		$main_table2 = "emp_accounts";
+		$array2 = array(
+			array('employee',$main_table2,'emp_id')
+			);
+		$data['account'] = $this->admin_model->join_record($main_table2, $array2, false);
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('admin/nav_v2',$data);
+		$this->load->view('admin/employee_account',$data);
+		$this->load->view('admin/footer',$data);
+	}
 	function fetchAccount(){
 		$result = array('data' => array());
 		$join = array(
@@ -696,6 +654,7 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/overtime_type',$data);
 		$this->load->view('admin/footer',$data);
 	}
+
 	function add_overtime_type(){
 		$this->form_validation->set_rules('name','Overtime Type Name','required');
 		$this->form_validation->set_rules('rate','Rate','required');
@@ -729,6 +688,7 @@ class Admin extends CI_Controller {
 			}
 		}
 	}
+
 	function update_overtime_type(){
 		$this->form_validation->set_rules('name','Overtime Type Name','required');
 		$this->form_validation->set_rules('rate','Rate','required');
@@ -754,6 +714,7 @@ class Admin extends CI_Controller {
 			}
 		}
 	}
+
 	function delete_overtime_type(){
 		$id = $this->uri->segment(3);
 		$table_name = 'overtime_type';
