@@ -162,83 +162,105 @@ class Admin extends CI_Controller {
 		$data['sub_heading'] = "Manage Salary Term";
 		$data['page'] = 'Frontdesk';
 
-		$data['record'] = $this->admin_model->property_info();
 		$data['term'] = $this->admin_model->get_table_record('salary_term',false,false,false);
 
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('admin/salary_term',$data);
-		$this->load->view('admin/property-popup',$data);
 		$this->load->view('admin/footer',$data);
 	}
-	function add_salary_term(){
+	function fetchSalTerm(){
+		$result = array('data' => array());
+		$data = $this->project_model->select('salary_term');
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->salary_term_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->salary_term_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$value->salary_term_name,
+					$value->salary_term_description,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function addSalTerm(){
 		$this->form_validation->set_rules('name','Salary Term Name','required');
 		$this->form_validation->set_rules('description','Salary Term Description','required');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->salary_term();
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
 			$data = array(
 				"salary_term_name"=>ucwords(set_value('name')),
 				"salary_term_description"=>set_value('description')
-				);
+			);
 			$table_name = 'salary_term';
-
-			$column_name = 'salary_term_name';
-			$name = set_value('name');
-
-			/*replace check duplicate*/
-			$check_duplicate = $this->admin_model->check_duplicate($table_name,$column_name,$name);
-
+			$cwhere = array(
+				'salary_term_name'=>set_value('name')
+			);
+			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$cwhere);
 			if ($check_duplicate != true) {
-				$add = $this->admin_model->add_table_record($data,$table_name);
-
-				if ($add == true) {
-					redirect('admin/salary_term/insert/true');
+				$add = $this->project_model->insert('salary_term',$data);
+				if ($add != false) {
+					$msg['success'] = true;
 				}else{
-					redirect('admin/salary_term/insert/false');
+					$msg['success'] = false;
+					$msg['error'] = 'Error adding data.';
 				}
 			}else{
-				redirect('admin/salary_term/duplicate/true');
+				$msg['success'] = false;
+				$msg['error'] = 'Error! Duplicate data detected.';
 			}
-
 		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
 	}
-	function update_salary_term(){
+	function editSalTerm(){
+		$id = $this->input->get('id');
+		$where = array("salary_term_id"=>$id);
+		$result = $this->project_model->single_select('salary_term',$where);
+		echo json_encode($result);
+	}
+	function updateSalTerm(){
 		$this->form_validation->set_rules('name','Salary Term Name','required');
 		$this->form_validation->set_rules('description','Salary Term Description','required');
+		$this->form_validation->set_rules('id','Data Id','required');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->salary_term();
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
 			$data = array(
 				"salary_term_name"=>ucwords(set_value('name')),
 				"salary_term_description"=>set_value('description')
-				);
-			$table_name = 'salary_term';
-			$table_id = 'salary_term_id';
-			$id = $this->input->post('id');
-			$add = $this->admin_model->update_table_record($data,$id,$table_id,$table_name);
-
-			if ($update == true) {
-				redirect('admin/salary_term/update/true');
+			);
+			$id = set_value('id');
+			$where = array('salary_term_id'=>$id);
+			$result = $this->project_model->updateNew('salary_term',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
 			}else{
-				redirect('admin/salary_term/update/false');
+				$msg['success'] = false;
+				$msg['error'] = 'Error updating data.';
 			}
 		}
+		$msg['type'] = 'Update';
+		echo json_encode($msg);
 	}
-	function delete_salary_term(){
-		$id = $this->uri->segment(3);
-		$table_name = 'salary_term';
-		$table_id = 'salary_term_id';
-
-		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
-
-		if ($delete == true) {
-			redirect('admin/salary_term/delete/true');
+	function deleteSalTerm(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('salary_term','salary_term_id',$id);
+		if ($result) {
+			$msg['success'] = true;
 		}else{
-			redirect('admin/salary_term/delete/false');
+			$msg['success'] = false;
 		}
+		echo json_encode($msg);
 	}
 	/*end of salary method*/
 
@@ -515,6 +537,158 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	function getJob(){
+		$data = $this->project_model->select('job_position');
+		echo json_encode($data);
+	}
+	function fetchEmployee(){
+		$result = array('data' => array());
+		$join = array(
+			array("job_position","employee","job_position_id")
+		);
+		$data = $this->project_model->select_join('employee',$join);
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$name = $value->emp_fname.' '.$value->emp_mname.' '.$value->emp_lname;
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->emp_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->emp_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$name,
+					$value->emp_contact,
+					$value->emp_email,
+					$value->job_position_name,
+					$value->emp_status,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function addEmployee(){
+		$this->form_validation->set_rules('lname','Last Name','required|alpha');
+		$this->form_validation->set_rules('mname','Middle Name','required|min_length[2]|alpha');
+		$this->form_validation->set_rules('fname','First Name','required|alpha');
+		$this->form_validation->set_rules('bdate','Birthdate','required');
+		$this->form_validation->set_rules('home_address','Home Address','required');
+		$this->form_validation->set_rules('contact_num','Contact Number','required');
+		$this->form_validation->set_rules('email_address','Email Address','required|valid_email');
+		$this->form_validation->set_rules('position','Position','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$order = array('employee'.'.'.'emp_code','ASC');
+			$last_id = $this->admin_model->get_table_record('employee',$where=false,$order,$group_by=false,$like=false,1);
+
+			if ($last_id != false) {
+				foreach ($last_id as $value) {
+					$code = $value->emp_code;
+				}
+			}else{
+				$code = 0;
+			}
+			$lastnum = substr($code, 6,14)+1;
+			$lastnum = $lastnum+1;
+			$first = substr(date('Y'), 2,2);
+			$second = substr(set_value('bdate'), 5,2);
+			$third = substr(set_value('bdate'), 2,2);
+			$data = array(
+				"emp_code"=>$first.$second.$third.$lastnum,
+				"emp_lname"=>ucwords(set_value('lname')),
+				"emp_mname"=>ucwords(set_value('mname')),
+				"emp_fname"=>ucwords(set_value('fname')),
+				"emp_bday"=>set_value('bdate'),
+				"emp_address"=>ucwords(set_value('home_address')),
+				"emp_contact"=>set_value('contact_num'),
+				"emp_email"=>set_value('email_address'),
+				"job_position_id"=>set_value('position'),
+				"emp_status"=>'active'
+				);
+			$table_name = 'employee';
+			$cwhere = array(
+				"emp_lname"=>ucwords(set_value('lname')),
+				"emp_mname"=>ucwords(set_value('mname')),
+				"emp_fname"=>ucwords(set_value('fname'))
+			);
+			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$cwhere);
+			if ($check_duplicate != true) {
+				$add = $this->project_model->insert('employee',$data);
+				if ($add != false) {
+					$msg['success'] = true;
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = 'Error adding data.';
+				}
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error! Duplicate data detected.';
+			}
+		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
+	}
+	function editEmployee(){
+		$id = $this->input->get('id');
+		$where = array("emp_id"=>$id);
+		$join = array(
+			array("job_position","employee","job_position_id")
+		);
+		$result = $this->project_model->single_select('employee',$where,$join);
+		echo json_encode($result);
+	}
+	function updateEmployee(){
+		$this->form_validation->set_rules('lname','Last Name','required|alpha');
+		$this->form_validation->set_rules('mname','Middle Name','required|min_length[2]|alpha');
+		$this->form_validation->set_rules('fname','First Name','required|alpha');
+		$this->form_validation->set_rules('bdate','Birthdate','required');
+		$this->form_validation->set_rules('home_address','Home Address','required');
+		$this->form_validation->set_rules('contact_num','Contact Number','required');
+		$this->form_validation->set_rules('email_address','Email Address','required|valid_email');
+		$this->form_validation->set_rules('position','Position','required');
+		$this->form_validation->set_rules('id','ID','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$data = array(
+				"emp_lname"=>ucwords(set_value('lname')),
+				"emp_mname"=>ucwords(set_value('mname')),
+				"emp_fname"=>ucwords(set_value('fname')),
+				"emp_bday"=>set_value('bdate'),
+				"emp_address"=>ucwords(set_value('home_address')),
+				"emp_contact"=>set_value('contact_num'),
+				"emp_email"=>set_value('email_address'),
+				"job_position_id"=>set_value('position'),
+				"emp_status"=>'active'
+				);
+			$id = set_value('id');
+			$where = array('emp_id'=>$id);
+			$result = $this->project_model->updateNew('employee',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error updating data.';
+			}
+		}
+		$msg['type'] = 'Update';
+		echo json_encode($msg);
+	}
+	function deleteEmployee(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('employee','emp_id',$id);
+		if ($result) {
+			$msg['success'] = true;
+		}else{
+			$msg['success'] = false;
+		}
+		echo json_encode($msg);
+	}
+
 	/*start of employee account method*/
 	function employee_account(){
 		$data['title'] = "Administrator";
@@ -654,7 +828,6 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/overtime_type',$data);
 		$this->load->view('admin/footer',$data);
 	}
-
 	function add_overtime_type(){
 		$this->form_validation->set_rules('name','Overtime Type Name','required');
 		$this->form_validation->set_rules('rate','Rate','required');
@@ -688,7 +861,6 @@ class Admin extends CI_Controller {
 			}
 		}
 	}
-
 	function update_overtime_type(){
 		$this->form_validation->set_rules('name','Overtime Type Name','required');
 		$this->form_validation->set_rules('rate','Rate','required');
@@ -714,7 +886,6 @@ class Admin extends CI_Controller {
 			}
 		}
 	}
-
 	function delete_overtime_type(){
 		$id = $this->uri->segment(3);
 		$table_name = 'overtime_type';
@@ -6095,19 +6266,9 @@ class Admin extends CI_Controller {
 
 //testing center
 	function testFunction(){
-		$data = array(
-			"emp_id"=>4,
-			"emp_username"=>"programmer_account",
-			"emp_dept"=>"cashier"
-		);
-		$id = 4;
-		$where = array('emp_account_id'=>$id);
-		$result = $this->project_model->updateNew('emp_accounts',$where,$data);
-		if ($result != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-			$msg['error'] = 'Error adding data.';
-		}
+		$id = 1;
+		$where = array("salary_term_id"=>$id);
+		$result = $this->project_model->single_select('salary_term',$where);
+		echo json_encode($result);
 }
 }
