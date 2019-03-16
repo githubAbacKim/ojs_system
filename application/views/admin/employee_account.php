@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Employee Account</h2>
+        <h2 class="page-header"><i class="fa fa-user fa-fw"></i> Employee Account</h2>
     </div>
   </div>
   <div class="row">
@@ -22,7 +22,7 @@
                       <th>Name</th>
                       <th>Username</th>
                       <th>Depart</th>
-                      <th>Action</th>
+                      <th width="15%">Action</th>
                   </tr>
               </thead>
           </table>
@@ -160,10 +160,12 @@
                 dataType: 'json',
                 success: function(response){
                     var error = response.error;
+                    var type = response.type;
                     if (response.success) {
                         $('#myForm')[0].reset();
-                        $('.alert-success').html('Successfully added account!').fadeIn().delay(2000).fadeOut('slow');
+                        $('.alert-success').html(type + 'successful.').fadeIn().delay(2000).fadeOut('slow');
                         accountTable.ajax.reload(null, false);
+                        if(type === "Update"){$('#myModal').modal('hide');}
                     }else{
                         $('#myModal').modal('hide');
                         $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');

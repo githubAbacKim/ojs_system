@@ -421,122 +421,6 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/employee_registration',$data);
 		$this->load->view('admin/footer',$data);
 	}
-	function add_employee(){
-		$this->form_validation->set_rules('lname','Last Name','required|alpha');
-		$this->form_validation->set_rules('mname','Middle Name','required|min_length[2]|alpha');
-		$this->form_validation->set_rules('fname','First Name','required|alpha');
-		$this->form_validation->set_rules('bdate','Birthdate','required');
-		$this->form_validation->set_rules('home_address','Home Address','required');
-		$this->form_validation->set_rules('contact_num','Contact Number','required');
-		$this->form_validation->set_rules('email_address','Email Address','required|valid_email');
-		$this->form_validation->set_rules('position','Position','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->employee_registration();
-		}else{
-			$order = array('employee'.'.'.'emp_code','ASC');
-			$last_id = $this->admin_model->get_table_record('employee',$where=false,$order,$group_by=false,$like=false,1);
-
-			if ($last_id != false) {
-				foreach ($last_id as $value) {
-					$code = $value->emp_code;
-				}
-			}else{
-				$code = 0;
-			}
-			$lastnum = substr($code, 6,14)+1;
-			$lastnum = $lastnum+1;
-			$first = substr(date('Y'), 2,2);
-			$second = substr(set_value('bdate'), 5,2);
-			$third = substr(set_value('bdate'), 2,2);
-
-			$data = array(
-				"emp_code"=>$first.$second.$third.$lastnum,
-				"emp_lname"=>ucwords(set_value('lname')),
-				"emp_mname"=>ucwords(set_value('mname')),
-				"emp_fname"=>ucwords(set_value('fname')),
-				"emp_bday"=>set_value('bdate'),
-				"emp_address"=>ucwords(set_value('home_address')),
-				"emp_contact"=>set_value('contact_num'),
-				"emp_email"=>set_value('email_address'),
-				"job_position_id"=>set_value('position'),
-				"emp_status"=>'active'
-				);
-			$table_name = 'employee';
-
-			$array = array(
-				"emp_lname"=>ucwords(set_value('lname')),
-				"emp_mname"=>ucwords(set_value('mname')),
-				"emp_fname"=>ucwords(set_value('fname'))
-				);
-
-			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$array);
-
-			if ($check_duplicate != true) {
-				$add = $this->admin_model->add_table_record($data,$table_name);
-
-				if ($add == true) {
-					redirect('admin/employee_registration/insert/true');
-				}else{
-					redirect('admin/employee_registration/insert/false');
-				}
-			}else{
-				redirect('admin/employee_registration/duplicate/true');
-			}
-
-		}
-	}
-	function update_employee(){
-		$this->form_validation->set_rules('lname','Last Name','required');
-		$this->form_validation->set_rules('mname','Middle Name','required');
-		$this->form_validation->set_rules('fname','First Name','required');
-		$this->form_validation->set_rules('bdate','Birthdate','required');
-		$this->form_validation->set_rules('home_address','Home Address','required');
-		$this->form_validation->set_rules('contact_num','Contact Number','required');
-		$this->form_validation->set_rules('email_address','Email Address','required|valid_email');
-		$this->form_validation->set_rules('position','Position','required');
-		$this->form_validation->set_rules('status','Working Status','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->employee_registration();
-		}else{
-			$data = array(
-				"emp_lname"=>ucwords(set_value('lname')),
-				"emp_mname"=>ucwords(set_value('mname')),
-				"emp_fname"=>ucwords(set_value('fname')),
-				"emp_bday"=>set_value('bdate'),
-				"emp_address"=>ucwords(set_value('home_address')),
-				"emp_contact"=>set_value('contact_num'),
-				"emp_email"=>set_value('email_address'),
-				"job_position_id"=>set_value('position'),
-				"emp_status"=>set_value('status')
-				);
-			$table_name = 'employee';
-			$table_id = 'emp_id';
-			$id = $this->input->post('id');
-			$update = $this->admin_model->update_table_record($data,$id,$table_id,$table_name);
-
-			if ($update == true) {
-				redirect('admin/employee_registration/update/true');
-			}else{
-				redirect('admin/employee_registration/update/false');
-			}
-		}
-	}
-	function delete_employee(){
-		$id = $this->uri->segment(3);
-		$table_name = 'employee';
-		$table_id = 'emp_id';
-
-		$delete = $this->admin_model->delete_table_record($id,$table_name,$table_id);
-
-		if ($delete == true) {
-			redirect('admin/employee_registration/delete/true');
-		}else{
-			redirect('admin/employee_registration/delete/false');
-		}
-	}
-
 	function getJob(){
 		$data = $this->project_model->select('job_position');
 		echo json_encode($data);
@@ -613,7 +497,7 @@ class Admin extends CI_Controller {
 				"emp_mname"=>ucwords(set_value('mname')),
 				"emp_fname"=>ucwords(set_value('fname'))
 			);
-			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$cwhere);
+			$check_duplicate = $this->project_model->check_multi_duplicate($table_name,$cwhere);
 			if ($check_duplicate != true) {
 				$add = $this->project_model->insert('employee',$data);
 				if ($add != false) {
@@ -842,11 +726,10 @@ class Admin extends CI_Controller {
 				"ot_rate"=>set_value('rate')
 				);
 			$table_name = 'overtime_type';
-
-			$array = array(
-				"ot_type_name"=>set_value('ot_type_name')
-				);
-			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$array);
+			$cwhere = array(
+				"ot_type_name"=>ucwords(set_value('name'))
+			);
+			$check_duplicate = $this->project_model->check_multi_duplicate($table_name,$cwhere);
 
 			if ($check_duplicate != true) {
 				$add = $this->admin_model->add_table_record($data,$table_name);
@@ -898,6 +781,105 @@ class Admin extends CI_Controller {
 		}else{
 			redirect('admin/overtime_type/delete/false');
 		}
+	}
+
+	function fetchOt(){
+		$result = array('data' => array());
+		$data = $this->project_model->select('overtime_type');
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->ot_type_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->ot_type_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$value->ot_type_name,
+					$value->ot_rate,
+					$value->ot_type_term,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function addOt(){
+		$this->form_validation->set_rules('name','Overtime Type Name','required');
+		$this->form_validation->set_rules('rate','Rate','required');
+		$this->form_validation->set_rules('term','Term','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$data = array(
+				"ot_type_name"=>set_value('name'),
+				"ot_type_term"=>set_value('term'),
+				"ot_rate"=>set_value('rate')
+				);
+			$table_name = 'overtime_type';
+			$cwhere = array(
+				"ot_type_name"=>ucwords(set_value('name'))
+			);
+			$check_duplicate = $this->project_model->check_multi_duplicate($table_name,$cwhere);
+			if ($check_duplicate != true) {
+				$add = $this->project_model->insert('overtime_type',$data);
+				if ($add != false) {
+					$msg['success'] = true;
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = 'Error adding data.';
+				}
+			}else{
+					$msg['success'] = false;
+					$msg['error'] = 'Error! Duplicate record found.';
+			}
+		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
+	}
+	function editOt(){
+		$id = $this->input->get('id');
+		$where = array("ot_type_id"=>$id);
+		$result = $this->project_model->single_select('overtime_type',$where);
+		echo json_encode($result);
+	}
+	function updateOt(){
+		$this->form_validation->set_rules('name','Overtime Type Name','required');
+		$this->form_validation->set_rules('rate','Rate','required');
+		$this->form_validation->set_rules('term','Term','required');
+		$this->form_validation->set_rules('id','Data Id','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$data = array(
+				"ot_type_name"=>set_value('name'),
+				"ot_type_term"=>set_value('term'),
+				"ot_rate"=>set_value('rate')
+				);
+			$id = set_value('id');
+			$where = array('ot_type_id'=>$id);
+			$result = $this->project_model->updateNew('overtime_type',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error updating data.';
+			}
+		}
+		$msg['type'] = 'Update';
+		echo json_encode($msg);
+	}
+	function deleteOt(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('overtime_type','ot_type_id',$id);
+		if ($result) {
+			$msg['success'] = true;
+		}else{
+			$msg['success'] = false;
+		}
+		echo json_encode($msg);
 	}
 	/*end of overtime type method*/
 
@@ -6266,9 +6248,23 @@ class Admin extends CI_Controller {
 
 //testing center
 	function testFunction(){
-		$id = 1;
-		$where = array("salary_term_id"=>$id);
-		$result = $this->project_model->single_select('salary_term',$where);
+		$result = array('data' => array());
+		$data = $this->project_model->select('overtime_type');
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$buttons = '
+					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->ot_type_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->ot_type_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$value->ot_type_id,
+					$value->ot_type_name,
+					$value->ot_rate,
+					$value->ot_type_term,
+					$buttons
+				);
+			}
+		}
 		echo json_encode($result);
-}
+	}
 }

@@ -173,10 +173,12 @@
                 dataType: 'json',
                 success: function(response){
                     var error = response.error;
+                    var type = response.type;
                     if (response.success) {
                         $('#myForm')[0].reset();
-                        $('.alert-success').html('Successfully added account!').fadeIn().delay(2000).fadeOut('slow');
+                        $('.alert-success').html(type + ' successful.').fadeIn().delay(2000).fadeOut('slow');
                         empTable.ajax.reload(null, false);
+                        if(type === "Update"){$('#myModal').modal('hide');}
                     }else{
                         $('#myModal').modal('hide');
                         $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');

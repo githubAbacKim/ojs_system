@@ -242,6 +242,7 @@
 	                    $('#myForm')[0].reset();
 	                    $('.alert-success').html(type + ' added miscellaneous.').fadeIn().delay(2000).fadeOut('slow');
 	                    miscTable.ajax.reload(null, false);
+                      if(type === "Update"){$('#myModal').modal('hide');}
 	                }else{
 	                    $('#myModal').modal('hide');
 	                    var error = response.error;

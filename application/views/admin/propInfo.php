@@ -1,6 +1,6 @@
 <div class="col-lg-8 col-lg-offset-2">
   <div class="col-lg-12">
-      <h2 class="page-header"><i class="fa fa-info fa-fw"></i> Change Password</h2>
+      <h2 class="page-header"><i class="fa fa-info fa-fw"></i> Update Information</h2>
   </div>
   <div class="row">
     <div class="col-lg-12">
