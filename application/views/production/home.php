@@ -27,7 +27,7 @@
                       </div>
                       <div class="col-xs-9 text-right">
                           <div class="huge">12</div>
-                          <div>Walk-In!</div>
+                          <div>Orders</div>
                       </div>
                   </div>
               </div>

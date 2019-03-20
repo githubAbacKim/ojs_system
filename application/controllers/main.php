@@ -192,16 +192,17 @@ class Main extends CI_Controller {
 			$table = 'emp_accounts';
 			$where = array(
 				'emp_username'=>set_value('username'),
-				'emp_password'=>sha1(set_value('password'))
+				'emp_password'=>sha1(set_value('password')),
+				'emp_dept'=>'production'
 				);
 			$log = $this->main_model->val_login($table,$where,$return=true);
 			if ($log[0] == true){
 				$newdata = array(
-					'ispos_log'=>$log[0],
+					'isprod_log'=>$log[0],
 					'current_id'=>$log[1]
 					);
 				$this->session->set_userdata($newdata);
-				redirect('clientPos');
+				redirect('production');
 			}else{
 				$data['title'] = "Production Login";
 				$data['sub_heading'] = 'Login Error';

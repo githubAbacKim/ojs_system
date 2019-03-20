@@ -8,6 +8,18 @@ class Production extends CI_Controller {
 		//$this->is_log_in();
 	}
 
+	private function is_log_in(){
+		if($this->session->userdata('isprod_log') == false){
+			redirect('main');
+		}
+	}
+
+	function logout(){
+		if ($this->session->userdata('isprod_log') == true) {
+			$this->session->unset_userdata('isprod_log');
+			redirect('main');
+		}
+	}
 	// new panel
 	function index(){
 		$data['title'] = "Administrator";
@@ -16,8 +28,10 @@ class Production extends CI_Controller {
 
 		$data['record'] = $this->admin_model->property_info();
 
-		$this->load->view('adminpanel/header',$data);
-		$this->load->view('adminpanel/newnav',$data);
-		$this->load->view('adminpanel/home',$data);
-		$this->load->view('adminpanel/footer',$data);
+		$this->load->view('production/header',$data);
+		$this->load->view('production/nav_v2',$data);
+		$this->load->view('production/home',$data);
+		$this->load->view('production/footer',$data);
 	}
+
+}

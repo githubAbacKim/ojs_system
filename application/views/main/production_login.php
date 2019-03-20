@@ -23,7 +23,7 @@
                 ';
             }
         ?>
-        <form method="post" action="<?php echo base_url('main/frontdesk_login')?>">
+        <form method="post" action="<?php echo base_url('main/production_login')?>">
         <fieldset>
             <div class="form-group">
                 <input class="form-control" placeholder="Username" name="username" type="text" value="<?php echo set_value('username');?>" required autofocus />
