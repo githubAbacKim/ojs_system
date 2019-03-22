@@ -144,37 +144,77 @@ class Main extends CI_Controller {
 	function frontdesk_login(){
 		$this->form_validation->set_rules('username','Username','required');
 		$this->form_validation->set_rules('password','Password','required');
+		$this->form_validation->set_rules('op_money','Opening Money','required|is_natural');
 
 		if ($this->form_validation->run() == FALSE) {
-			$data['title'] = 'Frontdesk Login';
-			$data['sub_heading'] = 'Validation Error!';
-			$data['error'] = '';
-			$this->load->view('header',$data);
-			$this->load->view('main/frontdesk_login',$data);
-			$this->load->view('footer');
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
 		}else{
 			$table = 'emp_accounts';
 			$where = array(
 				'emp_username'=>set_value('username'),
-				'emp_password'=>sha1(set_value('password'))
+				'emp_password'=>sha1(set_value('password')),
 				);
 			$log = $this->main_model->val_login($table,$where,$return=true);
 			if ($log[0] == true){
-				$newdata = array(
-					'ispos_log'=>$log[0],
-					'current_id'=>$log[1]
+				$logwhere = array(
+					'emp_id'=>$log[1],
+					'log_date'=>date("Y-m-d")
+				);
+				$logcheck = $this->project_model->select('cashier_logbook',false,$logwhere);
+				if ($logcheck != true) {
+					// add init log here
+					$data = array(
+						"emp_id"=>$log[1],
+						"log_date"=>date("Y-m-d"),
+						"log_time"=>date("h:i A"),
+						"op_money"=>set_value('op_money')
 					);
-				$this->session->set_userdata($newdata);
-				redirect('clientPos');
+					$logbook = $this->project_model->insert('cashier_logbook',$data,'logid');
+					if ($logbook != false) {
+						$newdata = array(
+							'ispos_log'=>$log[0],
+							'current_id'=>$log[1]
+							);
+						$this->session->set_userdata($newdata);
+						if ($this->session->userdata('current_id') == FALSE || $this->session->userdata('current_id') == "") {
+							$delwhere = array('logid'=>$logbook[1]);
+							$del = $this->project_model->deleteNew('cashier_logbook',$delwhere);
+							if ($del != false) {
+								$msg['success'] = false;
+								$msg['error'] = 'Unable to set session. Log delete done!';
+							}else{
+								$msg['success'] = false;
+								$msg['error'] = 'Unable to delete log.';
+							}
+						}else{
+							$msg['success'] = true;
+						}
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = 'Log error. Unble to record login.';
+					}
+
+				}else{
+					$newdata = array(
+						'ispos_log'=>$log[0],
+						'current_id'=>$log[1]
+						);
+					$this->session->set_userdata($newdata);
+					if ($this->session->userdata('current_id') == FALSE || $this->session->userdata('current_id') == "") {
+						$msg['success'] = false;
+						$msg['error'] = 'Unable to set session. Log delete done!';
+					}else{
+						$msg['success'] = true;
+					}
+				}
 			}else{
-				$data['title'] = "Frontdesk Login";
-				$data['sub_heading'] = 'Login Error';
-				$data['error'] = 'match';
-				$this->load->view("header",$data);
-				$this->load->view("main/frontdesk_login",$data);
-				$this->load->view("footer");
+				$msg['success'] = false;
+				$msg['error'] = 'Username or Password do not match.';
 			}
 		}
+
+		echo json_encode($msg);
 	}
 
 	function production_login(){

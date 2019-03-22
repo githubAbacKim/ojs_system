@@ -198,10 +198,10 @@
                             <label>Customer Name:</label>
                             <input type="text" class="form-control" placeholder="Name" name="cust_name" required >
                         </div>
-                        <div class="form-group text-center">
+                        <!-- <div class="form-group text-center">
                             <label>Downpayment:</label>
                             <input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="0.00" required >
-                        </div>
+                        </div> -->
                         <div class="form-group text-center">
                             <label>Tax Rate(Regular Non-vat: 3%; Gov Offices: 4%;):</label>
                             <input type="text" class="form-control" placeholder="Tax Rate" name="tax" value="0.00" required >

@@ -5,7 +5,7 @@ class Project_Model extends CI_Model {
 		parent::__construct();
 		$this->load->dbforge();
 	}
-	
+
 	function check_multi_duplicate($table_name,$where=false,$return=false,$like=false,$join=false){
 		$this->db->select('*');
 		$this->db->from($table_name);
@@ -14,7 +14,7 @@ class Project_Model extends CI_Model {
 			foreach ($join as $value) {
 				$this->db->join($value[0], $value[1].'.'.$value[2] .'='. $value[0].'.'.$value[2]);
 			}
-		}		
+		}
 
 		if ($where != false) {
 			$this->db->where($where);
@@ -33,7 +33,7 @@ class Project_Model extends CI_Model {
 			}else{
 				return true;
 			}
-			
+
 		}else{
 			return false;
 		}
@@ -59,7 +59,7 @@ class Project_Model extends CI_Model {
 			$this->db->where_in($where_in[0],$where[1]);
 		}
 		if ($order != false) {
-			$this->db->order_by($order[0],$order[1]);				
+			$this->db->order_by($order[0],$order[1]);
 		}
 		if ($group != false) {
 			$this->db->group_by($group);
@@ -83,7 +83,7 @@ class Project_Model extends CI_Model {
 
 		foreach ($join as $value) {
 			$this->db->join($value[0], $value[1].'.'.$value[2] .'='. $value[0].'.'.$value[2]);
-		}		
+		}
 		if ($where != false) {
 			$this->db->where($where);
 		}
@@ -148,7 +148,7 @@ class Project_Model extends CI_Model {
 				return array(true,$this->db->insert_id());
 			}else{
 				return true;
-			}			
+			}
 		}else{
 			return false;
 		}
@@ -160,7 +160,7 @@ class Project_Model extends CI_Model {
 
 		if ($query) {
 			return true;
-			
+
 		}else{
 			return false;
 		}
@@ -176,16 +176,16 @@ class Project_Model extends CI_Model {
 			return false;
 		}
 	}
-        
-    function updateNew($table_name,$where,$data){
-		$this->db->where($where);
-		$this->db->update($table_name,$data);
 
-		if ($this->db->affected_rows() > 0) {
-			return true;
-		}else{
-			return false;
-		}
+  function updateNew($table_name,$where,$data){
+			$this->db->where($where);
+			$this->db->update($table_name,$data);
+
+			if ($this->db->affected_rows() > 0) {
+				return true;
+			}else{
+				return false;
+			}
 	}
 
 	function delete($table_name,$table_id,$id){
@@ -253,6 +253,6 @@ class Project_Model extends CI_Model {
 				return false;
 			}
 		}
-		
+
 	}
 }

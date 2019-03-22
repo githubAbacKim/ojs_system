@@ -315,19 +315,19 @@
 	});
 
 	$('#btnPrint').click(function(){
-            $('#printForm')[0].reset();
-            $('#printModal').modal('show');
-            $('#printModal').find('.modal-title').text("Print Misc Summary Monthly");
-            $('#printForm').attr('action','<?php echo base_url("admin/")?>');
-    });
+      $('#printForm')[0].reset();
+      $('#printModal').modal('show');
+      $('#printModal').find('.modal-title').text("Print Misc Summary Monthly");
+      $('#printForm').attr('action','<?php echo base_url("admin/")?>');
+  });
 
-    $('#conPrint').click(function(){
-        /*var link =  $(this).attr('data');
-        window.open(link,"newwindow", "width=1200, height=800");*/
-        var month = $('select[name=mon2]');
-		var year = $('input[name=year]');
-		var url = '<?php echo base_url('admin/printMiscList')?>/'  + month.val() + '/' + year.val();
-        window.open(url,"newwindow", "width=900, height=600");
-    });
+  $('#conPrint').click(function(){
+      /*var link =  $(this).attr('data');
+      window.open(link,"newwindow", "width=1200, height=800");*/
+      var month = $('select[name=mon2]');
+	    var year = $('input[name=year]');
+	    var url = '<?php echo base_url('admin/printMiscList')?>/'  + month.val() + '/' + year.val();
+      window.open(url,"newwindow", "width=900, height=600");
+  });
 
 </script>
