@@ -137,6 +137,7 @@ class ClientPos extends CI_Controller {
 	function createCart(){
 		$this->form_validation->set_rules('cust_name','Customer Name','required');
 		$this->form_validation->set_rules('order_type','Order Type','required');
+		$this->form_validation->set_rules('ornum','OR Number','required');
 		$this->form_validation->set_rules('downpayment','Downpayment','required');
 		$this->form_validation->set_rules('tax','Tax','required');
 
@@ -154,14 +155,12 @@ class ClientPos extends CI_Controller {
 				'cust_name'=>strtoupper(set_value('cust_name')),
 				'order_date'=>date('Y-m-d h:i A'),
 				'emp_id'=>$this->session->userdata('current_id'),
-				'emp_id'=>4,
 				'order_type'=>set_value('order_type'),
 				'order_downpayment'=>set_value('downpayment'),
+				'or_num'=>set_value('ornum'),
 				'tax_rate'=>set_value('tax')
 			);
-
 			$insert = $this->project_model->insert('order',$data,true);
-
 			if ($insert[0]) {
 				$this->session->set_userdata('posCart',$insert[1]);
 				$msg['success'] = true;
@@ -1107,63 +1106,22 @@ class ClientPos extends CI_Controller {
 
 /*========= test =======*/
 	function test(){
-		$id = 1;
-		$where = array('order_item_id'=>$id);
-		$get = $this->project_model->select('ordered_item',false,$where);
-		if ($get !== false) {
-			foreach ($get as $ordereditem) {
-				$endpost = strpos($ordereditem->order_name, '(');
-				if ($endpost == false) {
-					$name = $ordereditem->order_name;
-				}else{
-					$name = substr($ordereditem->order_name, 0, $endpost);
-				}
-				if ($ordereditem->order_stock_type == 'instock') {
-					$item_where = array(
-						'stock_id'=>$ordereditem->stock_id
-					);
-					$item = $this->project_model->select('stockitem',false,$item_where);
-					if ($item != false) {
-						foreach ($item as $item) {
-							$stock_data = array(
-								"stock_qqty"=>$item->stock_qqty + $ordereditem->order_qty
-							);
-							$return_stock = $this->project_model->updateNew('stockitem',$item_where,$stock_data);
-							if ($return_stock != false) {
-								$delete = $this->project_model->deleteNew('ordered_item',$where);
-								if ($delete !== false) {
-									$msg['success'] =  true;
-								}else{
-									$msg['success'] =  false;
-									$ms['error'] = 'Unable to delete item';
-								}
-							}else{
-								$msg['success'] =  false;
-								$ms['error'] = 'Unable to return stock to menu item.';
-							}
-						}
-					}else{
-						$msg['success'] =  false;
-						$ms['error'] = 'Unable to find menu item.';
-					}
-				}else{
-					$delete = $this->project_model->deleteNew('ordered_item',$where);
-					if ($delete !== false) {
-						$msg['success'] =  true;
-					}else{
-						$msg['success'] =  false;
-						$ms['error'] = 'Unable to directly delete ordered item.';
-					}
-				}
-			}//foreach ordereditem end
+		$data = array(
+			'order_code'=>'OC0001',
+			'cust_name'=>"Kim",
+			'order_date'=>date('Y-m-d h:i A'),
+			'emp_id'=>'4',
+			'order_type'=>'purchase',
+			'order_downpayment'=>'0.00',
+			'or_num'=>'000',
+			'tax_rate'=>'0'
+		);
+		$insert = $this->project_model->insert('order',$data,true);
+		if ($insert[0] != false) {
+			echo "success";
 		}else{
-			$msg['success'] =  false;
-			$msg['error'] = 'Unable to find item';
+			echo "error";
 		}
-
-		echo json_encode($msg);
-
-
 	}
 
 }

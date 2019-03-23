@@ -186,27 +186,33 @@
             <form method="post" action="" id="createCart">
               <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-xs-12 col-lg-offset-3 col-md-offset-3">
+                    <div class="col-lg-6 col-md-6 col-xs-12">
                         <div class="form-group text-center" style="font-size: 14pt;">
                             <label>Order Type:</label>
                             <select class="form-control" name="order_type"  id="type_selector" required>
+														<option data-hw-type="purchace" value="purchace">Purchase</option>
                                 <option data-hw-type="order" value="order">Order</option>
-                                <option data-hw-type="purchace" value="purchace">Purchase</option>
                             </select>
                         </div>
                         <div class="form-group text-center">
                             <label>Customer Name:</label>
                             <input type="text" class="form-control" placeholder="Name" name="cust_name" required >
                         </div>
-                        <!-- <div class="form-group text-center">
-                            <label>Downpayment:</label>
-                            <input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="0.00" required >
-                        </div> -->
-                        <div class="form-group text-center">
-                            <label>Tax Rate(Regular Non-vat: 3%; Gov Offices: 4%;):</label>
-                            <input type="text" class="form-control" placeholder="Tax Rate" name="tax" value="0.00" required >
-                        </div>
                     </div>
+										<div class="col-lg-6 col-md-6 col-xs-12">
+												<div class="form-group text-center">
+														<label>OR Number:</label>
+														<input type="text" class="form-control" placeholder="OR Number" name="ornum" value="000" required >
+												</div>
+												<div class="form-group text-center">
+														<label>Downpayment:</label>
+														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="0.00" required >
+												</div>
+												<div class="form-group text-center">
+														<label>Tax Rate</label>
+														<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" value="0" required >
+												</div>
+										</div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -332,6 +338,28 @@
       </div><!-- /.modal-dialog -->
     </div>
 <!-- /.modal -->
+
+<!--  log out-->
+<div class="modal fade" tabindex="-1" role="dialog" id="outModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Title</h4>
+      </div>
+          <div class="modal-body">
+            <div class="row">
+
+            </div>
+          </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script type="text/javascript">
     var menuItem;
 
@@ -341,10 +369,10 @@
         getprinturl();
         receipturl();
         checkCart();
-        // setInterval(function(){
-        //     checkCart();
-        //     cart.ajax.reload(null, false);
-        // },1000);
+        setInterval(function(){
+            checkCart();
+            cart.ajax.reload(null, false);
+        },1000);
     /*Button events*/
         $('#cartBtn').click(function(){
             $('#cartModal').modal('show');
