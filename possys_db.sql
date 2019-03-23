@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 16, 2019 at 11:04 AM
+-- Generation Time: Mar 23, 2019 at 03:29 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -45,6 +45,30 @@ INSERT INTO `assign_access` (`assign_access_id`, `account_type`, `mac_address`) 
 (9, 'admin', '1C-87-2C-72-D4-53'),
 (10, 'frontdesk', 'D0-17-C2-1B-EF-E9'),
 (11, 'admin', 'D0-17-C2-1B-EF-E9');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cashier_logbook`
+--
+
+CREATE TABLE IF NOT EXISTS `cashier_logbook` (
+  `logid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `emp_id` int(10) unsigned NOT NULL,
+  `log_date` char(10) NOT NULL,
+  `log_time` char(8) NOT NULL,
+  `op_money` double(10,2) NOT NULL,
+  `clo_money` double(10,2) DEFAULT NULL,
+  PRIMARY KEY (`logid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `cashier_logbook`
+--
+
+INSERT INTO `cashier_logbook` (`logid`, `emp_id`, `log_date`, `log_time`, `op_money`, `clo_money`) VALUES
+(1, 4, '2019-03-22', '07:13 AM', 7000.00, NULL),
+(2, 4, '2019-03-23', '04:02 AM', 7000.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -352,9 +376,17 @@ CREATE TABLE IF NOT EXISTS `order` (
   `tax_rate` double(10,2) DEFAULT '0.00',
   `tax_amount` double(10,2) DEFAULT '0.00',
   `pick_update` char(16) DEFAULT NULL,
+  `or_num` char(5) DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `FK_restaurant_order_1` (`cust_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`order_id`, `order_code`, `cust_name`, `order_date`, `emp_id`, `order_bill_amount`, `order_cash_amount`, `order_type`, `order_status`, `order_discount`, `check_in_id`, `sub_order_type`, `order_downpayment`, `tax_rate`, `tax_amount`, `pick_update`, `or_num`) VALUES
+(2, 'OC0323-1', 'KIM', '2019-03-23 01:50 PM', 4, 0.00, 0.00, 'purchace', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000');
 
 -- --------------------------------------------------------
 
@@ -374,7 +406,7 @@ CREATE TABLE IF NOT EXISTS `ordered_item` (
   `order_unit` varchar(45) NOT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `FK_restaurant_ordered_item_1` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -388,7 +420,7 @@ CREATE TABLE IF NOT EXISTS `overtime_type` (
   `ot_type_term` varchar(45) NOT NULL,
   `ot_rate` double(10,2) NOT NULL,
   PRIMARY KEY (`ot_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `overtime_type`
@@ -519,7 +551,7 @@ CREATE TABLE IF NOT EXISTS `stockarrival_log` (
   `stock_id` int(10) unsigned NOT NULL,
   `stock_qqty` char(3) NOT NULL,
   `stock_unit` varchar(45) NOT NULL,
-  `stock_rate` double(10,2) NOT NULL,
+  `stock_rate` double(10,2) DEFAULT NULL,
   PRIMARY KEY (`idarrival_log`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
