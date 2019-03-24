@@ -140,6 +140,10 @@ class ClientPos extends CI_Controller {
 		$this->form_validation->set_rules('ornum','OR Number','required');
 		$this->form_validation->set_rules('downpayment','Downpayment','required');
 		$this->form_validation->set_rules('tax','Tax','required');
+		if ($this->input->post('order_type') == "order") {
+			$this->form_validation->set_rules('date','Pick-up date','required');
+			$this->form_validation->set_rules('time','Pick-up time','required');
+		}
 
 		if ($this->form_validation->run() == FALSE) {
 			$msg['error'] = validation_errors();
@@ -150,16 +154,33 @@ class ClientPos extends CI_Controller {
 			$length = strlen($this->lastCode('order',1,'order_id','order_code'));
 			$couter = substr($this->lastCode('order',1,'order_id','order_code'),7,$length) + 1;
 			//$code  = str_pad($code, 2, '0', STR_PAD_LEFT);
-			$data = array(
-				'order_code'=>'OC'.date('md').'-'.$couter,
-				'cust_name'=>strtoupper(set_value('cust_name')),
-				'order_date'=>date('Y-m-d h:i A'),
-				'emp_id'=>$this->session->userdata('current_id'),
-				'order_type'=>set_value('order_type'),
-				'order_downpayment'=>set_value('downpayment'),
-				'or_num'=>set_value('ornum'),
-				'tax_rate'=>set_value('tax')
-			);
+
+			if (set_value('order_type') == "order") {
+				$data = array(
+					'order_code'=>'OC'.date('md').'-'.$couter,
+					'cust_name'=>strtoupper(set_value('cust_name')),
+					'order_date'=>date('Y-m-d h:i A'),
+					'emp_id'=>$this->session->userdata('current_id'),
+					'order_type'=>set_value('order_type'),
+					'order_downpayment'=>set_value('downpayment'),
+					'or_num'=>set_value('ornum'),
+					'tax_rate'=>set_value('tax'),
+					'pickup_date'=>set_value('date'),
+					'pickup_time'=>set_value('time')
+				);
+			}else{
+				$data = array(
+					'order_code'=>'OC'.date('md').'-'.$couter,
+					'cust_name'=>strtoupper(set_value('cust_name')),
+					'order_date'=>date('Y-m-d h:i A'),
+					'emp_id'=>$this->session->userdata('current_id'),
+					'order_type'=>set_value('order_type'),
+					'order_downpayment'=>set_value('downpayment'),
+					'or_num'=>set_value('ornum'),
+					'tax_rate'=>set_value('tax')
+				);
+			}
+
 			$insert = $this->project_model->insert('order',$data,true);
 			if ($insert[0]) {
 				$this->session->set_userdata('posCart',$insert[1]);

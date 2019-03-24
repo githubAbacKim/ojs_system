@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 23, 2019 at 03:29 PM
+-- Generation Time: Mar 24, 2019 at 02:30 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `cashier_logbook` (
   `op_money` double(10,2) NOT NULL,
   `clo_money` double(10,2) DEFAULT NULL,
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `cashier_logbook`
@@ -68,7 +68,8 @@ CREATE TABLE IF NOT EXISTS `cashier_logbook` (
 
 INSERT INTO `cashier_logbook` (`logid`, `emp_id`, `log_date`, `log_time`, `op_money`, `clo_money`) VALUES
 (1, 4, '2019-03-22', '07:13 AM', 7000.00, NULL),
-(2, 4, '2019-03-23', '04:02 AM', 7000.00, NULL);
+(2, 4, '2019-03-23', '04:02 AM', 7000.00, NULL),
+(3, 4, '2019-03-24', '04:06 AM', 7000.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -375,18 +376,12 @@ CREATE TABLE IF NOT EXISTS `order` (
   `order_downpayment` double(10,2) DEFAULT '0.00',
   `tax_rate` double(10,2) DEFAULT '0.00',
   `tax_amount` double(10,2) DEFAULT '0.00',
-  `pick_update` char(16) DEFAULT NULL,
+  `pickup_date` char(16) DEFAULT NULL,
   `or_num` char(5) DEFAULT NULL,
+  `pickup_time` char(8) DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `FK_restaurant_order_1` (`cust_name`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `order`
---
-
-INSERT INTO `order` (`order_id`, `order_code`, `cust_name`, `order_date`, `emp_id`, `order_bill_amount`, `order_cash_amount`, `order_type`, `order_status`, `order_discount`, `check_in_id`, `sub_order_type`, `order_downpayment`, `tax_rate`, `tax_amount`, `pick_update`, `or_num`) VALUES
-(2, 'OC0323-1', 'KIM', '2019-03-23 01:50 PM', 4, 0.00, 0.00, 'purchace', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -406,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `ordered_item` (
   `order_unit` varchar(45) NOT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `FK_restaurant_ordered_item_1` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

@@ -190,7 +190,7 @@
                         <div class="form-group text-center" style="font-size: 14pt;">
                             <label>Order Type:</label>
                             <select class="form-control" name="order_type"  id="type_selector" required>
-														<option data-hw-type="purchace" value="purchace">Purchase</option>
+																<option data-hw-type="purchace" value="purchace">Purchase</option>
                                 <option data-hw-type="order" value="order">Order</option>
                             </select>
                         </div>
@@ -198,6 +198,12 @@
                             <label>Customer Name:</label>
                             <input type="text" class="form-control" placeholder="Name" name="cust_name" required >
                         </div>
+												<div class="form-group text-center" id="pickInfo" style="display:none;">
+														<label>Pick-up Date:</label>
+														<input type="date" class="form-control" placeholder="" name="date" required >
+														<label>Pick-up Time:</label>
+														<input type="time" class="form-control" placeholder="" name="time" required >
+												</div>
                     </div>
 										<div class="col-lg-6 col-md-6 col-xs-12">
 												<div class="form-group text-center">
@@ -362,17 +368,34 @@
 
 <script type="text/javascript">
     var menuItem;
-
     $(document).ready(function() {
         fetchMenuItems();
         fetchPosCartitem();
         getprinturl();
         receipturl();
         checkCart();
+				showField();
         setInterval(function(){
             checkCart();
             cart.ajax.reload(null, false);
         },1000);
+
+				function showField(){
+	          $('#type_selector').change(function () {
+	              // if ($(this).attr("value") == "order") {
+	              //     $('#pickInfo').show();
+	              // }else{
+	              //     $('#pickInfo').hide();
+	              // }
+								var val = $(this).val();
+								if (val === "order") {
+									$('#pickInfo').show();
+								}else{
+									$('#pickInfo').hide();
+								}
+	          });
+	      }
+
     /*Button events*/
         $('#cartBtn').click(function(){
             $('#cartModal').modal('show');
