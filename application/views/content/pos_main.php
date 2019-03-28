@@ -353,15 +353,20 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
+				<form id="outForm" action="" method="post">
           <div class="modal-body">
             <div class="row">
-
+							<div class="form-group col-lg-4">
+									<label>Item Name</label>
+									<input type="text" class="form-control" disabled name="item">
+							</div>
             </div>
           </div>
-      <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
-      </div>
+		      <div class="modal-footer">
+		            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		            <button type="button" id="btnOut" class="btn btn-danger">Logout</button>
+		      </div>
+				</form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -418,6 +423,12 @@
             $('#paymentModal').find('.modal-title').text("Payment Section");
             $('#paymentForm').attr('action','<?php echo base_url("clientPos/order_payment")?>');
         });
+				$("#logout").click(function(){
+					$('#outForm')[0].reset();
+					$('#outModal').modal('show');
+					$('#outModal').find('.modal-title').text("Confirm Logout");
+					$('#outForm').attr('action','<?php echo base_url("clientPos/logout")?>');
+				});
     /*end of events*/
 
     /*Data retrieving functions*/

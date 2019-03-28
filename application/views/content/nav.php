@@ -35,19 +35,20 @@
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form> -->
-      
+
       <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#">Link</a></li> -->
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gear"></i> Settings <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="javascript:;">Update Security <i class="fa fa-shield fa-fx"></i></a></li>
             <li role="separator" class="divider"></li>
             <li><a href="<?php echo base_url('clientPos/logout')?>">Log-out</a></li>
           </ul>
-        </li>
+        </li> -->
+        <li><a id="settings"><i class="fa fa-shield fa-fx"></i> Update Security</a></li>
+        <li><a id="logout" href="javascript:;"><i class="fa fa-sign-out fa-fx"></i> Logout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
