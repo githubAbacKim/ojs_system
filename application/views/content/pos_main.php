@@ -2,9 +2,9 @@
 <!-- Order Review  -->
 <div class="col-lg-7">
 	<div class="panel panel-default">
-	  <div class="panel-heading">
+	  <!-- <div class="panel-heading">
 	    <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Cart Items & Information</h3>
-	  </div>
+	  </div> -->
 
       <!-- Display this panel body on cart selection -->
 	  <div class="panel-body" id="cartLoaded" style="display:none;">
@@ -187,18 +187,19 @@
               <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-xs-12">
-                        <div class="form-group text-center" style="font-size: 14pt;">
+                        <div class="form-group text-left" style="font-size: 14pt;">
                             <label>Order Type:</label>
                             <select class="form-control" name="order_type"  id="type_selector" required>
 																<option data-hw-type="purchace" value="purchace">Purchase</option>
                                 <option data-hw-type="order" value="order">Order</option>
                             </select>
                         </div>
-                        <div class="form-group text-center">
-                            <label>Customer Name:</label>
-                            <input type="text" class="form-control" placeholder="Name" name="cust_name" required >
-                        </div>
-												<div class="form-group text-center" id="pickInfo" style="display:none;">
+												<div class="form-group text-left">
+														<label>Downpayment:</label>
+														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="0.00" required >
+												</div>
+
+												<div class="form-group text-left" id="pickInfo" style="display:none;">
 														<label>Pick-up Date:</label>
 														<input type="date" class="form-control" placeholder="" name="date" required >
 														<label>Pick-up Time:</label>
@@ -206,17 +207,17 @@
 												</div>
                     </div>
 										<div class="col-lg-6 col-md-6 col-xs-12">
-												<div class="form-group text-center">
-														<label>OR Number:</label>
-														<input type="text" class="form-control" placeholder="OR Number" name="ornum" value="000" required >
+											<div class="form-group text-left">
+													<label>Customer Name:</label>
+													<input type="text" class="form-control" placeholder="Name" name="cust_name" required >
+											</div>
+												<div class="form-group text-left">
+														<label>TIN</label>
+														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" required >
 												</div>
-												<div class="form-group text-center">
-														<label>Downpayment:</label>
-														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="0.00" required >
-												</div>
-												<div class="form-group text-center">
-														<label>Tax Rate</label>
-														<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" value="0" required >
+												<div class="form-group text-left">
+														<label>Address</label>
+														<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" required >
 												</div>
 										</div>
                 </div>
@@ -261,22 +262,36 @@
             <form method="post" action="" id="paymentForm">
               <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6 col-lg-offset-3 text-center">
+                    <div class="col-lg-6 col-xs-12 text-center">
                         <!-- <label>CASH AMOUNT:</label> -->
-                        <div class="input-group">
-                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
-                          <input type="text" name="cash" class="form-control" placeholder="Cash Amount" aria-describedby="basic-addon1" required>
-                        </div>
+												<div class="form-group text-left">
+													<label>Cash:</label>
+	                        <div class="input-group" style="margin-bottom:5px;">
+	                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
+	                          <input type="text" name="cash" class="form-control" placeholder="Cash Amount" aria-describedby="basic-addon1" required>
+	                        </div>
+												</div>
+												<div class="form-group text-left">
+													<label>Discount</label>
+													<div class="input-group">
+	                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
+	                          <input type="text" name="discount" class="form-control" placeholder="Discount Amount" aria-describedby="basic-addon1" required>
+	                        </div>
+											</div>
                     </div>
-
-                    <div class="col-lg-6 col-lg-offset-3 text-center" style="margin-top: 10px;">
-                        <!-- <label>DISCOUNT AMOUNT:</label> -->
-                        <div class="input-group">
-                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
-                          <input type="text" name="discount" class="form-control" placeholder="Discount Amount" aria-describedby="basic-addon1" required>
-                        </div>
-                    </div>
-
+										<div class="col-lg-6 col-md-6 col-xs-12">
+											<div class="form-group text-left">
+												<label>SI/OR No:</label>
+												<div class="input-group" style="margin-bottom:5px;">
+													<span class="input-group-addon" id="basic-addon1"><i class="fa fa-numbers fa-fx"></i></span>
+													<input type="text" name="ornum" class="form-control" placeholder="SI/OR" aria-describedby="basic-addon1" required>
+												</div>
+											</div>
+											<div class="form-group text-left">
+													<label>Tax Rate</label>
+													<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" value="0" required >
+											</div>
+										</div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -534,7 +549,7 @@
                 success: function(data){
                     var info = '';
                         info +='<li class="col-lg-4 col-md-4 col-xs-12" id="total"> '+
-                                    '<span class="text-muted"><strong>Sales w/ VAT: </strong></span>'+
+                                    '<span class="text-muted"><strong>Sub Total: </strong></span>'+
                                     '<span class="text-primary"><strong>Php '+ data.amount +'</strong></span>'+
                                 '</li>'+
                                 '<li class="col-lg-4 col-md-4 col-xs-12" id="change"> '+

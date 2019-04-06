@@ -33,10 +33,10 @@
           Date:</strong> <?php echo $bill->cust_name;?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
-          Time:<?php echo substr($bill->order_date,11,8);?>
+          TRML#: 01
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
-          TRML#: 01
+          Time:<?php echo substr($bill->order_date,11,8);?>
         </div>
     </div>
     <div class="row">
