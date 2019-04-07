@@ -47,7 +47,7 @@
           </ul>
         </li> -->
         <li><a id="settings"><i class="fa fa-shield fa-fx"></i> Update Security</a></li>
-        <li><a id="logout" href="javascript:;"><i class="fa fa-sign-out fa-fx"></i> Logout</a></li>
+        <li><a href="<?php echo base_url("clientPos/logout");?>"><i class="fa fa-sign-out fa-fx"></i> Logout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

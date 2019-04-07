@@ -20,8 +20,8 @@
                     <input class="form-control" placeholder="Password" name="password" type="password" required autofucos />
                 </div>
                 <div class="form-group">
-                    <label for="op_money">Opening Money</label>
-                    <input class="form-control" placeholder="Amount" name="op_money" type="text" required autofucos />
+                    <!-- <label for="op_money">OPENING CASH</label> -->
+                    <input class="form-control" placeholder="OPENING CASH" name="op_money" type="text" required autofucos />
                 </div>
                 <input type="button" name="login" id="btnLogin" value="Login" class="btn btn-lg btn-success btn-block" />
                 <a href="<?php echo base_url('main/');?>" class="btn btn-lg btn-default btn-block">Back to main</a>
