@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 24, 2019 at 02:30 PM
+-- Generation Time: Apr 08, 2019 at 10:21 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS `assign_access` (
 
 INSERT INTO `assign_access` (`assign_access_id`, `account_type`, `mac_address`) VALUES
 (7, 'frontdesk', '38-2C-4A-E8-84-88'),
-(8, 'frontdesk', '1C-87-2C-72-D4-53'),
-(9, 'admin', '1C-87-2C-72-D4-53'),
+(8, 'frontdesk', '1C-87-2C-72-D4-54'),
+(9, 'admin', '1C-87-2C-72-D4-54'),
 (10, 'frontdesk', 'D0-17-C2-1B-EF-E9'),
 (11, 'admin', 'D0-17-C2-1B-EF-E9');
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `cashier_logbook` (
   `op_money` double(10,2) NOT NULL,
   `clo_money` double(10,2) DEFAULT NULL,
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `cashier_logbook`
@@ -69,7 +69,10 @@ CREATE TABLE IF NOT EXISTS `cashier_logbook` (
 INSERT INTO `cashier_logbook` (`logid`, `emp_id`, `log_date`, `log_time`, `op_money`, `clo_money`) VALUES
 (1, 4, '2019-03-22', '07:13 AM', 7000.00, NULL),
 (2, 4, '2019-03-23', '04:02 AM', 7000.00, NULL),
-(3, 4, '2019-03-24', '04:06 AM', 7000.00, NULL);
+(3, 4, '2019-03-24', '04:06 AM', 7000.00, NULL),
+(4, 4, '2019-03-27', '02:48 PM', 7000.00, NULL),
+(5, 4, '2019-04-06', '02:08 AM', 7000.00, NULL),
+(6, 4, '2019-04-07', '02:59 AM', 7000.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -381,7 +384,15 @@ CREATE TABLE IF NOT EXISTS `order` (
   `pickup_time` char(8) DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `FK_restaurant_order_1` (`cust_name`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`order_id`, `order_code`, `cust_name`, `order_date`, `emp_id`, `order_bill_amount`, `order_cash_amount`, `order_type`, `order_status`, `order_discount`, `check_in_id`, `sub_order_type`, `order_downpayment`, `tax_rate`, `tax_amount`, `pickup_date`, `or_num`, `pickup_time`) VALUES
+(1, 'OC0328-1', 'CASH', '2019-03-28 06:24 AM', 4, 1000.00, 1000.00, 'purchace', 'paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000', NULL),
+(2, 'OC0329-2', 'CASH', '2019-03-29 08:18 AM', 4, 0.00, 0.00, 'purchace', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000', NULL);
 
 -- --------------------------------------------------------
 
@@ -401,7 +412,14 @@ CREATE TABLE IF NOT EXISTS `ordered_item` (
   `order_unit` varchar(45) NOT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `FK_restaurant_ordered_item_1` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ordered_item`
+--
+
+INSERT INTO `ordered_item` (`order_item_id`, `order_id`, `order_name`, `order_price`, `order_qty`, `order_date`, `order_stock_type`, `stock_id`, `order_unit`) VALUES
+(2, 1, 'CAR PLATE', 1000.00, '1', '2019-03-28', 'instock', 1, 'set');
 
 -- --------------------------------------------------------
 
@@ -597,7 +615,7 @@ CREATE TABLE IF NOT EXISTS `stockitem` (
 --
 
 INSERT INTO `stockitem` (`stock_id`, `stockCat_id`, `stock_name`, `stock_unit`, `stock_qqty`, `stockDispose`, `stockCost`, `stockclass_id`, `stock_type`) VALUES
-(1, 1, 'CAR PLATE', 'set', '1', '0', 1000.00, 4, 'instock'),
+(1, 1, 'CAR PLATE', 'set', '0', '0', 1000.00, 4, 'instock'),
 (2, 1, 'MOTOR PLATE', 'pc', '10', '0', 300.00, 4, 'instock');
 
 -- --------------------------------------------------------
