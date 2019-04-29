@@ -2,7 +2,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="border-bottom:0;margin-bottom: 0;">
             <div class="navbar-header">
-                <a class="navbar-brand" href="<?php echo base_url("admin/index");?>">LocSH (Local Store Helper) Admin</a>
+                <a class="navbar-brand" href="<?php echo base_url("production/index");?>"><i class="fa fa-home fa-fw"></i> Production Home</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -36,119 +36,20 @@
                 z-index: 1000 !important;
             }
         </style>
-        <div class="col-lg-12 topnav">
-            <div class="sidebar-nav navbar-collapse">
+        <div class="col-lg-12">
+            <div class="sidebar-nav navbar-collapse topnav">
                 <ul class="menu nav navbar-top-links navbar-center text-center">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Account Settings  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="<?php echo base_url("admin/propertyInfo")?>">Account Info</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/account_security")?>">Account Security</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
+                <li>
+                    <a class="active" href="<?php echo base_url("production/orders")?>" ><i class="fa fa-calendar fa-fw"></i> Orders</a>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Manage Employee <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="<?php echo base_url("admin/salary_term")?>">Salary</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/job_position")?>">Type of Position</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/employee_registration")?>">Register Employee</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/employee_account")?>">System Accounts</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
+                <li>
+                    <a href="<?php echo base_url("production/lowstocks")?>"><i class="fa fa-bar-chart-o fa-fw"></i> Stock Monitoring</a>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Manage Stocks  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="<?php echo base_url("admin/stockClass")?>">Stock Class</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/stockCategory")?>">Stock Category</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/stockItem")?>">Stock Items</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
+                <li>
+                    <a href="<?php echo base_url("production/newstocks")?>"><i class="fa fa-truck fa-fw"></i> New Stocks</a>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Manage Expenses  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="<?php echo base_url("admin/miscExp")?>">Miscellanous</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/prodExp")?>">Product</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/equipExp")?>">Equipment</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/returnExp")?>">Returnable</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/stocksExp")?>">Stocks</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/employee_salary")?>">Salary</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/employee_overtime")?>">Overtime</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/attendance")?>">Attendance</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Manage Reports  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="<?php echo base_url("admin/salesRep")?>">Sales</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/incomeStatement")?>">Income Statement</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
+                <li>
+                    <a href="<?php echo base_url("production/branchstocks")?>"><i class="fa fa-sitemap fa-fw"></i> Branch Stocks</a>
                 </li>
             </ul>
             </div>

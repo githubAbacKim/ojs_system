@@ -18,18 +18,21 @@
     <!-- overview -->
     <div class="row">
       <!-- walk-in -->
-      <div class="col-lg-3 col-md-6">
-          <div class="panel panel-primary">
+      <div class="col-lg-6 col-md-6">
+          <div class="panel panel-green">
               <div class="panel-heading">
                   <div class="row">
                       <div class="col-xs-3">
-                          <i class="fa fa-tasks fa-5x"></i>
+                          <i class="fa fa-calendar fa-5x"></i>
                       </div>
                       <div class="col-xs-9 text-right">
                           <div class="huge">12</div>
                           <div>Orders</div>
                       </div>
                   </div>
+              </div>
+              <div class="panel-body" style="min-height:350px;">
+
               </div>
               <a href="#">
                   <div class="panel-footer">
@@ -41,41 +44,22 @@
           </div>
       </div>
       <!-- orders -->
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-6 col-md-6">
           <div class="panel panel-yellow">
               <div class="panel-heading">
                   <div class="row">
                       <div class="col-xs-3">
+                          <i class="fa fa-angle-double-down fa-2x"></i>
                           <i class="fa fa-shopping-cart fa-5x"></i>
                       </div>
                       <div class="col-xs-9 text-right">
                           <div class="huge">12</div>
-                          <div>Orders!</div>
+                          <div>Low Stocks</div>
                       </div>
                   </div>
               </div>
-              <a href="#">
-                  <div class="panel-footer">
-                      <span class="pull-left">View Details</span>
-                      <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                      <div class="clearfix"></div>
-                  </div>
-              </a>
-          </div>
-      </div>
-      <!-- cancelled orders -->
-      <div class="col-lg-3 col-md-6">
-          <div class="panel panel-red">
-              <div class="panel-heading">
-                  <div class="row">
-                      <div class="col-xs-3">
-                          <i class="fa fa-tasks fa-5x"></i>
-                      </div>
-                      <div class="col-xs-9 text-right">
-                          <div class="huge">12</div>
-                          <div>Cancelled Orders!</div>
-                      </div>
-                  </div>
+              <div class="panel-body" style="min-height:350px;max-height:350px;">
+
               </div>
               <a href="#">
                   <div class="panel-footer">

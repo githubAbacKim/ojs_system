@@ -20,10 +20,9 @@ class Production extends CI_Controller {
 			redirect('main');
 		}
 	}
-	// new panel
+	// pages
 	function index(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Dashboard";
+		$data['title'] = "Dashboard";
 		$data['page'] = 'Production';
 
 		$data['record'] = $this->admin_model->property_info();
@@ -33,5 +32,55 @@ class Production extends CI_Controller {
 		$this->load->view('production/home',$data);
 		$this->load->view('production/footer',$data);
 	}
+
+	function orders(){
+		$data['title'] = "Orders";
+		$data['page'] = 'Production';
+
+		$data['record'] = $this->admin_model->property_info();
+
+		$this->load->view('production/header',$data);
+		$this->load->view('production/nav_v2',$data);
+		$this->load->view('production/newstocks',$data);
+		$this->load->view('production/footer',$data);
+	}
+
+	function lowstocks(){
+		$data['title'] = "Low Stocks";
+		$data['page'] = 'Production';
+
+		$data['record'] = $this->admin_model->property_info();
+
+		$this->load->view('production/header',$data);
+		$this->load->view('production/nav_v2',$data);
+		$this->load->view('production/newstocks',$data);
+		$this->load->view('production/footer',$data);
+	}
+
+	function newstocks(){
+		$data['title'] = "New Stocks";
+		$data['page'] = 'Production';
+
+		$data['record'] = $this->admin_model->property_info();
+
+		$this->load->view('production/header',$data);
+		$this->load->view('production/nav_v2',$data);
+		$this->load->view('production/newstocks',$data);
+		$this->load->view('production/footer',$data);
+	}
+
+	function branchstocks(){
+		$data['title'] = "Branch Stocks";
+		$data['page'] = 'Production';
+
+		$data['record'] = $this->admin_model->property_info();
+
+		$this->load->view('production/header',$data);
+		$this->load->view('production/nav_v2',$data);
+		$this->load->view('production/newstocks',$data);
+		$this->load->view('production/footer',$data);
+	}
+	// functions
+
 
 }

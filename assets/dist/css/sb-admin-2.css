@@ -102,6 +102,12 @@ body {
     background-color: #eee;
 }
 
+.topnav ul li a.active {
+    background-color: #eee;
+}
+.active{
+    background-color: #eee;
+}
 .sidebar .arrow {
     float: right;
 }
