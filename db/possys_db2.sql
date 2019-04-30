@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 19, 2019 at 01:04 PM
+-- Generation Time: Apr 30, 2019 at 01:52 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `assign_access` (
   `account_type` varchar(45) NOT NULL COMMENT 'Admin or Frontdesk',
   `mac_address` varchar(85) NOT NULL,
   PRIMARY KEY (`assign_access_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `assign_access`
@@ -41,10 +41,57 @@ CREATE TABLE IF NOT EXISTS `assign_access` (
 
 INSERT INTO `assign_access` (`assign_access_id`, `account_type`, `mac_address`) VALUES
 (7, 'frontdesk', '38-2C-4A-E8-84-88'),
-(8, 'frontdesk', '1C-87-2C-72-D4-53'),
-(9, 'admin', '1C-87-2C-72-D4-53'),
+(8, 'frontdesk', '1C-87-2C-72-D4-54'),
+(9, 'admin', '1C-87-2C-72-D4-54'),
 (10, 'frontdesk', 'D0-17-C2-1B-EF-E9'),
-(11, 'admin', 'D0-17-C2-1B-EF-E9');
+(11, 'admin', 'D0-17-C2-1B-EF-E9'),
+(12, 'frontdesk', 'C8-D9-D2-EB-75-25'),
+(13, 'admin', 'C8-D9-D2-EB-75-25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branch_stocks`
+--
+
+CREATE TABLE IF NOT EXISTS `branch_stocks` (
+  `branch_stocksid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `stockitem_id` int(10) unsigned NOT NULL,
+  `branch_name` varchar(85) NOT NULL,
+  `stocks_qty` char(5) NOT NULL,
+  `stocks_rate` double(10,2) NOT NULL,
+  `stock_date` char(10) NOT NULL,
+  PRIMARY KEY (`branch_stocksid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cashier_logbook`
+--
+
+CREATE TABLE IF NOT EXISTS `cashier_logbook` (
+  `logid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `emp_id` int(10) unsigned NOT NULL,
+  `log_date` char(10) NOT NULL,
+  `log_time` char(8) NOT NULL,
+  `op_money` double(10,2) NOT NULL,
+  `clo_money` double(10,2) DEFAULT NULL,
+  PRIMARY KEY (`logid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `cashier_logbook`
+--
+
+INSERT INTO `cashier_logbook` (`logid`, `emp_id`, `log_date`, `log_time`, `op_money`, `clo_money`) VALUES
+(1, 4, '2019-03-22', '07:13 AM', 7000.00, NULL),
+(2, 4, '2019-03-23', '04:02 AM', 7000.00, NULL),
+(3, 4, '2019-03-24', '04:06 AM', 7000.00, NULL),
+(4, 4, '2019-03-27', '02:48 PM', 7000.00, NULL),
+(5, 4, '2019-04-06', '02:08 AM', 7000.00, NULL),
+(6, 4, '2019-04-07', '02:59 AM', 7000.00, NULL),
+(7, 4, '2019-04-11', '04:18 AM', 7000.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -100,6 +147,7 @@ CREATE TABLE IF NOT EXISTS `emp_accounts` (
   `emp_id` int(10) unsigned NOT NULL,
   `emp_username` varchar(55) NOT NULL,
   `emp_password` varchar(85) NOT NULL,
+  `emp_dept` varchar(85) NOT NULL,
   PRIMARY KEY (`emp_account_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
@@ -107,14 +155,14 @@ CREATE TABLE IF NOT EXISTS `emp_accounts` (
 -- Dumping data for table `emp_accounts`
 --
 
-INSERT INTO `emp_accounts` (`emp_account_id`, `emp_id`, `emp_username`, `emp_password`) VALUES
-(1, 1, 'aiza_receptionist', '0920e216162a2da98881caa8abc4192abf501ea6'),
-(2, 2, 'clara_receptionist', 'a991f77280a9f0b577d8f90d9bf2fca9320ece23'),
-(3, 3, 'faith_receptionest', '08df9c147558947c6bddee4ce85b0193caf1eec3'),
-(4, 4, 'programmer_account', '01992dd2dfad9dbabb6710e1bd6ffa85faca1276'),
-(5, 5, 'robgloria', '4e89701f7bce01e90b21f3a34b436b52eeb6fead'),
-(7, 6, 'cindy_receptionist', 'd16e15156c37854e7fc9c7bdef47061d8b39c3f5'),
-(8, 7, 'joseph_veloso', 'c8ec1cfebb00d857b54daf2b805ecf1755629082');
+INSERT INTO `emp_accounts` (`emp_account_id`, `emp_id`, `emp_username`, `emp_password`, `emp_dept`) VALUES
+(1, 1, 'aiza_receptionist', '0920e216162a2da98881caa8abc4192abf501ea6', ''),
+(2, 2, 'clara_receptionist', 'a991f77280a9f0b577d8f90d9bf2fca9320ece23', ''),
+(3, 3, 'faith_receptionest', '08df9c147558947c6bddee4ce85b0193caf1eec3', ''),
+(4, 4, 'programmer_account', '01992dd2dfad9dbabb6710e1bd6ffa85faca1276', 'cashier'),
+(5, 5, 'robgloria', '4e89701f7bce01e90b21f3a34b436b52eeb6fead', ''),
+(7, 6, 'cindy_receptionist', 'd16e15156c37854e7fc9c7bdef47061d8b39c3f5', ''),
+(8, 7, 'joseph_veloso', 'c8ec1cfebb00d857b54daf2b805ecf1755629082', 'production');
 
 -- --------------------------------------------------------
 
@@ -316,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `job_position` (
   `salary_rate` double(10,2) NOT NULL,
   `salary_term_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`job_position_id`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `job_position`
@@ -325,7 +373,8 @@ CREATE TABLE IF NOT EXISTS `job_position` (
 INSERT INTO `job_position` (`job_position_id`, `job_position_name`, `salary_rate`, `salary_term_id`) VALUES
 (2, 'Shop Personnel', 350.00, 1),
 (4, 'Owner', 0.00, 1),
-(5, 'Printing Assistant', 250.00, 1);
+(5, 'Printing Assistant', 250.00, 1),
+(6, 'Test', 100.00, 1);
 
 -- --------------------------------------------------------
 
@@ -334,7 +383,7 @@ INSERT INTO `job_position` (`job_position_id`, `job_position_name`, `salary_rate
 --
 
 CREATE TABLE IF NOT EXISTS `order` (
-  `order_id` int(10) unsigned NOT NULL,
+  `order_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_code` char(20) NOT NULL,
   `cust_name` varchar(80) DEFAULT NULL,
   `order_date` char(20) NOT NULL,
@@ -349,10 +398,21 @@ CREATE TABLE IF NOT EXISTS `order` (
   `order_downpayment` double(10,2) DEFAULT '0.00',
   `tax_rate` double(10,2) DEFAULT '0.00',
   `tax_amount` double(10,2) DEFAULT '0.00',
-  `pick_update` char(16) NOT NULL,
+  `pickup_date` char(16) DEFAULT NULL,
+  `or_num` char(5) DEFAULT NULL,
+  `pickup_time` char(8) DEFAULT NULL,
+  `notes` text,
   PRIMARY KEY (`order_id`),
   KEY `FK_restaurant_order_1` (`cust_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`order_id`, `order_code`, `cust_name`, `order_date`, `emp_id`, `order_bill_amount`, `order_cash_amount`, `order_type`, `order_status`, `order_discount`, `check_in_id`, `sub_order_type`, `order_downpayment`, `tax_rate`, `tax_amount`, `pickup_date`, `or_num`, `pickup_time`, `notes`) VALUES
+(1, 'OC0328-1', 'CASH', '2019-03-28 06:24 AM', 4, 1000.00, 1000.00, 'purchace', 'paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000', NULL, NULL),
+(2, 'OC0329-2', 'CASH', '2019-03-29 08:18 AM', 4, 0.00, 0.00, 'purchace', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -368,11 +428,18 @@ CREATE TABLE IF NOT EXISTS `ordered_item` (
   `order_qty` char(4) NOT NULL,
   `order_date` char(22) NOT NULL,
   `order_stock_type` char(25) NOT NULL,
-  `menu_item_id` int(10) unsigned NOT NULL,
+  `stock_id` int(10) unsigned NOT NULL,
   `order_unit` varchar(45) NOT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `FK_restaurant_ordered_item_1` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ordered_item`
+--
+
+INSERT INTO `ordered_item` (`order_item_id`, `order_id`, `order_name`, `order_price`, `order_qty`, `order_date`, `order_stock_type`, `stock_id`, `order_unit`) VALUES
+(2, 1, 'CAR PLATE', 1000.00, '1', '2019-03-28', 'instock', 1, 'set');
 
 -- --------------------------------------------------------
 
@@ -509,21 +576,6 @@ INSERT INTO `salary_term` (`salary_term_id`, `salary_term_name`, `salary_term_de
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stockarrival_log`
---
-
-CREATE TABLE IF NOT EXISTS `stockarrival_log` (
-  `idarrival_log` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `stock_id` int(10) unsigned NOT NULL,
-  `stock_qqty` char(3) NOT NULL,
-  `stock_unit` varchar(45) NOT NULL,
-  `stock_rate` double(10,2) NOT NULL,
-  PRIMARY KEY (`idarrival_log`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `stockcategory`
 --
 
@@ -531,14 +583,17 @@ CREATE TABLE IF NOT EXISTS `stockcategory` (
   `stockCat_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `stockCat_name` varchar(100) NOT NULL,
   PRIMARY KEY (`stockCat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `stockcategory`
 --
 
 INSERT INTO `stockcategory` (`stockCat_id`, `stockCat_name`) VALUES
-(1, 'Vehicle Plates');
+(1, 'Vehicle Plates'),
+(2, 'Vinyl Stickers'),
+(3, 'T-shirt Printing'),
+(4, 'Siser Materials');
 
 -- --------------------------------------------------------
 
@@ -556,16 +611,19 @@ CREATE TABLE IF NOT EXISTS `stockitem` (
   `stockCost` double(10,2) NOT NULL,
   `stockclass_id` int(10) unsigned NOT NULL,
   `stock_type` varchar(55) NOT NULL,
+  `stock_alert` char(3) NOT NULL,
+  `suppier_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`stock_id`),
   KEY `FK_stockitem_1` (`stockCat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `stockitem`
 --
 
-INSERT INTO `stockitem` (`stock_id`, `stockCat_id`, `stock_name`, `stock_unit`, `stock_qqty`, `stockDispose`, `stockCost`, `stockclass_id`, `stock_type`) VALUES
-(1, 1, 'CAR PLATE', 'SET', '1', '0', 1000.00, 4, 'nonstock');
+INSERT INTO `stockitem` (`stock_id`, `stockCat_id`, `stock_name`, `stock_unit`, `stock_qqty`, `stockDispose`, `stockCost`, `stockclass_id`, `stock_type`, `stock_alert`, `suppier_id`) VALUES
+(1, 1, 'CAR PLATE', 'set', '0', '0', 1000.00, 4, 'instock', '', NULL),
+(2, 1, 'MOTOR PLATE', 'pc', '10', '0', 300.00, 4, 'instock', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -587,6 +645,37 @@ INSERT INTO `stock_class` (`stockclass_id`, `stockclass_name`) VALUES
 (3, 'RAW'),
 (4, 'FINISHED'),
 (5, 'CONSUMABLE');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_newlog`
+--
+
+CREATE TABLE IF NOT EXISTS `stock_newlog` (
+  `stock_newid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nstock_id` int(10) unsigned NOT NULL,
+  `nstock_qqty` char(3) NOT NULL,
+  `nstock_unit` varchar(45) NOT NULL,
+  `nstock_status` varchar(45) NOT NULL DEFAULT 'ok/damage',
+  `delivery_date` char(19) NOT NULL,
+  PRIMARY KEY (`stock_newid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suppliers`
+--
+
+CREATE TABLE IF NOT EXISTS `suppliers` (
+  `supplier_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `supplier_name` varchar(100) NOT NULL,
+  `supplier_tel` char(11) NOT NULL,
+  `supplier_mobile` char(11) NOT NULL,
+  `supplier_email` varchar(85) NOT NULL,
+  PRIMARY KEY (`supplier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
