@@ -41,7 +41,7 @@ class Production extends CI_Controller {
 
 		$this->load->view('production/header',$data);
 		$this->load->view('production/nav_v2',$data);
-		$this->load->view('production/newstocks',$data);
+		$this->load->view('production/orders',$data);
 		$this->load->view('production/footer',$data);
 	}
 
@@ -53,7 +53,7 @@ class Production extends CI_Controller {
 
 		$this->load->view('production/header',$data);
 		$this->load->view('production/nav_v2',$data);
-		$this->load->view('production/newstocks',$data);
+		$this->load->view('production/lowstocks',$data);
 		$this->load->view('production/footer',$data);
 	}
 

@@ -209,15 +209,15 @@
 										<div class="col-lg-6 col-md-6 col-xs-12">
 											<div class="form-group text-left">
 													<label>Customer Name:</label>
-													<input type="text" class="form-control" placeholder="Name" name="cust_name" required >
+													<input type="text" class="form-control" placeholder="Name" name="cust_name" value="cash" required >
 											</div>
 												<div class="form-group text-left">
 														<label>TIN</label>
-														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" required >
+														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="000-000-000" required >
 												</div>
 												<div class="form-group text-left">
 														<label>Address</label>
-														<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" required >
+														<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" value="none" required >
 												</div>
 										</div>
                 </div>
@@ -283,7 +283,7 @@
 											<div class="form-group text-left">
 												<label>SI/OR No:</label>
 												<div class="input-group" style="margin-bottom:5px;">
-													<span class="input-group-addon" id="basic-addon1"><i class="fa fa-numbers fa-fx"></i></span>
+													<span class="input-group-addon" id="basic-addon1"><i class="fa fa-file-text-o fa-fx"></i></span>
 													<input type="text" name="ornum" class="form-control" placeholder="SI/OR" aria-describedby="basic-addon1" required>
 												</div>
 											</div>
@@ -548,16 +548,8 @@
                 dataType:'json',
                 success: function(data){
                     var info = '';
-                        info +='<li class="col-lg-4 col-md-4 col-xs-12" id="total"> '+
-                                    '<span class="text-muted"><strong>Sub Total: </strong></span>'+
-                                    '<span class="text-primary"><strong>Php '+ data.amount +'</strong></span>'+
-                                '</li>'+
-                                '<li class="col-lg-4 col-md-4 col-xs-12" id="change"> '+
-                                    '<span class="text-muted"><strong>Downpayment: </strong></span>'+
-                                    '<span  class="text-primary"><strong>Php '+ data.downpayment +'</strong></span>'+
-                                '</li>'+
-                                '<li class="col-lg-4 col-md-4 col-xs-12" id="change"> '+
-                                    '<span class="text-muted"><strong>Total Bill: </strong></span>'+
+                        info +='<li class="col-lg-4 col-md-4 col-xs-12" id="change"> '+
+                                    '<span class="text-muted"><strong>Total Due: </strong></span>'+
                                     '<span class="text-danger"><strong>Php '+ data.total +'</strong></span>'+
                                 '</li>';
                     $('#cartFooter').html(info);

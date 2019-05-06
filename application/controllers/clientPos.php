@@ -137,7 +137,7 @@ class ClientPos extends CI_Controller {
 	function createCart(){
 		$this->form_validation->set_rules('cust_name','Customer Name','required');
 		$this->form_validation->set_rules('order_type','Order Type','required');
-		$this->form_validation->set_rules('ornum','OR Number','required');
+
 		$this->form_validation->set_rules('downpayment','Downpayment','required');
 		$this->form_validation->set_rules('tax','Tax','required');
 		if ($this->input->post('order_type') == "order") {
@@ -163,7 +163,7 @@ class ClientPos extends CI_Controller {
 					'emp_id'=>$this->session->userdata('current_id'),
 					'order_type'=>set_value('order_type'),
 					'order_downpayment'=>set_value('downpayment'),
-					'or_num'=>set_value('ornum'),
+					'or_num'=>'',
 					'tax_rate'=>set_value('tax'),
 					'pickup_date'=>set_value('date'),
 					'pickup_time'=>set_value('time')
@@ -176,7 +176,7 @@ class ClientPos extends CI_Controller {
 					'emp_id'=>$this->session->userdata('current_id'),
 					'order_type'=>set_value('order_type'),
 					'order_downpayment'=>set_value('downpayment'),
-					'or_num'=>set_value('ornum'),
+					'or_num'=>'',
 					'tax_rate'=>set_value('tax')
 				);
 			}
@@ -939,7 +939,8 @@ class ClientPos extends CI_Controller {
 	function order_payment(){
 		$this->form_validation->set_rules('cash','Cash Amount','required');
 		$this->form_validation->set_rules('discount','Discount','required');
-
+		$this->form_validation->set_rules('ornum','OR Number','required');
+		$this->form_validation->set_rules('tax','Tax','required');
 		if ($this->form_validation->run() == FALSE) {
 			$data['success'] = false;
 			$data['error'] = validation_errors();
@@ -960,7 +961,7 @@ class ClientPos extends CI_Controller {
 					}
 
 					$total = $amount - $downpayment;
-					$tax = $value->tax_rate / 100;
+					$tax = set_value('tax') / 100;
 					$tax_amount = $amount * $tax;
 					$total = $total - set_value('discount');
 
@@ -969,6 +970,7 @@ class ClientPos extends CI_Controller {
 						'order_cash_amount'=>set_value('cash'),
 						'order_status'=>'paid',
 						'order_discount'=>set_value('discount'),
+						'or_num'=>set_value('ornum'),
 						'tax_amount'=>$tax_amount
 					);
 

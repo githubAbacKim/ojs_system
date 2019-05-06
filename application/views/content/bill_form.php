@@ -16,7 +16,7 @@
                 <h6><?php echo $value->property_name;?></h6>
             </div>
             <!-- /.col-lg-12 -->
-            <div class="col-lg-12 col-xs-12 text-center" style="font-size: 7pt!important;">
+            <div class="col-lg-12 col-xs-12 text-center" style="font-size: 8pt!important;">
               <p><?php echo $value->email?></p>
               <p><?php echo $value->street_name.', '.$value->municipality.', '.$value->state.', '.$value->country.' '.$value->zipcode;
                 ?></p>
@@ -25,23 +25,23 @@
             }
         ?>
     </div>
-    <div class="row" style="font-size: 7pt!important;padding:0px;">
+    <div class="row" style="font-size: 8pt!important;padding:0px;">
         <div class="col-lg-6 col-md-6 col-xs-6">
-          OCode <?php echo $bill->order_code;?>
+          O# <?php echo $bill->order_code;?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
-          Date:</strong> <?php echo $bill->cust_name;?>
+          Time:</strong> <?php echo substr($bill->order_date,11,8);?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
           TRML#: 01
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
-          Time:<?php echo substr($bill->order_date,11,8);?>
+          Date: <?php echo substr($bill->order_date,0,11);?>
         </div>
     </div>
     <div class="row">
       <!-- <div class="col-xs-12" style="border-top: solid 0.25px !important;"></div> -->
-      <div class="col-lg-8 col-md-8 col-xs-12 text-center" style="font-size: 7pt!important;font-weight:bold;border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;padding:5px">
+      <div class="col-lg-8 col-md-8 col-xs-12 text-center" style="font-size: 8pt!important;font-weight:bold;border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;padding:5px">
           <?php echo $page;?>
       </div>
       <!-- <div class="col-xs-12" style="border-top: solid 0.25px !important;"></div> -->
@@ -55,7 +55,7 @@
               padding: 2px 5px!important;
           }
       </style>
-        <table class="table table-striped table-hover" style="font-size:7pt!important;">
+        <table class="table table-striped table-hover" style="font-size:8pt!important;">
                 <!-- <thead>
                     <tr>
                         <td colspan="4">
@@ -111,7 +111,7 @@
                     <!-- Total, Payment Amount and Balance -->
                     <tr>
                         <td colspan="2">Sub Total</td>
-                        <td class="text-right" style="font-size:7pt!important;"><?php echo "P".$this->cart->format_number($tamount);?></td>
+                        <td class="text-right" style="font-size:8pt!important;"><?php echo "P".$this->cart->format_number($tamount);?></td>
                     </tr>
                     <tr style="font-size:8pt!important;font-weight:bold;">
                         <td colspan="2">Total</td>
@@ -120,12 +120,12 @@
                     <!-- Downpayment -->
                     <tr>
                         <td colspan="2">Downpayment</td>
-                        <td class="text-right" style="font-size:7pt!important;"><?php echo "P".$this->cart->format_number($bill->order_downpayment);?></td>
+                        <td class="text-right" style="font-size:8pt!important;"><?php echo "P".$this->cart->format_number($bill->order_downpayment);?></td>
                     </tr>
                     <!-- total bill -->
                     <tr>
                         <td colspan="2">Payment Due</td>
-                        <td class="text-right" style="font-size:7pt!important;"><?php echo "P".$this->cart->format_number($tbill);?></td>
+                        <td class="text-right" style="font-size:8pt!important;"><?php echo "P".$this->cart->format_number($tbill);?></td>
                     </tr>
                 </tbody>
             </table>

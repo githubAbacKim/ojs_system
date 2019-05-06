@@ -18,12 +18,12 @@
     <!-- overview -->
     <div class="row">
       <!-- walk-in -->
-      <div class="col-lg-6 col-md-6">
+      <div class="col-lg-4 col-md-4">
           <div class="panel panel-green">
               <div class="panel-heading">
                   <div class="row">
                       <div class="col-xs-3">
-                          <i class="fa fa-calendar fa-5x"></i>
+                          <i class="fa fa-calendar fa-4x"></i>
                       </div>
                       <div class="col-xs-9 text-right">
                           <div class="huge">12</div>
@@ -31,8 +31,15 @@
                       </div>
                   </div>
               </div>
-              <div class="panel-body" style="min-height:350px;">
-
+              <div class="panel-body" style="min-height:350px;max-height:350px;font-size:9pt;">
+                <table class="table table-striped table-bordered table-hover" id="attendance">
+                    <thead>
+                        <tr>
+                            <th>Order Code</th>
+                            <th width="40%">Pick-up Date</th>
+                        </tr>
+                    </thead>
+                </table>
               </div>
               <a href="#">
                   <div class="panel-footer">
@@ -44,22 +51,61 @@
           </div>
       </div>
       <!-- orders -->
-      <div class="col-lg-6 col-md-6">
+      <div class="col-lg-4 col-md-4">
           <div class="panel panel-yellow">
               <div class="panel-heading">
                   <div class="row">
-                      <div class="col-xs-3">
-                          <i class="fa fa-angle-double-down fa-2x"></i>
-                          <i class="fa fa-shopping-cart fa-5x"></i>
+                      <div class="col-xs-4">
+                          <i class="fa fa-exclamation-triangle fa-4x"></i>
                       </div>
-                      <div class="col-xs-9 text-right">
+                      <div class="col-xs-8 text-right">
                           <div class="huge">12</div>
                           <div>Low Stocks</div>
                       </div>
                   </div>
               </div>
-              <div class="panel-body" style="min-height:350px;max-height:350px;">
-
+              <div class="panel-body" style="min-height:350px;max-height:350px;font-size:9pt;">
+                <table class="table table-striped table-bordered table-hover" id="attendance">
+                    <thead>
+                        <tr>
+                            <th>Item Desc</th>
+                            <th>Qty</th>
+                        </tr>
+                    </thead>
+                </table>
+              </div>
+              <a href="#">
+                  <div class="panel-footer">
+                      <span class="pull-left">View Details</span>
+                      <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                      <div class="clearfix"></div>
+                  </div>
+              </a>
+          </div>
+      </div>
+      <!-- orders -->
+      <div class="col-lg-4 col-md-4">
+          <div class="panel panel-red">
+              <div class="panel-heading">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-times fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8 text-right">
+                          <div class="huge">12</div>
+                          <div>Damage Stocks</div>
+                      </div>
+                  </div>
+              </div>
+              <div class="panel-body" style="min-height:350px;max-height:350px;font-size:9pt;">
+                <table class="table table-striped table-bordered table-hover" id="attendance">
+                    <thead>
+                        <tr>
+                            <th>Item Desc</th>
+                            <th>Qty</th>
+                        </tr>
+                    </thead>
+                </table>
               </div>
               <a href="#">
                   <div class="panel-footer">
