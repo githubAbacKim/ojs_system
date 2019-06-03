@@ -16,7 +16,7 @@
                 <h6><?php echo $value->property_name;?></h6>
             </div>
             <!-- /.col-lg-12 -->
-            <div class="col-lg-12 col-xs-12 text-center" style="font-size: 8pt!important;">
+            <div class="col-lg-12 col-xs-12 text-center" style="font-size: 11pt!important;">
               <p><?php echo $value->email?></p>
               <p><?php echo $value->street_name.', '.$value->municipality.', '.$value->state.', '.$value->country.' '.$value->zipcode;
                 ?></p>
@@ -25,7 +25,7 @@
             }
         ?>
     </div>
-    <div class="row" style="font-size: 8pt!important;padding:0px;">
+    <div class="row" style="font-size: 11pt!important;padding:0px;">
         <div class="col-lg-6 col-md-6 col-xs-6">
           OR# <?php echo $bill->order_code;?>
         </div>
@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="row">
-      <div class="col-lg-8 col-md-8 col-xs-12 text-center" style="font-size: 8pt!important;font-weight:bold;border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;padding:5px">
+      <div class="col-lg-8 col-md-8 col-xs-12 text-center" style="font-size: 11pt!important;font-weight:bold;border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;padding:5px">
           <?php echo $page;?>
       </div>
         <style scope>
@@ -53,7 +53,7 @@
                 padding: 2px 5px!important;
             }
         </style>
-            <table class="table table-striped table-hover" style="font-size:8pt!important;">
+            <table class="table table-striped table-hover" style="font-size:11pt!important;">
 
                 <tbody>
                     <?php
@@ -90,7 +90,7 @@
                     <!-- Total, Payment Amount and Balance -->
                     <tr>
                         <td colspan="2">Sub Total</td>
-                        <td class="text-right" style="font-size:8pt!important;"><?php echo "P".$this->cart->format_number($tamount);?></td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($tamount);?></td>
                     </tr>
                     <tr style="font-size:9pt !important;font-weight:bold;">
                         <td colspan="2">Total</td>
@@ -99,10 +99,10 @@
                     <!-- Downpayment -->
                     <tr>
                         <td colspan="2">Downpayment</td>
-                        <td class="text-right" style="font-size:8pt!important;"><?php echo "P".$this->cart->format_number($bill->order_downpayment);?></td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($bill->order_downpayment);?></td>
                     </tr>
                         <td colspan="2">Cash</td>
-                        <td class="text-right" style="font-size:8pt!important;"><?php echo "P".$this->cart->format_number($bill->order_cash_amount);?></td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($bill->order_cash_amount);?></td>
                     </tr>
                     <tr style="font-size:9pt !important;font-weight:bold;">
                         <td colspan="2">Change</td>
@@ -120,7 +120,7 @@
                 </tbody>
             </table>
     </div>
-    <div class="row" style="font-size: 8pt!important;padding:0px;">
+    <div class="row" style="font-size: 11pt!important;padding:0px;">
         <div class="col-lg-6 col-md-6 col-xs-6">
           Name:
         </div>

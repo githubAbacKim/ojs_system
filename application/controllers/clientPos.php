@@ -1051,8 +1051,6 @@ class ClientPos extends CI_Controller {
 		echo json_encode($data);
 	}
 
-
-
 	function checkcartstat(){
 		$where = array("order_id"=>$this->session->userdata('posCart'));
 		$cart = $this->project_model->select('order',false,$where);

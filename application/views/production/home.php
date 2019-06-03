@@ -18,7 +18,7 @@
     <!-- overview -->
     <div class="row">
       <!-- walk-in -->
-      <div class="col-lg-4 col-md-4">
+      <!-- <div class="col-lg-4 col-md-4">
           <div class="panel panel-green">
               <div class="panel-heading">
                   <div class="row">
@@ -49,9 +49,9 @@
                   </div>
               </a>
           </div>
-      </div>
+      </div> -->
       <!-- orders -->
-      <div class="col-lg-4 col-md-4">
+      <!-- <div class="col-lg-4 col-md-4">
           <div class="panel panel-yellow">
               <div class="panel-heading">
                   <div class="row">
@@ -82,9 +82,9 @@
                   </div>
               </a>
           </div>
-      </div>
+      </div> -->
       <!-- orders -->
-      <div class="col-lg-4 col-md-4">
+      <!-- <div class="col-lg-4 col-md-4">
           <div class="panel panel-red">
               <div class="panel-heading">
                   <div class="row">
@@ -115,7 +115,7 @@
                   </div>
               </a>
           </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- forms -->

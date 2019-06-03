@@ -87,6 +87,10 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
+                            <a href="<?php echo base_url("admin/suppliers")?>">Suppliers</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
                             <a href="<?php echo base_url("admin/stockClass")?>">Stock Class</a>
                         </li>
                         <li class="divider"></li>
@@ -150,6 +154,10 @@
                         <li class="divider"></li>
                         <li>
                             <a href="<?php echo base_url("admin/incomeStatement")?>">Income Statement</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="<?php echo base_url("admin/cashierLogHistory")?>">Cashier Login</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-messages -->

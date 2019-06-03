@@ -2237,6 +2237,19 @@ class Admin extends CI_Controller {
 		$this->load->view('storage/stockclass',$data);
 		$this->load->view('admin/footer',$data);
 	}
+	function suppliers(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "Suppliers";
+		$data['page'] = 'Stock';
+
+		$data['record'] = $this->admin_model->property_info();
+
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('admin/nav_v2',$data);
+		$this->load->view('storage/stockclass',$data);
+		$this->load->view('admin/footer',$data);
+	}
 
 	function officeStocks(){
 		$data['title'] = "Administrator";
@@ -4485,6 +4498,17 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/footer',$data);
 	}
 
+	function cashierLogHistory(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "Cashier Log";
+		$data['page'] = 'reports';
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('admin/nav_v2',$data);
+		$this->load->view('reports/cashierLog',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
 /*====== Monthly Reports Processing ==========*/
 	/*miscellaneous*/
 		function fetchMisc(){
@@ -6246,6 +6270,48 @@ class Admin extends CI_Controller {
 			$this->load->view('admin/footer',$data);
 		}
 
+ 	// cashier login history
+	function fetchCashierPreLog(){
+		$result = array('data' => array());
+		$join = array(
+				array('employee','cashier_logbook','emp_id')
+		);
+		$order = array('log_date','ASC');
+		$data = $this->project_model->select_join('cashier_logbook',$join,$like=false,$where=false,$order);
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$name = $value->emp_fname.' '.$value->emp_lname;
+				$result['data'][$key] = array(
+					$value->log_date,
+					$name,
+					$value->op_money,
+					$value->clo_money
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function fetchCashierLog(){
+		$result = array('data' => array());
+		$join = array(
+				array('employee','cashier_logbook','emp_id')
+		);
+		$order = array('log_date','ASC');
+		$data = $this->project_model->select_join('cashier_logbook',$join,$like=false,$where=false,$order);
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$name = $value->emp_fname.' '.$value->emp_lname;
+				$result['data'][$key] = array(
+					$value->log_date,
+					$value->log_time,
+					$name,
+					$value->op_money,
+					$value->clo_money
+				);
+			}
+		}
+		echo json_encode($result);
+	}
 //testing center
 	function testFunction(){
 		$result = array('data' => array());

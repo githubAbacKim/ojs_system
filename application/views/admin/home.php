@@ -4,8 +4,7 @@
     </div>
 
     <!-- overview -->
-    <div class="row">
-      <!-- walk-in -->
+    <!-- <div class="row">
       <div class="col-lg-3 col-md-6">
           <div class="panel panel-primary">
               <div class="panel-heading">
@@ -28,7 +27,6 @@
               </a>
           </div>
       </div>
-      <!-- orders -->
       <div class="col-lg-3 col-md-6">
           <div class="panel panel-yellow">
               <div class="panel-heading">
@@ -51,7 +49,6 @@
               </a>
           </div>
       </div>
-      <!-- cancelled orders -->
       <div class="col-lg-3 col-md-6">
           <div class="panel panel-red">
               <div class="panel-heading">
@@ -74,90 +71,163 @@
               </a>
           </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- forms -->
     <div class="row">
-      <div class="col-lg-4">
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                  <i class="fa fa-users fa-2x"></i> Employee Forms
-              </div>
-              <!-- /.panel-heading -->
-              <div class="panel-body">
-                  <div class="list-group" style="margin: 0 auto !important;">
-                      <a href="javascript:;" id="printLogForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Attendance Form
-                      </a>
-                      <a href="javascript:;" id="printOTForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Overtime Form
-                      </a>
-                      <a href="javascript:;" id="printCreditForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Credit Form
-                      </a>
-                      <a href="javascript:;" id="printSalesForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Employee Sales Form
-                      </a>
-                  </div>
-              </div>
-              <!-- /.panel-body -->
-          </div>
-          <!-- /.panel -->
+      <div class="col-lg-6">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-users fa-2x"></i> Cashier Log-in history
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                  <table class="table table-striped table-bordered table-hover" id="cashierlogin">
+                      <thead>
+                          <tr>
+                              <th>Date</th>
+                              <th>Employee</th>
+                              <th>Starting</th>
+                              <th>Closing</th>
+                          </tr>
+                      </thead>
+                  </table>
+                </div>
+                <!-- /.panel-body -->
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- Expenses Forms -->
       </div>
-      <!-- Expenses Forms -->
 
-      <div class="col-lg-4">
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                  <i class="fa fa-money fa-2x"></i> Expenses Forms
-              </div>
-              <!-- /.panel-heading -->
-              <div class="panel-body">
-                  <div class="list-group" style="margin: 0 auto !important;">
-                      <a href="javascript:;" id="printMiscForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Miscellaneous Exp. Form
-                      </a>
-                      <a href="javascript:;" id="printProdForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Production Exp. Form
-                      </a>
-                      <a href="javascript:;" id="printEquipForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Equipment Exp. Form
-                      </a>
-                      <a href="javascript:;" id="printStockExpForm" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Stocks Exp. Form
-                      </a>
-                  </div>
-              </div>
-              <!-- /.panel-body -->
-          </div>
-          <!-- /.panel -->
-      </div>
-      <!-- Item List -->
+      <div class="col-lg-6">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-users fa-2x"></i> Employee Forms
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group" style="margin: 0 auto !important;">
+                        <a href="javascript:;" id="printLogForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Attendance Form
+                        </a>
+                        <a href="javascript:;" id="printOTForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Overtime Form
+                        </a>
+                        <a href="javascript:;" id="printCreditForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Credit Form
+                        </a>
+                        <a href="javascript:;" id="printSalesForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Employee Sales Form
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- Expenses Forms -->
 
-      <div class="col-lg-4">
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                  <i class="fa fa-cubes fa-2x"></i> Inventory Forms
-              </div>
-              <!-- /.panel-heading -->
-              <div class="panel-body">
-                  <div class="list-group">
-                      <a href="javascript:;" id="printStockList" class="list-group-item">
-                          <i class="fa fa-file-text fa-fw"></i> Stocks List Form
-                      </a>
-                  </div>
-              </div>
-              <!-- /.panel-body -->
-          </div>
-          <!-- /.panel -->
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-money fa-2x"></i> Expenses Forms
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group" style="margin: 0 auto !important;">
+                        <a href="javascript:;" id="printMiscForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Miscellaneous Exp. Form
+                        </a>
+                        <a href="javascript:;" id="printProdForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Production Exp. Form
+                        </a>
+                        <a href="javascript:;" id="printEquipForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Equipment Exp. Form
+                        </a>
+                        <a href="javascript:;" id="printStockExpForm" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Stocks Exp. Form
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- Item List -->
+
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-cubes fa-2x"></i> Inventory Forms
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="javascript:;" id="printStockList" class="list-group-item">
+                            <i class="fa fa-file-text fa-fw"></i> Stocks List Form
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- end of forms -->
       </div>
-      <!-- end of forms -->
+
     </div>
 
   </div>
 
   <script>
+    var logTable;
   	$(document).ready(function() {
+      setInterval(function(){
+          logTable.ajax.reload(null, false);
+      },3000);
+      // Setup - add a text input to each footer cell
+      $('#cashierlogin thead th').each( function () {
+          var title = $(this).text();
+          $(this).html( '<input style="width:100%;font-size:12px;" type="text" placeholder="'+title+'" />' );
+      } );
+
+      logTable = $("#cashierlogin").DataTable({
+          'processing':true,
+          'serverside':true,
+          'ajax': {
+              "url": "<?php echo site_url('admin/fetchCashierPreLog')?>",
+              "type": "POST"
+          },
+          "dom": '<"top"l>rt<"bottom"ip><"clear">',
+          'bProcessing': false,
+          "scrollY":        "250px",
+          "scrollCollapse": true,
+          "paging":         false
+      });
+
+      // Apply the search
+      logTable.columns().every( function () {
+          var that = this;
+
+          $( 'input', this.header() ).on( 'keyup change', function () {
+              if ( that.search() !== this.value ) {
+                  that
+                      .search( this.value )
+                      .draw();
+              }
+          } );
+      } );
+
   		$('#btnPrint').click(function(){
   	            $('#printForm')[0].reset();
   	            $('#printModal').modal('show');
@@ -167,7 +237,7 @@
   	    $('#conPrint').click(function(){
   	        /*var link =  $(this).attr('data');
   	        window.open(link,"newwindow", "width=1200, height=800");*/
-  	         var month = $('select[name=mon2]');
+  	        var month = $('select[name=mon2]');
   	        var emp = $('select[name=employee2]');
   	        var year = $('input[name=year]');
   	        var url = '<?php echo base_url('admin/attendance_sheet')?>/'  + month.val() + '/' + year.val() + '/' + emp.val();

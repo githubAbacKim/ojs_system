@@ -127,7 +127,7 @@
             },
             "dom": '<"top"l>rt<"bottom"ip><"clear">',
             'bProcessing': false,
-            "scrollY":        "350px",
+            "scrollY":        "300px",
             "scrollCollapse": true,
             "paging":         false
         });
