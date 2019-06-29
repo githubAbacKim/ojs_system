@@ -2204,6 +2204,7 @@ class Admin extends CI_Controller {
 
 		$data['category'] = $this->project_model->select('stockcategory');
 		$data['stockclass'] = $this->project_model->select('stock_class');
+		$data['suppliers'] = $this->project_model->select('suppliers');
 		$data['record'] = $this->admin_model->property_info();
 
 		$this->load->view('admin/header',$data);
@@ -2244,10 +2245,9 @@ class Admin extends CI_Controller {
 
 		$data['record'] = $this->admin_model->property_info();
 
-
 		$this->load->view('admin/header',$data);
 		$this->load->view('admin/nav_v2',$data);
-		$this->load->view('storage/stockclass',$data);
+		$this->load->view('storage/suppliers',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -2498,7 +2498,8 @@ class Admin extends CI_Controller {
 		$result = array('data' => array());
 
 		$join = array(
-				array('stockcategory','stockitem','stockCat_id')
+				array('stockcategory','stockitem','stockCat_id'),
+				array('suppliers','stockitem','supplier_id')
 			);
 		$data = $this->project_model->select_join('stockitem',$join);
 		if ($data != false) {
@@ -2514,6 +2515,7 @@ class Admin extends CI_Controller {
 					$value->stock_unit,
 					$value->stock_qqty,
 					$value->stockCost,
+					$value->supplier_name,
 					$tcost,
 					$buttons
 				);
@@ -2523,37 +2525,66 @@ class Admin extends CI_Controller {
 	}
 	function createItem(){
 		$type = $this->input->post('stock_type');
+
+		$this->form_validation->set_rules('category','Category','required');
+		$this->form_validation->set_rules('name','Item name','required');
+		$this->form_validation->set_rules('unit','Unit','required');
+		$this->form_validation->set_rules('cost','Cost','required');
+		$this->form_validation->set_rules('rp','Retail Price','required');
+		$this->form_validation->set_rules('stockclass','Stock class','required');
+		$this->form_validation->set_rules('stock_type','Stock type','required');
+		$this->form_validation->set_rules('supplier','Supplier','required');
+
 		if ($type == "instock") {
-			$data = array(
-				"stockCat_id"=>$this->input->post('category'),
-				"stock_name"=>ucwords($this->input->post('name')),
-				"stock_unit"=>$this->input->post('unit'),
-				"stock_qqty"=>$this->input->post('qty'),
-				"stockCost"=>$this->input->post('cost'),
-				"stockclass_id"=>$this->input->post('stockclass'),
-				"stock_type"=>$this->input->post('stock_type')
-			);
-		}else{
-			$data = array(
-				"stockCat_id"=>$this->input->post('category'),
-				"stock_name"=>ucwords($this->input->post('name')),
-				"stock_unit"=>'none',
-				"stock_qqty"=>0,
-				"stockclass_id"=>$this->input->post('stockclass'),
-				"stockCost"=>$this->input->post('cost'),
-				"stock_type"=>$this->input->post('stock_type')
-			);
+			$this->form_validation->set_rules('alert','Alert quantity','required');
+			$this->form_validation->set_rules('qty','Stock Quantity','required');
 		}
 
-		$result = $this->project_model->insert('stockitem',$data);
+		if ($this->form_validation->run() == FALSE) {
+			$msg['success'] = false;
+			$msg['error'] = validation_errors();
+		}else{
+			if ($type == "instock") {
+			  $data = array(
+			    "stockCat_id"=>set_value('category'),
+			    "stock_name"=>ucwords(set_value('name')),
+			    "stock_unit"=>set_value('unit'),
+			    "stock_qqty"=>set_value('qty'),
+			    "stockCost"=>set_value('cost'),
+			    "stockclass_id"=>set_value('stockclass'),
+			    "stock_type"=>set_value('stock_type'),
+					"stock_alert"=>set_value('alert'),
+			    "supplier_id"=>set_value('supplier'),
+					"retail_price"=>set_value('rp')
+			  );
+			}else{
+			  $data = array(
+			    "stockCat_id"=>set_value('category'),
+			    "stock_name"=>ucwords(set_value('name')),
+			    "stock_unit"=>set_value('unit'),
+			    "stock_qqty"=>0,
+			    "stockclass_id"=>set_value('stockclass'),
+			    "stockCost"=>set_value('cost'),
+			    "stock_type"=>set_value('stock_type'),
+					"stock_alert"=>0,
+			    "supplier_id"=>set_value('supplier'),
+					"retail_price"=>set_value('rp')
+			  );
+			}
+
+			$result = $this->project_model->insert('stockitem',$data);
+
+			$msg['type'] = 'add';
+			if ($result) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error adding item';
+			}
+
+		}
 
 		$msg['type'] = 'add';
-		if ($result) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
 		echo json_encode($msg);
 	}
 	function editStock(){
@@ -2566,34 +2597,62 @@ class Admin extends CI_Controller {
 	function updateItem(){
 		$msg['type'] = 'update';
 		$type = $this->input->post('stock_type');
+
+		$this->form_validation->set_rules('category','Category','required');
+		$this->form_validation->set_rules('name','Item name','required');
+		$this->form_validation->set_rules('unit','Unit','required');
+		$this->form_validation->set_rules('cost','Cost','required');
+		$this->form_validation->set_rules('rp','Retail Price','required');
+		$this->form_validation->set_rules('stockclass','Stock class','required');
+		$this->form_validation->set_rules('stock_type','Stock type','required');
+		$this->form_validation->set_rules('supplier','Supplier','required');
+
 		if ($type == "instock") {
-			$data = array(
-				"stockCat_id"=>$this->input->post('category'),
-				"stock_name"=>ucwords($this->input->post('name')),
-				"stock_unit"=>$this->input->post('unit'),
-				"stock_qqty"=>$this->input->post('qty'),
-				"stockCost"=>$this->input->post('cost'),
-				"stockclass_id"=>$this->input->post('stockclass'),
-				"stock_type"=>$this->input->post('stock_type')
-			);
-		}else{
-			$data = array(
-				"stockCat_id"=>$this->input->post('category'),
-				"stock_name"=>ucwords($this->input->post('name')),
-				"stock_unit"=>'none',
-				"stock_qqty"=>0,
-				"stockclass_id"=>$this->input->post('stockclass'),
-				"stockCost"=>$this->input->post('cost'),
-				"stock_type"=>$this->input->post('stock_type')
-			);
+			$this->form_validation->set_rules('alert','Alert quantity','required');
+			$this->form_validation->set_rules('qty','Stock Quantity','required');
 		}
-		$id = $this->input->post('id');
-		$where = array('stock_id'=>$id);
-		$result = $this->project_model->updateNew('stockitem',$where,$data);
-		if ($result != false) {
-			$msg['success'] = true;
-		}else{
+
+		if ($this->form_validation->run() == FALSE) {
 			$msg['success'] = false;
+			$msg['error'] = validation_errors();
+		}else{
+			if ($type == "instock") {
+				$data = array(
+					"stockCat_id"=>set_value('category'),
+					"stock_name"=>ucwords(set_value('name')),
+					"stock_unit"=>set_value('unit'),
+					"stock_qqty"=>set_value('qty'),
+					"stockCost"=>set_value('cost'),
+					"stockclass_id"=>set_value('stockclass'),
+					"stock_type"=>set_value('stock_type'),
+					"stock_alert"=>set_value('alert'),
+					"supplier_id"=>set_value('supplier'),
+					"retail_price"=>set_value('rp')
+				);
+			}else{
+				$data = array(
+					"stockCat_id"=>set_value('category'),
+					"stock_name"=>ucwords(set_value('name')),
+					"stock_unit"=>set_value('unit'),
+					"stock_qqty"=>0,
+					"stockDispose"=>0,
+					"stockclass_id"=>set_value('stockclass'),
+					"stockCost"=>set_value('cost'),
+					"stock_type"=>set_value('stock_type'),
+					"stock_alert"=>0,
+					"supplier_id"=>set_value('supplier'),
+					"retail_price"=>set_value('rp')
+				);
+			}
+			$id = $this->input->post('id');
+			$where = array('stock_id'=>$id);
+			$result = $this->project_model->updateNew('stockitem',$where,$data);
+			if ($result != false) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error updating item';
+			}
 		}
 		echo json_encode($msg);
 
@@ -2609,7 +2668,7 @@ class Admin extends CI_Controller {
 		echo json_encode($msg);
 	}
 
-/*====== Distribution Channels ======*/
+/*====== Stock Class ======*/
 	function fetchStockClass(){
 		$result = array('data' => array());
 
@@ -2689,6 +2748,114 @@ class Admin extends CI_Controller {
 
 		echo json_encode($msg);
 	}
+
+	/*====== Stock Suppliers ======*/
+		function fetchSuppliers(){
+			$result = array('data' => array());
+
+			$data = $this->project_model->select('suppliers');
+
+			if ($data != false) {
+				foreach ($data as $key => $value) {
+					$buttons = '
+						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->supplier_id.'" title="Print"><i class="fa fa-pencil"></i></a>
+						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->supplier_id.'" title="Select"><i class="fa fa-times"></i></a>
+					';
+					$result['data'][$key] = array(
+						$value->supplier_name,
+						$value->supplier_tel,
+						$value->supplier_mobile,
+						$value->supplier_email,
+						$value->supplier_desc,
+						$buttons
+					);
+				}
+			}
+
+			echo json_encode($result);
+		}
+		function addSupplier(){
+			$this->form_validation->set_rules("company","Company/Suppliers Name","required");
+			$this->form_validation->set_rules("telephone","Telephone","required|is_natural");
+			$this->form_validation->set_rules("mobile","Mobile","required|is_natural");
+			$this->form_validation->set_rules("email","Email Address","required|valid_email");
+			$this->form_validation->set_rules("desc","Supplies","required");
+			if ($this->form_validation->run() == FALSE) {
+				$msg['success'] = false;
+				$msg['error'] = validation_errors();
+			}else{
+				$data = array(
+					'supplier_name'=>ucwords(set_value("company")),
+					'supplier_tel'=>set_value("telephone"),
+					'supplier_mobile'=>set_value("mobile"),
+					'supplier_email'=>set_value("email"),
+					'supplier_desc'=>set_value("desc")
+					);
+				$where =  array("supplier_name"=>ucwords(set_value("company")));
+				$check = $this->project_model->check_multi_duplicate('suppliers',$where);
+				if ($check != true) {
+					$insert = $this->project_model->insert('suppliers',$data);
+					if ($insert != false) {
+						$msg['success'] = true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = "Error adding data.";
+					}
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = "Sorry! Duplicate record found.";
+				}
+			}
+			$msg['type'] = 'add';
+			echo json_encode($msg);
+		}
+		function editSupplier(){
+			$id = $this->input->get('id');
+			$where = array("supplier_id"=>$id);
+			$result = $this->project_model->single_select('suppliers',$where);
+			echo json_encode($result);
+		}
+		function updateSupplier(){
+			$msg['type'] = 'update';
+			$this->form_validation->set_rules("company","Company/Suppliers Name","required");
+			$this->form_validation->set_rules("telephone","Telephone","required|is_natural");
+			$this->form_validation->set_rules("mobile","Mobile","required|is_natural");
+			$this->form_validation->set_rules("email","Email Address","required|valid_email");
+			$this->form_validation->set_rules("desc","Supplies","required");
+			$this->form_validation->set_rules("supplierId","Data Id","required");
+			if ($this->form_validation->run() == FALSE) {
+				$msg['success'] = false;
+				$msg['error'] = validation_errors();
+			}else{
+					$data = array(
+						'supplier_name'=>ucwords(set_value("company")),
+						'supplier_tel'=>set_value("telephone"),
+						'supplier_mobile'=>set_value("mobile"),
+						'supplier_email'=>set_value("email"),
+						'supplier_desc'=>set_value("desc")
+						);
+					$where = array('supplier_id'=>set_value("supplierId"));
+					$result = $this->project_model->updateNew('suppliers',$where,$data);
+					if ($result != false) {
+						$msg['success'] = true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = 'Error updating data.';
+					}
+			}
+			echo json_encode($msg);
+		}
+		function deleteSupplier(){
+			$id = $this->input->get('id');
+			$result = $this->project_model->delete('suppliers','supplier_id',$id);
+			if ($result) {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+			}
+
+			echo json_encode($msg);
+		}
 
 /*====== Monitoring ==========*/
 	function stockRoomMonitoring(){
@@ -4508,6 +4675,28 @@ class Admin extends CI_Controller {
 		$this->load->view('reports/cashierLog',$data);
 		$this->load->view('admin/footer',$data);
 	}
+	function printCahierLog(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Cashier Login Record';
+
+		$month = $this->uri->segment(3);
+		$year = $this->uri->segment(4);
+		$param = $year.'-'.$month;
+		$like = array(
+			'log_date'=>$param
+		);
+		$order = array('log_date','asc');
+		$join = array(
+			array('employee','cashier_logbook','emp_id')
+		);
+		$data['result' ] = $this->project_model->select_join('cashier_logbook',$join,$like,$where=false,$order);
+		$data['property']= $this->project_model->select('property_info');
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('reports/printCashierLog',$data);
+		$this->load->view('admin/footer',$data);
+	}
 
 /*====== Monthly Reports Processing ==========*/
 	/*miscellaneous*/
@@ -4536,7 +4725,6 @@ class Admin extends CI_Controller {
 			echo json_encode($result);
 		}
 		function addMisc(){
-			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
 			$this->form_validation->set_rules('cost','Cost','required');
@@ -4549,7 +4737,6 @@ class Admin extends CI_Controller {
 				$msg['success'] = false;
 			}else{
 				$data = array(
-					'misc_desc'=>ucwords(set_value('desc')),
 					'misc_qty'=>set_value('qty'),
 					'misc_unit'=>set_value('unit'),
 					'misc_price'=>set_value('cost'),
@@ -4643,25 +4830,21 @@ class Admin extends CI_Controller {
 	/*production*/
 		function fetchExpProd(){
 			$result = array('data' => array());
-
 			$join = array(
-				array('releasecart','releaseditem','releaseCart_id'),
-				array('order','releasecart','order_id')
+				array('stockitem','releaseditem','stock_id')
 			);
 			$data = $this->project_model->select_join('releaseditem',$join);
 			if ($data != false) {
 				foreach ($data as $key => $value) {
-					$tcost = $this->cart->format_number($value->releaseitem_cost * $value->releaseitem_qty);
+					$tcost = $this->cart->format_number($value->stockCost * $value->releaseitem_qty);
 					$buttons = '
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->release_item_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
 					';
 					$result['data'][$key] = array(
 						$value->release_date,
-						$value->order_code,
-						$value->releaseitem_name,
+						$value->stock_name,
 						$value->releaseitem_unit,
 						$value->releaseitem_qty,
-						$value->releaseitem_cost,
 						$tcost,
 						$buttons
 					);
@@ -4766,11 +4949,10 @@ class Admin extends CI_Controller {
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
 			$like = array(
-				'releasecart.release_date'=>$param
+				'release_date'=>$param
 			);
 			$join = array(
-				array('releasecart','releaseditem','releaseCart_id'),
-				array('order','releasecart','order_id')
+				array('stockitem','releaseditem','stock_id')
 			);
 			$data['result' ] = $this->project_model->select_join('releaseditem',$join,$like);
 			$data['property']= $this->project_model->select('property_info');
@@ -5047,19 +5229,21 @@ class Admin extends CI_Controller {
 		function fetchExpStocks(){
 			$result = array('data' => array());
 
-			$data = $this->project_model->select('expenses_stocks');
+			$join = array(
+				array('stockitem','stock_newlog','stock_id')
+			);
+			$data = $this->project_model->select_join('stock_newlog',$join);
 			if ($data != false) {
 				foreach ($data as $key => $value) {
-					$tcost = $this->cart->format_number($value->expstocks_price*$value->expstocks_qty);
+					$tcost = $this->cart->format_number($value->stockCost*$value->nstock_qqty);
 					$buttons = '
-						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->expstocks_id.'" title="Select"><i class="fa fa-times"></i></a>
-						<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->expstocks_id.'" title="Edit"><i class="fa fa-pencil"></i></a>';
+						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->stock_newid.'" title="Select"><i class="fa fa-times"></i></a>';
 					$result['data'][$key] = array(
-						$value->expstocks_date,
-						$value->expstocks_desc,
-						$value->expstocks_unit,
-						$value->expstocks_qty,
-						$value->expstocks_price,
+						$value->delivery_date,
+						$value->stock_name,
+						$value->nstock_unit,
+						$value->nstock_qqty,
+						$value->stockCost,
 						$tcost,
 						$buttons
 					);
@@ -5069,7 +5253,6 @@ class Admin extends CI_Controller {
 		}
 		function addExpStocks(){
 
-			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
 			$this->form_validation->set_rules('cost','Cost','required');
@@ -5090,7 +5273,7 @@ class Admin extends CI_Controller {
 					'expstocks_date'=>set_value('date'),
 					'expstocks_mon'=>set_value('mon')
 				);
-				$add = $this->project_model->insert('expenses_stocks',$data);
+				$add = $this->project_model->insert('stock_newlog',$data);
 				if ($add != false) {
 					$msg['success'] = true;
 				}else{
@@ -5101,56 +5284,35 @@ class Admin extends CI_Controller {
 			$msg['type'] = 'Add';
 			echo json_encode($msg);
 		}
-		function editExpStocks(){
-
-			$id = $this->input->get('id');
-			$where = array("expstocks_id"=>$id);
-			$result = $this->project_model->single_select('expenses_stocks',$where);
-			echo json_encode($result);
-		}
-		function updateExpStocks(){
-			$this->form_validation->set_rules('mon','Month','required');
-			$this->form_validation->set_rules('desc','Desciption','required');
-			$this->form_validation->set_rules('unit','Unit','required');
-			$this->form_validation->set_rules('cost','Cost','required');
-			$this->form_validation->set_rules('qty','Quantity','required');
-			$this->form_validation->set_rules('date','Date','required');
-			$this->form_validation->set_rules('note','Note','required');
-			$this->form_validation->set_rules('id','Id','required');
-
-			if ($this->form_validation->run() == FALSE) {
-				$msg['error'] = validation_errors();
-				$msg['success'] = false;
-			}else{
-				$data = array(
-					'expstocks_desc'=>ucwords(set_value('desc')),
-					'expstocks_qty'=>set_value('qty'),
-					'expstocks_unit'=>set_value('unit'),
-					'expstocks_price'=>set_value('cost'),
-					'expstocks_note'=>set_value('note'),
-					'expstocks_date'=>set_value('date'),
-					'expstocks_mon'=>set_value('mon')
-				);
-				$id = set_value('id');
-				$where = array('expstocks_id'=>$id);
-				$result = $this->project_model->updateNew('expenses_stocks',$where,$data);
-				if ($result != false) {
-					$msg['success'] = true;
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = 'Error adding data.';
-				}
-			}
-			$msg['type'] = 'Update';
-			echo json_encode($msg);
-		}
 		function deleteExpStocks(){
 			$id = $this->input->get('id');
-			$result = $this->project_model->delete('expenses_stocks','expstocks_id',$id);
-			if ($result) {
-				$msg['success'] = true;
-			}else{
-				$msg['success'] = false;
+			// update first the stock qty before deleting the record.
+			$where = array('stock_newid'=>$id);
+
+			$join = array(
+				array('stockitem','stock_newlog','stock_id')
+			);
+			$get = $this->project_model->select_join('stock_newlog',$join,false,$where);
+			foreach ($get as $value) {
+				if ($value->nstock_status == "GOOD") {
+
+				}
+				$where2 = array('stock_id'=>$value->stock_id);
+				$newqty = $value->stock_qqty - $value->nstock_qqty;
+				$data = array('stock_qqty'=>$newqty);
+				$update = $this->project_model->updateNew('stockitem',$where2,$data);
+				if ($update != false) {
+					$result = $this->project_model->delete('stock_newlog','stock_newid',$id);
+					if ($result) {
+						$msg['success'] = true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = "Unable to delete ";
+					}
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = "Unable to deduct stock quantity.";
+				}
 			}
 			echo json_encode($msg);
 		}
@@ -5163,9 +5325,9 @@ class Admin extends CI_Controller {
 			$year = $this->uri->segment(4);
 			$param = $year.'-'.$month;
 			$like = array(
-				'expstocks_date'=>$param
+				'delivery_date'=>$param
 			);
-			$data['result' ] = $this->project_model->select('expenses_stocks',$like);
+			$data['result' ] = $this->project_model->select('stock_newlog',$like);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5889,7 +6051,6 @@ class Admin extends CI_Controller {
 
 				if ($check_duplicate != true) {
 					$add = $this->project_model->insert($table_name,$data);
-
 					if ($add == true) {
 						$msg['success'] = true;
 					}else{
@@ -6314,23 +6475,32 @@ class Admin extends CI_Controller {
 	}
 //testing center
 	function testFunction(){
-		$result = array('data' => array());
-		$data = $this->project_model->select('overtime_type');
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$buttons = '
-					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->ot_type_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
-					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->ot_type_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-				';
-				$result['data'][$key] = array(
-					$value->ot_type_id,
-					$value->ot_type_name,
-					$value->ot_rate,
-					$value->ot_type_term,
-					$buttons
-				);
+		$id = 4;
+		// update first the stock qty before deleting the record.
+		$where = array('stock_newid'=>$id);
+
+		$join = array(
+			array('stockitem','stock_newlog','stock_id')
+		);
+		$get = $this->project_model->select_join('stock_newlog',$join,false,$where);
+		foreach ($get as $value) {
+			$where2 = array('stock_id'=>$value->stock_id);
+			$newqty = $value->stock_qqty - $value->nstock_qqty;
+			$data = array('stock_qqty'=>$newqty);
+			$update = $this->project_model->updateNew('stockitem',$where2,$data);
+			if ($update != false) {
+				$result = $this->project_model->delete('stock_newlog','stock_newid',$id);
+				if ($result) {
+					$msg['success'] = true;
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = "Unable to delete ";
+				}
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = "Unable to deduct stock quantity.";
 			}
 		}
-		echo json_encode($result);
+		echo json_encode($msg);
 	}
 }

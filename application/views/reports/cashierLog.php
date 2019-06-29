@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Employee Attendance</h2>
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Cashier Log Record</h2>
     </div>
   </div>
   <div class="row">
@@ -282,7 +282,7 @@
     $('#btnPrint').click(function(){
             $('#printForm')[0].reset();
             $('#printModal').modal('show');
-            $('#printModal').find('.modal-title').text("Print Employee Monthly Attendance");
+            $('#printModal').find('.modal-title').text("Print Cashier Log");
             $('#printForm').attr('action','<?php echo base_url("admin/")?>');
     });
 
@@ -292,7 +292,7 @@
          var month = $('select[name=mon2]');
         var emp = $('select[name=employee2]');
         var year = $('input[name=year]');
-        var url = '<?php echo base_url('admin/printAttendList')?>/'  + month.val() + '/' + year.val() + '/' + emp.val();
+        var url = '<?php echo base_url('admin/printCahierLog')?>/'  + month.val() + '/' + year.val() + '/' + emp.val();
         window.open(url,"newwindow", "width=900, height=600");
     });
     function showEmployee(){

@@ -114,15 +114,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="<?php echo base_url("admin/prodExp")?>">Product</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/equipExp")?>">Equipment</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="<?php echo base_url("admin/returnExp")?>">Returnable</a>
+                            <a href="<?php echo base_url("admin/prodExp")?>">Production</a>
                         </li>
                         <li class="divider"></li>
                         <li>

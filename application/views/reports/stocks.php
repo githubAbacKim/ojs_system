@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Stock Expenses</h2>
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Arrive Stocks</h2>
     </div>
   </div>
 	<div class="row">
@@ -26,7 +26,7 @@
 	                    <th>Qty</th>
 	                    <th>Cost</th>
 	                    <th>Total Cost</th>
-	                    <th>Action</th>
+	                    <th style="width:10%;">Action</th>
 	                </tr>
 	            </thead>
 	        </table>
@@ -45,28 +45,7 @@
 	      <div class="modal-body">
 	      		<div class="row">
 	      			<div class="col-md-12">
-	      				<input type="hidden" name="id" value="0" >
-	      				<div class="form-group col-md-4">
-							<label for="mon">Exp. Month</label>
-		      				<select class="form-control" id="mon" name="mon" required>
-								<option value="">Select</option>
-								<?php
-									$mon = date('m');
-									$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
-									foreach ($months as $key => $value) {
-										if ($mon == $key) {
-								?>
-									<option value="<?php echo $key?>" selected><?php echo $value?></option>
-								<?php
-										}else{
-								?>
-									<option value="<?php echo $key?>"><?php echo $value?></option>
-								<?php
-										}
-									}
-								?>
-							</select>
-						</div>
+	      				<input type="hidden" name="id" value="0" >	      				
 						<div class="form-group col-md-8">
 							<label for="name">Description *</label>
 							<input type="text" class="form-control" id="desc" name="desc" placeholder="Description" />
@@ -255,35 +234,6 @@
 	            }
 	        });
 
-		});
-
-		//edit
-		$('#expStocksItem').on('click','.item-edit',function(){
-			var id =  $(this).attr('data');
-			$('#myModal').modal('show');
-			$('#myModal').find('.modal-title').text('Edit Production Expense');
-			$('#myForm').attr('action','<?php echo base_url("admin/updateExpStocks")?>');
-			$.ajax({
-				type: 'ajax',
-				method: 'get',
-				url: '<?php echo base_url("admin/editExpStocks")?>',
-				data: {id: id},
-				async: true,
-				dataType: 'json',
-				success: function(data){
-					$('input[name=id]').val(data.expstocks_id);
-					$('select[name=mon]').val(data.expstocks_mon);
-					$('input[name=desc]').val(data.expstocks_desc);
-					$('input[name=unit]').val(data.expstocks_unit);
-					$('input[name=cost]').val(data.expstocks_price);
-					$('input[name=qty]').val(data.expstocks_qty);
-					$('input[name=date]').val(data.expstocks_date);
-					$('textarea[name=note]').val(data.expstocks_note);
-				},
-				error: function(){
-					alert('Could not Edit data');
-				}
-			});
 		});
 
 		$('#expStocksItem').on('click','.item-delete',function(){

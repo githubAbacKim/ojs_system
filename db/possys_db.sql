@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 03, 2019 at 09:47 AM
+-- Generation Time: Jun 29, 2019 at 05:26 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -56,13 +56,25 @@ INSERT INTO `assign_access` (`assign_access_id`, `account_type`, `mac_address`) 
 
 CREATE TABLE IF NOT EXISTS `branch_stocks` (
   `branch_stocksid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `stockitem_id` int(10) unsigned NOT NULL,
+  `stock_id` int(10) unsigned NOT NULL,
   `branch_name` varchar(85) NOT NULL,
-  `stocks_qty` char(5) NOT NULL,
-  `stocks_rate` double(10,2) NOT NULL,
-  `stock_date` char(10) NOT NULL,
+  `bstocks_qty` char(5) NOT NULL,
+  `bstocks_unit` varchar(55) NOT NULL,
+  `transfer_date` char(20) NOT NULL,
+  `emp_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`branch_stocksid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `branch_stocks`
+--
+
+INSERT INTO `branch_stocks` (`branch_stocksid`, `stock_id`, `branch_name`, `bstocks_qty`, `bstocks_unit`, `transfer_date`, `emp_id`) VALUES
+(1, 1, 'branch1', '1', 'set', '2019-06-19', 7),
+(2, 1, 'branch2', '1', 'set', '2019-06-19', 7),
+(3, 1, 'branch1', '1', 'set', '2019-06-19', 7),
+(4, 1, 'branch1', '1', 'set', '2019-06-19 03:36 P', 7),
+(5, 1, 'branch1', '1', 'set', '2019-06-19 03:47 PM', 7);
 
 -- --------------------------------------------------------
 
@@ -78,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `cashier_logbook` (
   `op_money` double(10,2) NOT NULL,
   `clo_money` double(10,2) DEFAULT NULL,
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `cashier_logbook`
@@ -99,7 +111,15 @@ INSERT INTO `cashier_logbook` (`logid`, `emp_id`, `log_date`, `log_time`, `op_mo
 (12, 4, '2019-05-15', '04:48 PM', 0.00, NULL),
 (13, 4, '2019-05-21', '07:53 AM', 0.00, NULL),
 (14, 4, '2019-05-30', '02:45 PM', 0.00, NULL),
-(15, 4, '2019-05-31', '03:18 AM', 0.00, NULL);
+(15, 4, '2019-05-31', '03:18 AM', 0.00, NULL),
+(16, 4, '2019-06-05', '01:57 PM', 0.00, NULL),
+(17, 4, '2019-06-07', '08:47 AM', 7000.00, NULL),
+(18, 4, '2019-06-10', '02:22 PM', 0.00, NULL),
+(19, 4, '2019-06-19', '05:15 PM', 0.00, NULL),
+(20, 4, '2019-06-20', '06:27 AM', 0.00, NULL),
+(21, 4, '2019-06-26', '03:29 PM', 0.00, NULL),
+(22, 4, '2019-06-27', '02:19 AM', 0.00, NULL),
+(23, 4, '2019-06-28', '02:25 AM', 0.00, 10000.00);
 
 -- --------------------------------------------------------
 
@@ -275,9 +295,17 @@ CREATE TABLE IF NOT EXISTS `expenses_misc` (
   `misc_price` double(10,2) NOT NULL,
   `misc_note` text NOT NULL,
   `misc_date` char(11) NOT NULL,
-  `misc_mon` char(2) NOT NULL,
   PRIMARY KEY (`misc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `expenses_misc`
+--
+
+INSERT INTO `expenses_misc` (`misc_id`, `misc_desc`, `misc_qty`, `misc_unit`, `misc_price`, `misc_note`, `misc_date`) VALUES
+(6, 'PLDT', '1', 'monthly', 1200.00, 'none', '2019-06-19'),
+(7, 'PLDT', '1', 'monthly', 1200.00, 'none', '2019-06-19'),
+(8, 'Electric', '1', 'monthly', 2230.00, 'none', '2019-06-19');
 
 -- --------------------------------------------------------
 
@@ -412,7 +440,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `notes` text,
   PRIMARY KEY (`order_id`),
   KEY `FK_restaurant_order_1` (`cust_name`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `order`
@@ -420,13 +448,9 @@ CREATE TABLE IF NOT EXISTS `order` (
 
 INSERT INTO `order` (`order_id`, `order_code`, `cust_name`, `order_date`, `emp_id`, `order_bill_amount`, `order_cash_amount`, `order_type`, `order_status`, `order_discount`, `check_in_id`, `sub_order_type`, `order_downpayment`, `tax_rate`, `tax_amount`, `pickup_date`, `or_num`, `pickup_time`, `notes`) VALUES
 (1, 'OC0328-1', 'CASH', '2019-03-28 06:24 AM', 4, 1000.00, 1000.00, 'purchace', 'paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000', NULL, NULL),
-(2, 'OC0329-2', 'CASH', '2019-03-29 08:18 AM', 4, 0.00, 0.00, 'purchace', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, NULL, '000', NULL, NULL),
-(3, 'OC0510-3', 'SCRAPY COCO', '2019-05-10 10:10 AM', 4, 0.00, 0.00, 'order', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-05-10', '', '13:00', NULL),
-(4, 'OC0510-4', 'CASH', '2019-05-10 10:16 AM', 4, 0.00, 0.00, 'order', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-05-11', '', '15:00', NULL),
-(5, 'OC0512-5', 'CASH', '2019-05-12 09:05 AM', 4, 0.00, 0.00, 'order', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-05-12', '', '13:00', NULL),
 (6, 'OC0513-6', 'CASH', '2019-05-13 05:42 AM', 4, 0.00, 0.00, 'order', 'packed', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-05-13', '', '14:00', NULL),
 (7, 'OC0513-7', 'CASH', '2019-05-13 07:43 AM', 4, 0.00, 0.00, 'order', 'packed', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-05-14', '', '13:00', NULL),
-(9, 'OC0513-8', 'CASH', '2019-05-13 07:50 AM', 4, 0.00, 0.00, 'order', 'not_paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-05-14', '', '14:00', NULL);
+(8, 'OC0628-8', 'CASH', '2019-06-28 10:25 AM', 4, 3900.00, 4000.00, 'order', 'paid', 0.00, NULL, NULL, 0.00, 0.00, 0.00, '2019-06-29', '0021', '17:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -446,7 +470,7 @@ CREATE TABLE IF NOT EXISTS `ordered_item` (
   `order_unit` varchar(45) NOT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `FK_restaurant_ordered_item_1` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `ordered_item`
@@ -454,13 +478,11 @@ CREATE TABLE IF NOT EXISTS `ordered_item` (
 
 INSERT INTO `ordered_item` (`order_item_id`, `order_id`, `order_name`, `order_price`, `order_qty`, `order_date`, `order_stock_type`, `stock_id`, `order_unit`) VALUES
 (2, 1, 'CAR PLATE', 1000.00, '1', '2019-03-28', 'instock', 1, 'set'),
-(3, 2, 'MOTOR PLATE', 300.00, '1', '2019-05-01', 'instock', 2, 'pc'),
-(4, 3, 'MOTOR PLATE', 300.00, '1', '2019-05-10', 'instock', 2, 'pc'),
-(5, 4, 'MOTOR PLATE', 300.00, '2', '2019-05-10', 'instock', 2, 'pc'),
-(6, 5, 'MOTOR PLATE', 300.00, '1', '2019-05-12', 'instock', 2, 'pc'),
 (7, 6, 'MOTOR PLATE', 300.00, '1', '2019-05-13', 'instock', 2, 'pc'),
 (8, 7, 'CAR PLATE', 1000.00, '3', '2019-05-13', 'nonstock', 1, 'none'),
-(9, 7, 'MOTOR PLATE', 300.00, '2', '2019-05-13', 'nonstock', 2, 'none');
+(9, 7, 'MOTOR PLATE', 300.00, '2', '2019-05-13', 'nonstock', 2, 'none'),
+(19, 8, 'CAR PLATE', 1000.00, '3', '2019-06-28', 'instock', 1, 'set'),
+(20, 8, 'MOTOR PLATE', 300.00, '3', '2019-06-28', 'nonstock', 2, 'pc');
 
 -- --------------------------------------------------------
 
@@ -543,36 +565,27 @@ INSERT INTO `rate_types` (`rate_type_id`, `rate_name`, `rate_type`, `rate_type_n
 -- --------------------------------------------------------
 
 --
--- Table structure for table `releasecart`
---
-
-CREATE TABLE IF NOT EXISTS `releasecart` (
-  `releaseCart_id` int(20) unsigned NOT NULL AUTO_INCREMENT,
-  `channel_id` int(20) unsigned NOT NULL,
-  `release_date` char(10) NOT NULL,
-  `release_code` char(10) NOT NULL,
-  `releasing_status` varchar(45) NOT NULL DEFAULT 'releasing',
-  `order_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`releaseCart_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `releaseditem`
 --
 
 CREATE TABLE IF NOT EXISTS `releaseditem` (
   `release_item_id` int(20) unsigned NOT NULL AUTO_INCREMENT,
-  `releaseCart_id` int(20) unsigned NOT NULL,
-  `releaseitem_name` varchar(85) NOT NULL,
   `releaseitem_unit` varchar(45) NOT NULL,
   `releaseitem_qty` char(6) NOT NULL,
-  `releaseitem_cost` double(10,2) NOT NULL,
-  `stockCat_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`release_item_id`),
-  KEY `FK_releaseditem_1` (`releaseCart_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `stock_id` int(10) unsigned NOT NULL,
+  `release_date` char(10) NOT NULL,
+  `emp_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`release_item_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `releaseditem`
+--
+
+INSERT INTO `releaseditem` (`release_item_id`, `releaseitem_unit`, `releaseitem_qty`, `stock_id`, `release_date`, `emp_id`) VALUES
+(1, 'kl', '5', 3, '2019-06-18', 7),
+(2, 'kl', '10', 3, '2019-06-18', 7),
+(3, 'kl', '2', 3, '2019-06-24', 7);
 
 -- --------------------------------------------------------
 
@@ -634,7 +647,9 @@ CREATE TABLE IF NOT EXISTS `stockitem` (
   `stockclass_id` int(10) unsigned NOT NULL,
   `stock_type` varchar(55) NOT NULL,
   `stock_alert` char(3) NOT NULL,
-  `suppier_id` int(10) unsigned DEFAULT NULL,
+  `supplier_id` int(10) unsigned NOT NULL,
+  `stock_damage` char(3) DEFAULT NULL,
+  `retail_price` double(10,2) NOT NULL,
   PRIMARY KEY (`stock_id`),
   KEY `FK_stockitem_1` (`stockCat_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
@@ -643,10 +658,10 @@ CREATE TABLE IF NOT EXISTS `stockitem` (
 -- Dumping data for table `stockitem`
 --
 
-INSERT INTO `stockitem` (`stock_id`, `stockCat_id`, `stock_name`, `stock_unit`, `stock_qqty`, `stockDispose`, `stockCost`, `stockclass_id`, `stock_type`, `stock_alert`, `suppier_id`) VALUES
-(1, 1, 'CAR PLATE', 'none', '0', '0', 1000.00, 4, 'nonstock', '', NULL),
-(2, 1, 'MOTOR PLATE', 'none', '0', '0', 300.00, 4, 'nonstock', '', NULL),
-(3, 5, 'Flour', 'kl', '100', '0', 80.00, 3, 'instock', '', NULL);
+INSERT INTO `stockitem` (`stock_id`, `stockCat_id`, `stock_name`, `stock_unit`, `stock_qqty`, `stockDispose`, `stockCost`, `stockclass_id`, `stock_type`, `stock_alert`, `supplier_id`, `stock_damage`, `retail_price`) VALUES
+(1, 1, 'CAR PLATE', 'set', '3', '0', 500.00, 4, 'instock', '3', 2, '', 1000.00),
+(2, 1, 'MOTOR PLATE', 'pc', '0', '0', 150.00, 4, 'nonstock', '0', 2, '', 300.00),
+(3, 5, 'Flour', 'kl', '88', '2', 80.00, 3, 'instock', '30', 2, '', 0.00);
 
 -- --------------------------------------------------------
 
@@ -677,13 +692,24 @@ INSERT INTO `stock_class` (`stockclass_id`, `stockclass_name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `stock_newlog` (
   `stock_newid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `nstock_id` int(10) unsigned NOT NULL,
+  `stock_id` int(10) unsigned NOT NULL,
   `nstock_qqty` char(3) NOT NULL,
   `nstock_unit` varchar(45) NOT NULL,
   `nstock_status` varchar(45) NOT NULL DEFAULT 'ok/damage',
   `delivery_date` char(19) NOT NULL,
+  `nstock_pqty` char(3) NOT NULL COMMENT 'stock before update',
+  `emp_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`stock_newid`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `stock_newlog`
+--
+
+INSERT INTO `stock_newlog` (`stock_newid`, `stock_id`, `nstock_qqty`, `nstock_unit`, `nstock_status`, `delivery_date`, `nstock_pqty`, `emp_id`) VALUES
+(1, 1, '7', '2019-06-09', 'GOOD', '2019-06-09', '3', 0),
+(2, 3, '70', '2019-06-09', 'GOOD', '2019-06-09', '30', 0),
+(5, 3, '5', 'kl', 'GOOD', '2019-06-18', '100', NULL);
 
 -- --------------------------------------------------------
 
@@ -697,8 +723,16 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
   `supplier_tel` char(11) NOT NULL,
   `supplier_mobile` char(11) NOT NULL,
   `supplier_email` varchar(85) NOT NULL,
+  `supplier_desc` text NOT NULL,
   PRIMARY KEY (`supplier_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `supplier_tel`, `supplier_mobile`, `supplier_email`, `supplier_desc`) VALUES
+(2, 'Miranda General Merchandise', '2334635', '09770818583', 'abackim1990@yahoo.com', 'egg, flour and oil');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

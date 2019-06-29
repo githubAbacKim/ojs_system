@@ -5,6 +5,7 @@ class Main extends CI_Controller {
 		parent::__construct();
 		$this->load->dbforge();
 		$this->is_log_in();
+		date_default_timezone_set('Asia/Manila');
 		//echo $this->my_mac();
 		/* if ($this->pre_installation() == FALSE) {
 			$this->pre_installation();
@@ -159,7 +160,8 @@ class Main extends CI_Controller {
 			if ($log[0] == true){
 				$logwhere = array(
 					'emp_id'=>$log[1],
-					'log_date'=>date("Y-m-d")
+					'log_date'=>date("Y-m-d"),
+					'clo_money'=>null
 				);
 				$logcheck = $this->project_model->select('cashier_logbook',false,$logwhere);
 				if ($logcheck != true) {
@@ -268,6 +270,8 @@ class Main extends CI_Controller {
 			redirect('admin');
 		}elseif ($this->session->userdata('ispos_log') == true) {
 			redirect('clientPos');
+		}elseif ($this->session->userdata('isprod_log') == true) {
+			redirect('production');
 		}
 	}
 

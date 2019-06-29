@@ -24,6 +24,7 @@
 	                    <th>Unit</th>
 	                    <th>Qtty</th>
 	                    <th>Cost</th>
+                      <th>Supplier</th>
 	                    <th>Total Cost</th>
 	                    <th>Action</th>
 	                </tr>
@@ -73,6 +74,19 @@
 							</select>
 						</div>
             <div class="form-group col-lg-4">
+							<label for="category">Supplier *</label>
+		      				<select class="form-control" id="category" name="supplier" required>
+								<option value="">Select</option>
+								<?php
+									foreach ($suppliers as $value2) {
+								?>
+								<option value="<?php echo $value2->supplier_id?>"><?php echo $value2->supplier_name?></option>
+								<?php
+									}
+								?>
+							</select>
+						</div>
+            <div class="form-group col-lg-3">
                 <label for="category">Type *</label>
                     <div class="col-lg-12">
                         <div class="radio">
@@ -87,24 +101,32 @@
                         </div>
                     </div>
             </div>
-            <div class="col-lg-12" id="newStockDiv" style="display:none;">
-                <div class="form-group col-lg-4">
-                <label for="unit">Unit *</label>
-                <input type="text" class="form-control" id="unit" name="unit" placeholder="Unit">
+            <div class="form-group col-lg-3">
+              <label for="unit">Unit *</label>
+              <input type="text" class="form-control" id="unit" name="unit" placeholder="Unit">
+            </div>
+            <div class="col-lg-6" id="newStockDiv" style="display:none;">
+                <div class="form-group col-lg-6">
+                  <label for="qty">Quantity *</label>
+                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
                 </div>
-                <div class="form-group col-lg-4">
-                <label for="qty">Quantity *</label>
-                <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity">
+                <div class="form-group col-lg-6">
+                  <label for="qty">Stock Alert *</label>
+                  <input type="text" class="form-control" id="alert" name="alert" placeholder="Quantity">
                 </div>
             </div>
 					  <div class="col-lg-12">
-              <div class="form-group col-lg-8">
+              <div class="form-group col-lg-6">
     						<label for="name">Stock Name *</label>
     						<input type="text" class="form-control" id="name" name="name" placeholder="Stock Name">
   						</div>
-              <div class="form-group col-lg-4">
+              <div class="form-group col-lg-3">
                 <label for="cost">Cost *</label>
                 <input type="text" class="form-control" id="cost" name="cost" placeholder="Cost">
+              </div>
+              <div class="form-group col-lg-3">
+                <label for="rp">Retail Price *</label>
+                <input type="text" class="form-control" id="rp" name="rp" value="0.00" placeholder="Retail Price">
               </div>
             </div>
 					</div>
@@ -198,88 +220,35 @@
 		$('#btnSave').click(function(){
 			var url = $('#myForm').attr('action');
 			var data = $('#myForm').serialize();
-			//validate form
-			var category = $('select[name=category]');
-			var name = $('input[name=name]');
-			var unit = $('input[name=unit]');
-			var cost = $('input[name=cost]');
-			var qty = $('input[name=qty]');
-			var stockclass = $('input[name=stockclass]');
-			var stock_type = $('input[name=stock_type]');
 
-			var result = '';
-			if (category.val()=='') {
-				category.parent().parent().addClass('has-error');
-			}else{
-				category.parent().parent().removeClass('has-error');
-				result +='1';
-			}
-			if (name.val()=='') {
-				name.parent().parent().addClass('has-error');
-			}else{
-				name.parent().parent().removeClass('has-error');
-				result +='2';
-			}
-			if (unit.val()=='') {
-				unit.parent().parent().addClass('has-error');
-			}else{
-				unit.parent().parent().removeClass('has-error');
-				result +='3';
-			}
-			if (cost.val()=='') {
-				cost.parent().parent().addClass('has-error');
-			}else{
-				cost.parent().parent().removeClass('has-error');
-				result +='4';
-			}
-			if (qty.val()=='') {
-				qty.parent().parent().addClass('has-error');
-			}else{
-				qty.parent().parent().removeClass('has-error');
-				result +='5';
-			}
-			if (stockclass.val()=='') {
-				stockclass.parent().parent().addClass('has-error');
-			}else{
-				stockclass.parent().parent().removeClass('has-error');
-				result +='6';
-			}
-			if (stock_type.val()=='') {
-				stock_type.parent().parent().addClass('has-error');
-			}else{
-				stock_type.parent().parent().removeClass('has-error');
-				result +='7';
-			}
-
-			if (result == '1234567') {
-				$.ajax({
-					type:'ajax',
-					method: 'post',
-					url: url,
-					data: data,
-					async: false,
-					dataType: 'json',
-					success: function(response){
-						if (response.success) {
-							$('#myForm')[0].reset();
-							if (response.type=='update') {
-									var type = 'update';
-									$('#myModal').modal('hide');
-							}else if(response.type=='add'){
-									var type = 'added';
-							}
-							$('.alert-success').html('Stock Room Item '+type+' successfully').fadeIn().delay(2000).fadeOut('slow');
-								itemTable.ajax.reload(null, false);
-						}else{
-							$('#myModal').modal('hide');
-							$('.alert-danger').html('No data changes.').fadeIn().delay(2000).fadeOut('slow');
+			$.ajax({
+				type:'ajax',
+				method: 'post',
+				url: url,
+				data: data,
+				async: false,
+				dataType: 'json',
+				success: function(response){
+          var error = response.error;
+					if (response.success) {
+						$('#myForm')[0].reset();
+						if (response.type=='update') {
+								var type = 'update';
+								$('#myModal').modal('hide');
+						}else if(response.type=='add'){
+								var type = 'added';
 						}
-					},
-					error: function(){
-						alert('Could not add data.');
+						$('.alert-success').html('Item '+type+' successfully').fadeIn().delay(2000).fadeOut('slow');
+							itemTable.ajax.reload(null, false);
+					}else{
+						$('#myModal').modal('hide');
+						$('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
 					}
-				});
-			}
+				},
+				error: function(){
+					alert('Error connecting server.');
+				}
+			});
 
 		});
 
@@ -301,10 +270,18 @@
 					$('input[name=name]').val(data.stock_name);
 					$('input[name=unit]').val(data.stock_unit);
 					$('input[name=cost]').val(data.stockCost);
+          $('input[name=rp]').val(data.retail_price);
 					$('input[name=qty]').val(data.stock_qqty);
+          $('input[name=alert]').val(data.stock_alert);
 					$('input[name=id]').val(data.stock_id);
 					$('select[name=stockclass]').val(data.stockclass_id);
           $('input[name="stock_type"][value="' + data.stock_type + '"]').prop('checked', true);
+          $('select[name=supplier]').val(data.supplier_id);
+          if (data.stock_type == "instock") {
+            $('#newStockDiv').show();
+          }else{
+            $('#newStockDiv').hide();
+          }
 				},
 				error: function(){
 					alert('Could not Edit data');

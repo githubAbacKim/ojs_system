@@ -1,99 +1,100 @@
 
-<!-- Order Review  -->
-<div class="col-lg-7">
-	<div class="panel panel-default">
-	  <!-- <div class="panel-heading">
-	    <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Cart Items & Information</h3>
-	  </div> -->
+<div class="col-lg-12" style="max-height:500px;min-height:520px;">
+  <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
+    <div class="list-group text-center" style="margin: 0 auto !important;">
 
-      <!-- Display this panel body on cart selection -->
-	  <div class="panel-body" id="cartLoaded" style="display:none;">
-            <!-- <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> -->
-
-            <!-- ordered item list here -->
-    	    <div class="col-lg-12" style="min-height:335px;max-height:335px;" >
-                <table id="cartPosItem" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th width="30%">Item</th>
-                            <th width="15%">Unit</th>
-                            <th width="20%">Qty</th>
-                            <th width="20%">Price</th>
-                            <th width="20%">Action</th>
-                        </tr>
-                    </thead>
-                </table>
-    	    </div>
-            <!-- total display -->
-    	    <div class="col-lg-12 col-md-12 col-xs-12">
-                <ul class="col-lg-12 col-md-12 col-xs-12 list-inline" id="cartFooter">
-                </ul>
-    	    </div>
-            <!-- payment & bill button -->
-            <div class="col-lg-12 col-md-12 col-xs-12">
-                <button id="btnpayment" class="btn btn-success" style="margin-right: 5px;"><i class="fa fa-money fa-fx"></i> PAYMENT</button>
-                <button id="btnbill" class="btn btn-primary" style="margin-right: 5px;"><i class="fa fa-print fa-fx"></i> PRINT BILL</button>
-
-                <button id="disabledPayment" class="btn btn-default" style="margin-right: 5px;display: none;"><i class="fa fa-money fa-fx"></i> PAYMENT</button>
-                <button id="btnreceipt" class="btn btn-primary" style="margin-right: 5px;display: none;"><i class="fa fa-print fa-fx"></i> PRINT RECEIPT</button>
-            </div>
-	  </div>
-
-      <!-- Default display panel body -->
-      <div class="panel-body" id="cartFalse">
-            <div class="col-lg-12" style="min-height:405px;max-height:405px;" >
-                <div class="alert alert-danger text-center">
-                    No selected transanction!
-                </div>
-            </div>
+				<a href="javascript:;" id="cartBtn" class="list-group-item">
+						<i class="fa fa-shopping-cart fa-2x text-center"></i><br /> Cart
+				</a>
+				<div id="cartLoadedBut">
+					<a href="javascript:;" id="btnpayment" class="list-group-item">
+	            <i class="fa fa-money fa-2x text-center"></i><br /> Pay
+	        </a>
+					<a href="javascript:;" id="btnbill" class="list-group-item">
+	            <i class="fa fa-print fa-2x text-center"></i><br /> Bill
+	        </a>
+					<a href="javascript:;" id="disabledPayment" class="list-group-item" style="display: none;">
+	            <i class="fa fa-print fa-2x text-center"></i><br /> Payment
+	        </a>
+					<a href="javascript:;" id="btnreceipt" class="list-group-item" style="display: none;">
+	            <i class="fa fa-print fa-2x text-center"></i><br /> Receipt
+	        </a>
+				</div>
+				<a href="javascript:;" id="return" class="list-group-item disabled">
+            <i class="fa fa-refresh fa-2x text-center"></i><br /> Return
+        </a>
+				<a href="javascript:;" id="closeCart" class="list-group-item">
+            <i class="fa fa-times fa-2x text-center"></i><br /> Close
+        </a>
+				<a href="javascript:;" id="btnneworder" class="list-group-item">
+            <i class="fa fa-plus fa-2x text-center"></i><br /> New
+        </a>
+    </div>
+  </div>
+  <div class="col-lg-4" style="max-height:500px;min-height:520px;">
+    <div class="row">
+      <div class="col-lg-12">
+          <div class="col-lg-12">
+						<h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Items</h2>
+            <table class="table table-striped table-bordered table-hover" id="menuItemTable" style="font-size:10pt;">
+                <thead>
+                    <tr>
+                        <th>CAT</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th style="width:25%;">Action</th>
+                    </tr>
+                </thead>
+            </table>
+          </div>
       </div>
-	</div>
-</div>
-
-<!-- product -->
-<div class="col-lg-5">
-	<div class="panel panel-default" style="min-height:475px;max-height:475px;">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Products Search</h3>
-	  </div>
-	  <div class="panel-body">
-        <table id="menuItemTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>CAT</th>
-                    <th>Item</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-        </table>
-	  </div>
-	</div>
-</div>
-
-<!-- Bottom panel -->
-<div class="col-lg-12">
-    <div class="col-lg-5">
-        <!-- left button -->
-        <!-- <button id="" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-history"></i> Return Item</button>
-        <button id="" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Void Order</button> -->
-        <button id="cartBtn" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-shopping-cart"></i> Cart</button>
-        <button id="closeCart" class="btn btn-danger btn-circle" style="margin-right: 5px;"><i class="fa fa-times"> </i></button>
-        <button id="btnneworder" class="btn btn-success btn-circle" style="margin-right: 5px;"><i class="fa fa-plus"> </i></button>
+			<div class="col-lg-12">
+	        <!-- <div class="alert alert-warning text-center">Transaction status here!<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> -->
+	        <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+	        <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+	    </div>
     </div>
-    <div class="col-lg-5">
-        <!-- <div class="alert alert-warning text-center">Transaction status here!<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> -->
-        <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-        <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+  </div>
+  <div class="col-lg-7" style="max-height:500px;min-height:520px;background-color:#ececec;">
+    <div class="row">
+    <!-- Display this panel body on cart selection -->
+    <div id="cartLoaded" style="display:none;">
+          <!-- <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> -->
+
+          <!-- ordered item list here -->
+        <div class="col-lg-12">
+							<h2 class="page-header"><i class="fa fa-cubes fa-fw"></i>Cart Items</h2>
+              <table id="cartPosItem" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                      <tr>
+													<th width="20%">Action</th>
+                          <th width="30%">Item</th>
+                          <th width="15%">Unit</th>
+                          <th width="20%">Qty</th>
+                          <th width="20%">Price</th>
+                      </tr>
+                  </thead>
+              </table>
+							<!-- total display -->
+		        <div class="col-lg-12 col-md-12 col-xs-12">
+		              <ul class="col-lg-12 col-md-12 col-xs-12 list-inline" id="cartFooter">
+		              </ul>
+		        </div>
+        </div>
+
+  	</div>
+
+    <!-- Default display panel body -->
+    <div id="cartFalse">
+          <div class="col-lg-8 col-lg-offset-2" style="min-height:405px;max-height:405px;margin-top:175px;" >
+              <div class="alert alert-danger text-center">
+                  No selected transanction!
+              </div>
+          </div>
     </div>
-    <!-- right button -->
-    <!-- <div class="col-lg-2">
-
-        <button id="closeCart" class="btn btn-danger btn-circle" style="float:right;"><i class="fa fa-times"> </i></button>
-        <button id="btnneworder" class="btn btn-success btn-circle" style="float:right;"><i class="fa fa-plus"> </i></button>
-    </div> -->
+    </div>
+  </div>
 </div>
-
 <!-- POP-UP MODALS SECTION -->
 <!-- add item -->
     <!-- add item -->
@@ -187,7 +188,7 @@
               <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-xs-12">
-                        <div class="form-group text-left" style="font-size: 14pt;">
+                        <div class="form-group text-left">
                             <label>Order Type:</label>
                             <select class="form-control" name="order_type"  id="type_selector" required>
 																<option data-hw-type="purchace" value="purchace">Purchase</option>
@@ -371,15 +372,19 @@
 				<form id="outForm" action="" method="post">
           <div class="modal-body">
             <div class="row">
-							<div class="form-group col-lg-4">
-									<label>Item Name</label>
-									<input type="text" class="form-control" disabled name="item">
-							</div>
+  							<div class="form-group text-left col-lg-6 col-lg-offset-3">
+  									<div class="input-group">
+  										<span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
+  										<input type="text" name="closingCash" class="form-control" placeholder="Closing Cash" aria-describedby="basic-addon1" required>
+  									</div>
+  							</div>
             </div>
           </div>
 		      <div class="modal-footer">
-		            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		            <button type="button" id="btnOut" class="btn btn-danger">Logout</button>
+		            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                <button type="button" id="btnOut" class="btn btn-primary">Process</button>
+                <button type="button" id="btnOutPrint" class="btn btn-success" style="display:none;">Print</button>
+		            <button type="button" id="btnOutSwitch" class="btn btn-danger" style="display:none;">Logout</button>
 		      </div>
 				</form>
     </div><!-- /.modal-content -->
@@ -388,6 +393,7 @@
 
 <script type="text/javascript">
     var menuItem;
+		var cart;
     $(document).ready(function() {
         fetchMenuItems();
         fetchPosCartitem();
@@ -395,7 +401,9 @@
         receipturl();
         checkCart();
 				showField();
+        checkClosing();
         setInterval(function(){
+            checkClosing();
             checkCart();
             cart.ajax.reload(null, false);
         },1000);
@@ -438,11 +446,12 @@
             $('#paymentModal').find('.modal-title').text("Payment Section");
             $('#paymentForm').attr('action','<?php echo base_url("clientPos/order_payment")?>');
         });
-				$("#logout").click(function(){
+				$("#closing").click(function(){
 					$('#outForm')[0].reset();
 					$('#outModal').modal('show');
-					$('#outModal').find('.modal-title').text("Confirm Logout");
-					$('#outForm').attr('action','<?php echo base_url("clientPos/logout")?>');
+					$('#outModal').find('.modal-title').text("Closer Drawer Confirmation");
+          $('#outForm').attr('action','<?php echo base_url("clientPos/processClosing")?>');
+
 				});
     /*end of events*/
 
@@ -548,11 +557,41 @@
                 dataType:'json',
                 success: function(data){
                     var info = '';
-                        info +='<li class="col-lg-4 col-md-4 col-xs-12" id="change"> '+
+                        info +='<li class="col-lg-6 col-md-6 col-xs-12" id="change"> '+
                                     '<span class="text-muted"><strong>Total Due: </strong></span>'+
                                     '<span class="text-danger"><strong>Php '+ data.total +'</strong></span>'+
+                                '</li>'+
+                                '<li class="col-lg-6 col-md-6 col-xs-12" id="change"> '+
+                                    '<span class="text-muted"><strong>Cash: </strong></span>'+
+                                    '<span class="text-danger"><strong>Php '+ data.cash +'</strong></span>'+
+                                '</li>'+
+                                '<li class="col-lg-6 col-md-6 col-xs-12" id="change"> '+
+                                    '<span class="text-muted"><strong>Downpayment: </strong></span>'+
+                                    '<span class="text-danger"><strong>Php '+ data.downpayment +'</strong></span>'+
+                                '</li>'+
+                                '<li class="col-lg-6 col-md-6 col-xs-12" id="change"> '+
+                                    '<span class="text-muted"><strong>Change: </strong></span>'+
+                                    '<span class="text-danger"><strong>Php '+ data.change +'</strong></span>'+
                                 '</li>';
                     $('#cartFooter').html(info);
+                },
+                error: function(){
+                    $('.alert-danger').html('Unable to retrieve cart info.').fadeIn().delay(2000).fadeOut('slow');
+                }
+            });
+        }
+
+        function checkClosing(){
+            $.ajax({
+                url:'<?php echo base_url("clientPos/checkClosing")?>',
+                async:false,
+                dataType:'json',
+                success: function(data){
+                    if (data.success == true) {
+                        $('#btnOutPrint').show();
+                        $('#btnOutSwitch').show();
+                        $('#btnOut').hide();
+                    }
                 },
                 error: function(){
                     $('.alert-danger').html('Unable to retrieve cart info.').fadeIn().delay(2000).fadeOut('slow');
@@ -605,7 +644,7 @@
                     $('input[name=category]').val(data.stockCat_name);
                     $('input[name=item]').val(data.stock_name);
                     $('input[name=stocktype]').val(data.stock_type);
-                    $('input[name=price]').val(data.stockCost);
+                    $('input[name=price]').val(data.retail_price);
                     $('input[name=instock]').val(data.stock_qqty);
                 },
                 error: function(){
@@ -656,6 +695,7 @@
                     if (response.success) {
                         $('#cartFalse').fadeOut('slow');
                         $('#cartLoaded').fadeIn('slow');
+												$('#cartLoadedBut').fadeIn('slow');
                         menuItem.ajax.reload(null, false);
                         cart.ajax.reload(null, false);
                         posCartItem.ajax.reload(null, false);
@@ -663,6 +703,7 @@
 	                      checkOrderStat();
                     }else{
                         $('#cartLoaded').fadeOut('slow');
+												$('#cartLoadedBut').fadeOut('slow');
                         $('#cartFalse').fadeIn('slow');
                         menuItem.ajax.reload(null, false);
                         cart.ajax.reload(null, false);
@@ -995,6 +1036,60 @@
                 });
             }
 
+        });
+
+        $('#btnOut').click(function(){
+            var url = $('#outForm').attr('action');
+            var data = $('#outForm').serialize();
+            $.ajax({
+                type:'ajax',
+                method: 'post',
+                url: url,
+                data: data,
+                async: false,
+                dataType: 'json',
+                success: function(response){
+                    var error = response.error;
+                    if (response.success) {
+                        $('.alert-success').html('Successfully registered closing cash!').fadeIn().delay(2000).fadeOut('slow');
+                        $('#btnOut').fadeOut('slow');
+                        $('#btnOutPrint').fadeIn('slow');
+                        $('#btnOutSwitch').fadeIn('slow');
+                    }else{
+                        $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
+                    }
+                },
+                error: function(){
+                    $('.alert-danger').html('Could not close log-in.').fadeIn().delay(2000).fadeOut('slow');
+                }
+            });
+        });
+
+        $('#btnOutSwitch').click(function(){
+          var url = '<?php echo base_url("clientPos/closingLogOut");?>';
+          $.ajax({
+              type:'ajax',
+              method: 'post',
+              url: url,
+              async: false,
+              dataType: 'json',
+              success: function(response){
+                  var error = response.error;
+                  if (response.success == true) {
+                      location.reload();
+                  }else{
+                      $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
+                  }
+              },
+              error: function(){
+                  $('.alert-danger').html('Could not add data.').fadeIn().delay(2000).fadeOut('slow');
+              }
+          });
+        });
+
+        $('#btnOutPrint').click(function(){
+            var url = '<?php echo base_url('clientPos/printClosingReceipt')?>/';
+            window.open(url,"newwindow", "width=1000, height=700");
         });
 
     /*end of processing functions*/

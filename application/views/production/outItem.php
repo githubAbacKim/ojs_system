@@ -1,24 +1,19 @@
 <div class="col-lg-12" style="max-height:500px;min-height:520px;">
   <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
-        <a href="javascript:;" id="printGood" data="<?php echo base_url('production/printGoodStock');?>" class="list-group-item">
-            <i class="fa fa-print fa-2x text-center"></i><br /> Good Stock
-        </a>
-        <a href="javascript:;" id="printDamage" data="<?php echo base_url('production/printDamageStock');?>" class="list-group-item">
-            <i class="fa fa-print fa-2x text-center"></i><br /> Damage Stock
+        <a href="javascript:;" id="printOut" data="<?php echo base_url('production/printGoodStock');?>" class="list-group-item">
+            <i class="fa fa-print fa-2x text-center"></i><br /> Out Stock
         </a>
     </div>
   </div>
   <div class="col-lg-4" style="max-height:500px;min-height:520px;">
     <div class="row">
       <div class="col-lg-12">
-
+          <h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Stock Items</h2>
           <div class="col-lg-12">
-            <h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Stock Items</h2>
             <table class="table table-striped table-bordered table-hover" id="newItems" style="font-size:10pt;">
                 <thead>
                     <tr>
-                        <th style="width:30%;">Supplier</th>
                         <th>Item</th>
                         <th style="width:25%;">Action</th>
                     </tr>
@@ -31,16 +26,15 @@
   <div class="col-lg-7" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="page-header text-center">New Stocks</h2>
+        <h2 class="page-header text-center">Out Stocks</h2>
         <table class="table table-striped table-bordered table-hover" id="arrivalLog" style="font-size:10pt;">
             <thead>
                 <tr>
                     <th style="width:20%">Date</th>
-                    <th style="width:20%">Supplier</th>
                     <th>Item</th>
                     <th style="width:15%">Unit</th>
                     <th style="width:15%">Qty</th>
-                    <th style="width:10%">Stat</th>
+                    <th style="width:15%">Emp</th>
                 </tr>
             </thead>
         </table>
@@ -66,21 +60,25 @@
                 <label>Item Name</label>
                 <input type="text" class="form-control" disabled name="item">
             </div>
-            <div class="form-group col-lg-4">
-                <label>Item Price</label>
+            <div class="form-group col-lg-3">
+                <label>Price</label>
                 <input type="text" class="form-control" disabled name="price">
             </div>
-             <div class="form-group col-lg-4">
+            <div class="form-group col-lg-3">
+                <label>Unit</label>
+                <input type="text" class="form-control" disabled name="unit">
+            </div>
+             <div class="form-group col-lg-3">
                 <label>Stock Type</label>
                 <input type="text" class="form-control" disabled name="stocktype">
             </div>
-            <div class="form-group col-lg-4">
+            <div class="form-group col-lg-3">
                 <label>Current Instock</label>
                 <input type="text" class="form-control" disabled name="instock">
             </div>
             <div class="row">
                 <div class="form-group col-lg-4 col-lg-offset-4">
-                    <label for="qty">New stock:</label>
+                    <label for="qty">Out stock:</label>
                     <input type="text" class="form-control" name="qty" placeholder="Instock" autofocus>
                 </div>
             </div>
@@ -174,60 +172,7 @@
           </div>
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="conGPrint" class="btn btn-primary">Print File</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="modal fade" tabindex="-1" role="dialog" id="printDModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Title</h4>
-      </div>
-      <div class="modal-body">
-            <div class="row">
-            <form id="printDForm" action="" method="post">
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Month</legend>
-                        <div class="form-group">
-                            <select class="form-control" id="mon2" name="mon2" required>
-                                <option value="">Select</option>
-                                <?php
-                                    $mon = date('m');
-                                    $months = array('01' => 'January', '02' => 'Febuary', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
-                                    foreach ($months as $key => $value) {
-                                        if ($mon == $key) {
-                                ?>
-                                    <option value="<?php echo $key?>" selected><?php echo $value?></option>
-                                <?php
-                                        }else{
-                                ?>
-                                    <option value="<?php echo $key?>"><?php echo $value?></option>
-                                <?php
-                                        }
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Year</legend>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
-                        </div>
-                    </fieldset>
-                </div>
-            </form>
-            </div>
-          </div>
-      <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="conDPrint" class="btn btn-primary">Print File</button>
+            <button type="button" id="conOPrint" class="btn btn-primary">Print File</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -250,7 +195,7 @@
       'processing':true,
       'serverside':true,
       'ajax': {
-          "url": "<?php echo site_url('production/fetchNewItem')?>",
+          "url": "<?php echo site_url('production/fetchRawItem')?>",
           "type": "POST"
       },
       "dom": '<"top"l>rt<"bottom"ip><"clear">',
@@ -268,7 +213,6 @@
           if ( that.search() !== this.value ) {
               that
                   .search( this.value )
-                  .draw();
           }
       } );
   } );
@@ -282,7 +226,7 @@
       'processing':true,
       'serverside':true,
       'ajax': {
-          "url": "<?php echo site_url('production/fetchItemArrivalLog')?>",
+          "url": "<?php echo site_url('production/fetchOutItem')?>",
           "type": "POST"
       },
       "dom": '<"top"l>rt<"bottom"ip><"clear">',
@@ -309,7 +253,7 @@
       var id =  $(this).attr('data');
       $('#addModal').modal('show');
       $('#addModal').find('.modal-title').text('Add new item');
-      $('#addForm').attr('action','<?php echo base_url("production/addNewStock")?>');
+      $('#addForm').attr('action','<?php echo base_url("production/addOutStock")?>');
       $.ajax({
           type: 'ajax',
           method: 'get',
@@ -323,30 +267,8 @@
               $('input[name=item]').val(data.stock_name);
               $('input[name=stocktype]').val(data.stock_type);
               $('input[name=price]').val(data.stockCost);
+              $('input[name=unit]').val(data.stock_unit);
               $('input[name=instock]').val(data.stock_qqty);
-          },
-          error: function(){
-              alert('Could not Edit data');
-          }
-      });
-  });
-
-  $('#newItems').on('click','.item-addD',function(){
-      var id =  $(this).attr('data');
-      $('#addDModal').modal('show');
-      $('#addDModal').find('.modal-title').text('Add damage item');
-      $('#addDForm').attr('action','<?php echo base_url("production/addNewDamageStock")?>');
-      $.ajax({
-          type: 'ajax',
-          method: 'get',
-          url: '<?php echo base_url("production/getItem")?>',
-          data: {id: id},
-          async: false,
-          dataType: 'json',
-          success: function(data){
-              $('input[name=id]').val(data.stock_id);
-              $('input[name=category]').val(data.stockCat_name);
-              $('input[name=item]').val(data.stock_name);
           },
           error: function(){
               alert('Could not Edit data');
@@ -369,7 +291,7 @@
               if (response.success) {
                   $('#addModal').modal('hide');
                   $('#addForm')[0].reset();
-                  $('.alert-success').html('Successfully registered stock!').fadeIn().delay(2000).fadeOut('slow');
+                  $('.alert-success').html('Successfully out stock!').fadeIn().delay(2000).fadeOut('slow');
                   arrivalLogTable.ajax.reload(null, false);
               }else{
                   $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
@@ -408,34 +330,19 @@
       });
   });
 
-  $('#printGood').click(function(){
+  $('#printOut').click(function(){
       $('#printGForm')[0].reset();
       $('#printGModal').modal('show');
-      $('#printGModal').find('.modal-title').text("Print Good Stock List");
+      $('#printGModal').find('.modal-title').text("Print Out Stock");
       $('#printGForm').attr('action','<?php echo base_url("admin/")?>');
   });
-  $('#printDamage').click(function(){
-      $('#printDForm')[0].reset();
-      $('#printDModal').modal('show');
-      $('#printDModal').find('.modal-title').text("Print Damage Stock List");
-      $('#printDForm').attr('action','<?php echo base_url("admin/")?>');
-  });
 
-  $('#conGPrint').click(function(){
+  $('#conOPrint').click(function(){
       /*var link =  $(this).attr('data');
       window.open(link,"newwindow", "width=1200, height=800");*/
       var month = $('select[name=mon2]');
       var year = $('input[name=year]');
-      var url = '<?php echo base_url('production/printGoodStock')?>/'  + month.val() + '/' + year.val();
-      window.open(url,"newwindow", "width=900, height=600");
-  });
-
-  $('#conDPrint').click(function(){
-      /*var link =  $(this).attr('data');
-      window.open(link,"newwindow", "width=1200, height=800");*/
-      var month = $('select[name=mon2]');
-      var year = $('input[name=year]');
-      var url = '<?php echo base_url('production/printDamageStock')?>/'  + month.val() + '/' + year.val();
+      var url = '<?php echo base_url('production/printOutStock')?>/'  + month.val() + '/' + year.val();
       window.open(url,"newwindow", "width=900, height=600");
   });
 

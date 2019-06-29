@@ -13,7 +13,7 @@
             foreach ($property as $value) {
         ?>
             <div class="col-lg-12 col-md-12 col-xs-12 text-center">
-                <h6><?php echo $value->property_name;?></h6>
+                <h3><?php echo $value->property_name;?></h3>
             </div>
             <!-- /.col-lg-12 -->
             <div class="col-lg-12 col-xs-12 text-center" style="font-size: 11pt!important;">
@@ -26,17 +26,17 @@
         ?>
     </div>
     <div class="row" style="font-size: 11pt!important;padding:0px;">
-        <div class="col-lg-6 col-md-6 col-xs-6">
-          OR# <?php echo $bill->order_code;?>
+        <div class="col-lg-12 col-md-12 col-xs-12 text-center">
+          Code#: <?php echo $bill->order_code;?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
-          Date:<?php echo substr($bill->order_date,0,10);?>
+          Time:</strong> <?php echo substr($bill->order_date,11,8);?>
         </div>
-        <div class="col-lg-6 col-md-6 col-xs-6">
+        <!-- <div class="col-lg-6 col-md-6 col-xs-6">
           TRML#: 01
-        </div>
+        </div> -->
         <div class="col-lg-6 col-md-6 col-xs-6">
-          Time:<?php echo substr($bill->order_date,11,8);?>
+          Date: <?php echo substr($bill->order_date,0,11);?>
         </div>
     </div>
     <div class="row">

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Codeigniter DataTable</title>
+    <title><?php echo $title;?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
@@ -21,8 +21,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link href="<?php echo base_url('assets/DataTables/media/css/dataTables.bootstrap.css');?>" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="<?php echo base_url('assets/font-awesome/css/font-awesome.min.css');?>" rel="stylesheet" type="text/css"> 
-    
+    <link href="<?php echo base_url('assets/bower_components/font-awesome/css/font-awesome.min.css');?>" rel="stylesheet" type="text/css">
+
     <!-- jQuery -->
     <script src="<?php echo base_url('assets/jquery/jquery-3.1.1.min.js');?>"></script>
 
@@ -36,4 +36,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </head>
 
-<body>  
+<body>

@@ -1,7 +1,7 @@
-<div class="col-lg-6 col-lg-offset-3">
+<div class="col-lg-12">
   <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header"><i class="fa fa-desktop fa-fw"></i> Stock Class</h2>
+        <h2 class="page-header"><i class="fa fa-desktop fa-fw"></i> Stock Suppliers</h2>
     </div>
   </div>
   <div class="col-lg-12">
@@ -15,11 +15,15 @@
               <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Class</button>
           </div>
       </div>
-      <table class="table" id="classTable">
+      <table class="table" id="supplierTable">
           <thead>
               <tr>
-                  <th style="width: 70%;">Class</th>
-                  <th style="width: 30% !important;">Action</th>
+                  <th>Company</th>
+                  <th style="width: 10% !important;">Telephone</th>
+                  <th style="width: 10% !important;">Mobile</th>
+                  <th style="width: 10% !important;">Email</th>
+                  <th>Desc</th>
+                  <th style="width: 10% !important;">Action</th>
               </tr>
           </thead>
       </table>
@@ -34,11 +38,35 @@
         </div>
         <div class="modal-body">
           <form id="myForm" action="" class="form-horizontal" method="post">
-              <input type="hidden" name="classId" value="0">
+              <input type="hidden" name="supplierId" value="0">
               <div class="form-group">
-                  <label for="channel" class="label-control col-md-4 col-xs-4"> Stock Class Name</label>
+                  <label for="channel" class="label-control col-md-4 col-xs-4"> Company Name:</label>
                   <div class="col-md-8 col-xs-8">
-                      <input type="text" name="class" class="form-control">
+                      <input type="text" name="company" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="channel" class="label-control col-md-4 col-xs-4"> Telephone:</label>
+                  <div class="col-md-8 col-xs-8">
+                      <input type="text" name="telephone" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="channel" class="label-control col-md-4 col-xs-4"> Mobile:</label>
+                  <div class="col-md-8 col-xs-8">
+                      <input type="text" name="mobile" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="channel" class="label-control col-md-4 col-xs-4"> Email Address:</label>
+                  <div class="col-md-8 col-xs-8">
+                      <input type="text" name="email" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="channel" class="label-control col-md-4 col-xs-4"> Supplies:</label>
+                  <div class="col-md-8 col-xs-8">
+                      <textarea name="desc" rows="8" cols="80" class="form-control"></textarea>
                   </div>
               </div>
           </form>
@@ -72,15 +100,15 @@
 </div>
 
 <script>
-    var classTable;
+    var supplierTable;
 
     $(document).ready(function() {
 
-        classTable = $("#classTable").DataTable({
+        supplierTable = $("#supplierTable").DataTable({
             'processing':true,
             'serverside':true,
             'ajax': {
-                "url": "<?php echo site_url('admin/fetchStockClass')?>",
+                "url": "<?php echo site_url('admin/fetchSuppliers')?>",
                 "type": "POST"
             }
         });
@@ -89,8 +117,8 @@
         $('#btnAdd').click(function(){
             $('#myForm')[0].reset();
             $('#myModal').modal('show');
-            $('#myModal').find('.modal-title').text("Add Class");
-            $('#myForm').attr('action','<?php echo base_url("admin/addClass")?>');
+            $('#myModal').find('.modal-title').text("Add Suppliers");
+            $('#myForm').attr('action','<?php echo base_url("admin/addSupplier")?>');
         });
 
         $('#btnSave').click(function(){
@@ -114,6 +142,7 @@
                     async: false,
                     dataType: 'json',
                     success: function(response){
+                      var error = response.error;
                         if (response.success) {
                             $('#myForm')[0].reset();
                             if (response.type=='update') {
@@ -122,11 +151,11 @@
                             }else if(response.type=='add'){
                                     var type = 'added';
                             }
-                            $('.alert-success').html('Channel '+type+' successfully').fadeIn().delay(2000).fadeOut('slow');
-                                classTable.ajax.reload(null, false);
+                            $('.alert-success').html('Supplier '+type+' successfully').fadeIn().delay(2000).fadeOut('slow');
+                                supplierTable.ajax.reload(null, false);
                         }else{
                             $('#myModal').modal('hide');
-                            $('.alert-danger').html('No data changes.').fadeIn().delay(2000).fadeOut('slow');
+                            $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
                         }
                     },
                     error: function(){
@@ -137,21 +166,25 @@
         });
 
         //edit
-        $('#classTable').on('click','.item-edit',function(){
+        $('#supplierTable').on('click','.item-edit',function(){
             var id =  $(this).attr('data');
             $('#myModal').modal('show');
             $('#myModal').find('.modal-title').text('Edit Class');
-            $('#myForm').attr('action','<?php echo base_url("admin/updateClass")?>');
+            $('#myForm').attr('action','<?php echo base_url("admin/updateSupplier")?>');
             $.ajax({
                 type: 'ajax',
                 method: 'get',
-                url: '<?php echo base_url("admin/editClass")?>',
+                url: '<?php echo base_url("admin/editSupplier")?>',
                 data: {id: id},
                 async: false,
                 dataType: 'json',
                 success: function(data){
-                    $('input[name=class]').val(data.stockclass_name);
-                    $('input[name=classId]').val(data.stockclass_id);
+                    $('input[name=company]').val(data.supplier_name);
+                    $('input[name=telephone]').val(data.supplier_tel);
+                    $('input[name=mobile]').val(data.supplier_mobile);
+                    $('input[name=email]').val(data.supplier_email);
+                    $('textarea[name=desc]').val(data.supplier_desc);
+                    $('input[name=supplierId]').val(data.supplier_id);
                 },
                 error: function(){
                     alert('Could not Edit data');
@@ -159,7 +192,7 @@
             });
         });
 
-        $('#classTable').on('click','.item-delete',function(){
+        $('#supplierTable').on('click','.item-delete',function(){
             var id =  $(this).attr('data');
             $('#deleteModal').modal('show');
             $('#btnDelete').unbind().click(function(){
@@ -167,20 +200,20 @@
                     type: 'ajax',
                     method: 'get',
                     async:true,
-                    url: '<?php echo base_url("admin/deleteClass")?>',
+                    url: '<?php echo base_url("admin/deleteSupplier")?>',
                     data: {id: id},
                     dataType: 'json',
                     success: function(response){
                         if (response.success) {
                             $('#deleteModal').modal('hide');
-                            $('.alert-success').html('Stock Category Deleted Successfully').fadeIn().delay(1000).fadeOut('slow');
-                            classTable.ajax.reload(null, false);
+                            $('.alert-success').html('Supplier deleted successfully').fadeIn().delay(1000).fadeOut('slow');
+                            supplierTable.ajax.reload(null, false);
                         }else{
-                            alert('Error');
+                            $('.alert-danger').html('Error deleting data.').fadeIn().delay(2000).fadeOut('slow');
                         }
                     },
                     error: function(){
-                        alert('Error deleting');
+                        $('.alert-danger').html('Unable to connect to server.').fadeIn().delay(2000).fadeOut('slow');
                     }
                 });
             });

@@ -54,7 +54,13 @@
                         <a href="<?php echo base_url("production/newstocks")?>"><i class="fa fa-truck fa-fw"></i> New Stocks</a>
                     </li>
                     <li>
+                        <a href="<?php echo base_url("production/outItems")?>"><i class="fa fa-truck fa-fw"></i> Out Item</a>
+                    </li>
+                    <li>
                         <a href="<?php echo base_url("production/branchstocks")?>"><i class="fa fa-sitemap fa-fw"></i> Branch Stocks</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo base_url("production/miscExp")?>"><i class="fa fa-sitemap fa-fw"></i> Miscellaneous</a>
                     </li>
                 </ul>
               </div>

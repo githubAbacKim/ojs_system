@@ -46,28 +46,8 @@
 	      		<div class="row">
 	      			<div class="col-md-12">
 	      				<input type="hidden" name="id" value="0" >
-	      				<div class="form-group col-md-4">
-							<label for="mon">Exp. Month</label>
-		      				<select class="form-control" id="mon" name="mon" required>
-								<option value="">Select</option>
-								<?php
-									$mon = date('m');
-									$months = array(01 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
-									foreach ($months as $key => $value) {
-										if ($mon == $key) {
-								?>
-									<option value="<?php echo $key?>" selected><?php echo $value?></option>
-								<?php
-										}else{
-								?>
-									<option value="<?php echo $key?>"><?php echo $value?></option>
-								<?php
-										}
-									}
-								?>
-							</select>
-						</div>
-						<div class="form-group col-md-8">
+
+						<div class="form-group col-md-12">
 							<label for="name">Description *</label>
 							<input type="text" class="form-control" id="desc" name="desc" placeholder="Description" />
 						</div>
@@ -85,7 +65,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<label for="qty">Date Purchace *</label>
-							<input type="date" class="form-control" id="date" name="date" />
+							<input type="date" class="form-control" id="date" name="date" value="<?php echo date("Y-m-d");?>" />
 						</div>
 						<div class="form-group col-md-6">
 							<label for="qty">Note *</label>
@@ -272,7 +252,6 @@
 				dataType: 'json',
 				success: function(data){
 					$('input[name=id]').val(data.misc_id);
-					$('select[name=mon]').val(data.misc_mon);
 					$('input[name=desc]').val(data.misc_desc);
 					$('input[name=unit]').val(data.misc_unit);
 					$('input[name=cost]').val(data.misc_price);

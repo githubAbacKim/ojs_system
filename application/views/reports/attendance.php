@@ -52,9 +52,9 @@
                 </div>
                 <div class="form-group text-center col-lg-6 col-md-6 col-xs-12 col-lg-offset-3">
                     <label>Date: </label>
-                    <input class="form-control text-center" type="date" name="date" required autofocus />
+                    <input class="form-control text-center" type="date" value="<?php echo date("Y-m-d");?>" name="date" required autofocus />
                     <label>Time: </label>
-                    <input class="form-control text-center" type="time" name="timein" required autofocus />
+                    <input class="form-control text-center" type="time" value="<?php echo date("H:i");?>" name="timein" required autofocus />
                 </div>
             </div>
           </div>
@@ -243,7 +243,7 @@
                     var type = response.type;
                     if (response.success) {
                         $('#myForm')[0].reset();
-                        $('.alert-success').html(type + ' added overtime.').fadeIn().delay(2000).fadeOut('slow');
+                        $('.alert-success').html(type + ' attendance successfully.').fadeIn().delay(2000).fadeOut('slow');
                             attendTable.ajax.reload(null, false);
                             if (type == "Update") {$('#myModal').modal('hide');}
                     }else{
@@ -372,7 +372,7 @@
     $('#conPrint').click(function(){
         /*var link =  $(this).attr('data');
         window.open(link,"newwindow", "width=1200, height=800");*/
-         var month = $('select[name=mon2]');
+        var month = $('select[name=mon2]');
         var emp = $('select[name=employee2]');
         var year = $('input[name=year]');
         var url = '<?php echo base_url('admin/printAttendList')?>/'  + month.val() + '/' + year.val() + '/' + emp.val();

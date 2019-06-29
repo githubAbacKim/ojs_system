@@ -48,7 +48,7 @@
                     <thead>
                         <tr>
                             <th style="font-size:12pt;">Date</th>
-                            <th style="font-size:12pt;">Items</th>
+                            <th style="font-size:12pt;">Description</th>
                             <th style="font-size:12pt;">Unit</th>
                             <th style="font-size:12pt;">Quantity</th>
                             <th class="text-right" style="font-size:12pt;">Cost</th>
@@ -58,20 +58,20 @@
                     <tbody>
                         <?php
                             if ($result != false) {
-                                $prod_amount = 0;
-                                $prod_tamount = 0;
+                                $misc_amount = 0;
+                                $misc_tamount = 0;
                                 foreach ($result as $item) {
-                                    $prod_amount = $item->releaseitem_qty * $item->stockCost;
-                                    $prod_tamount = $prod_tamount + $prod_amount;
+                                    $misc_amount = $item->misc_qty * $item->misc_price;
+                                    $misc_tamount = $misc_tamount + $misc_amount;
 
                         ?>
                         <tr>
-                            <td style="font-size:12pt;"><?php echo $item->release_date;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->stock_name;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->releaseitem_unit;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->releaseitem_qty;?></td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $item->stockCost;?></td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $prod_amount;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->misc_date;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->misc_desc;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->misc_unit;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->misc_qty;?></td>
+                            <td class="text-right" style="font-size:12pt;"><?php echo $item->misc_price;?></td>
+                            <td class="text-right" style="font-size:12pt;"><?php echo $misc_amount;?></td>
                         </tr>
                         <?php
                                 }
@@ -79,13 +79,13 @@
                         <tr>
 
                             <td class="text-center" colspan="5" style="font-size:12pt;">Total Amount</td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $this->cart->format_number($prod_tamount);?></td>
+                            <td class="text-right" style="font-size:12pt;"><?php echo $misc_tamount;?></td>
                         </tr>
                         <?php
                             }else{
                         ?>
                         <tr>
-                            <td colspan="7">No Record Found.</td>
+                            <td colspan="4">No Record Found.</td>
                         </tr>
                         <?php
                             }

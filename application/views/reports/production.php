@@ -20,14 +20,12 @@
         <table class="table table-striped table-bordered table-hover" id="prodTable" style="min-height: 150px !important;">
         	<thead>
                 <tr>
-                    <th>Date</th>
+                    <th style="width:10%;">Date</th>
                     <th>Description</th>
-                    <th>Notes</th>
-                    <th>Unit</th>
-                    <th>Qty</th>
-                    <th>Cost</th>
-                    <th>Total Cost</th>
-                    <th>Action</th>
+                    <th style="width:10%;">Unit</th>
+                    <th style="width:10%;">Qty</th>
+                    <th style="width:12%;">Total Cost</th>
+                    <th style="width:10%;">Action</th>
                 </tr>
             </thead>
         </table>
@@ -47,27 +45,7 @@
 	      		<div class="row">
 	      			<div class="col-md-12">
 	      				<input type="hidden" name="id" value="0" >
-	      				<div class="form-group col-md-4">
-							<label for="mon">Exp. Month</label>
-		      				<select class="form-control" id="mon" name="mon" required>
-								<option value="">Select</option>
-								<?php
-									$mon = date('m');
-									$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
-									foreach ($months as $key => $value) {
-										if ($mon == $key) {
-								?>
-									<option value="<?php echo $key?>" selected><?php echo $value?></option>
-								<?php
-										}else{
-								?>
-									<option value="<?php echo $key?>"><?php echo $value?></option>
-								<?php
-										}
-									}
-								?>
-							</select>
-						</div>
+
 						<div class="form-group col-md-8">
 							<label for="name">Description *</label>
 							<input type="text" class="form-control" id="desc" name="desc" placeholder="Description" />

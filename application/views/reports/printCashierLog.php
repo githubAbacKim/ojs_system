@@ -48,48 +48,34 @@
                     <thead>
                         <tr>
                             <th style="font-size:12pt;">Date</th>
-                            <th style="font-size:12pt;">Items</th>
-                            <th style="font-size:12pt;">Unit</th>
-                            <th style="font-size:12pt;">Quantity</th>
-                            <th class="text-right" style="font-size:12pt;">Cost</th>
-                            <th class="text-right" style="font-size:12pt;">Amount</th>
+                            <th style="font-size:12pt;">Employee</th>
+                            <th class="text-right" style="font-size:12pt;">Log Time</th>
+                            <th class="text-right" style="font-size:12pt;">Opening Cash</th>
+                            <th class="text-right" style="font-size:12pt;">Closing</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                             if ($result != false) {
-                                $prod_amount = 0;
-                                $prod_tamount = 0;
-                                foreach ($result as $item) {
-                                    $prod_amount = $item->releaseitem_qty * $item->stockCost;
-                                    $prod_tamount = $prod_tamount + $prod_amount;
-
+                                foreach ($result as $log) {
+                                  $name = $log->emp_fname.' '.$log->emp_lname;
                         ?>
                         <tr>
-                            <td style="font-size:12pt;"><?php echo $item->release_date;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->stock_name;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->releaseitem_unit;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->releaseitem_qty;?></td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $item->stockCost;?></td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $prod_amount;?></td>
+                            <td style="font-size:12pt;"><?php echo $log->log_date;?></td>
+                            <td style="font-size:12pt;"><?php echo $name?></td>
+                            <td class="text-center" style="font-size:12pt;"><?php echo $log->log_time;?></td>
+                            <td class="text-right" style="font-size:12pt;"><?php echo $log->op_money;?></td>
+                            <td class="text-right" style="font-size:12pt;"><?php echo $log->clo_money;?></td>
                         </tr>
                         <?php
                                 }
+                          }else{
                         ?>
                         <tr>
-
-                            <td class="text-center" colspan="5" style="font-size:12pt;">Total Amount</td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $this->cart->format_number($prod_tamount);?></td>
-                        </tr>
-                        <?php
-                            }else{
-                        ?>
-                        <tr>
-                            <td colspan="7">No Record Found.</td>
+                            <td colspan="5">No Record Found.</td>
                         </tr>
                         <?php
                             }
-
                         ?>
                     </tbody>
                 </table>

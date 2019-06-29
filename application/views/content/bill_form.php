@@ -13,7 +13,7 @@
             foreach ($property as $value) {
         ?>
             <div class="col-lg-12 col-md-12 col-xs-12 text-center">
-                <h4><?php echo $value->property_name;?></h4>
+                <h3><?php echo $value->property_name;?></h3>
             </div>
             <!-- /.col-lg-12 -->
             <div class="col-lg-12 col-xs-12 text-center" style="font-size: 11pt!important;">
@@ -25,8 +25,8 @@
             }
         ?>
     </div>
-    <div class="row" style="font-size: 8pt!important;padding:0px;">
-        <div class="col-lg-12 col-md-12 col-xs-12">
+    <div class="row" style="font-size: 11pt!important;padding:0px;">
+        <div class="col-lg-12 col-md-12 col-xs-12 text-center">
           Code#: <?php echo $bill->order_code;?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
