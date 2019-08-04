@@ -7,12 +7,12 @@
   <div class="row">
       <div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
           <div class="col-lg-6">
+              <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 15px;"><i class="fa fa-plus"></i> New Salary</button>
+          </div>
+          <div class="col-lg-6">
               <!-- <div class="messages" ></div> -->
               <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
               <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          </div>
-          <div class="col-lg-6">
-              <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> New Salary</button>
           </div>
       </div>
       <div class="col-lg-12">

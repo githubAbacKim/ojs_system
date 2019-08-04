@@ -95,7 +95,7 @@
             },
             "dom": '<"top"l>rt<"bottom"ip><"clear">',
             'bProcessing': false,
-            "scrollY":        "325px",
+            "scrollY":        "250px",
             "scrollCollapse": true,
             "paging":         false
         });

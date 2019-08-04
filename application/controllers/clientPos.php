@@ -20,7 +20,7 @@ class ClientPos extends CI_Controller {
 	}
 
 	function fetchItems(){
-		$result = array('data' => array());
+		$result2 = array('data' => array());
 
 		$join = array(
 				array("stock_class","stockitem","stockclass_id"),
@@ -37,36 +37,67 @@ class ClientPos extends CI_Controller {
 						if ($val2->order_status === "paid") {
 							$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-plus"></i> Add </a>';
 							if ($data != false) {
-								foreach ($data as $key => $value) {
-									$result['data'][$key] = array(
+								foreach ($data as $key => $result) {
+									$result2['data'][$key] = array(
 										$link,
-										$value->stockCat_name,
-										$value->stock_name,
-										$value->retail_price
+										$result->stockCat_name,
+										$result->stock_name,
+										$result->retail_price
 									);
 								}
 							}
 						}else{
 							if ($data != false) {
-								foreach ($data as $key => $value) {
-									if ($value->stock_qqty > 0 && $value->stock_type == "instock") {
-										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
-									}elseif ($value->stock_type == "nonstock") {
-
-										if ($value->stockCat_name == "Vinyl Stickers" || $value->stockCat_name == "Siser Materials" || $value->stockCat_name == "Tarp") {
-											$link = '<a javascript:; class="btn btn-default addCustItem" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
-										}else{
-											$link = '<a javascript:; class="btn btn-default addToCart" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
+								foreach ($data as $key => $result) {
+									$where = array('stock_id'=>$result->stock_id);			
+									$tcurrent = 0;
+									$new = $this->project_model->select('stock_newlog',false,$where);
+									if ($new != false) {
+										foreach ($new as $value) {
+											$tcurrent = $tcurrent + $value->nstock_qqty;
 										}
-									}else{
-										$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-plus"></i> Add </a>';
 									}
 
-									$result['data'][$key] = array(
+									$where3 = array('stock_id'=>$result->stock_id);
+									$branch = $this->project_model->select('branch_stocks',false,$where3);
+									$tbranch = 0;
+									if ($branch != false) {
+										foreach ($branch as $value3) {
+											$tbranch = $tbranch + $value3->bstocks_qty;
+										}
+									}
+
+									$where2 = array('stock_id'=>$result->stock_id);
+									$sold = $this->project_model->select('ordered_item',false,$where2);
+									$tsold = 0;
+									$tout = 0;
+									if ($sold != false) {
+										foreach ($sold as $value2) {
+											$tsold = $tsold + $value2->order_qty;
+										}
+									}
+
+									$tout = $tsold + $tbranch;
+									$total = $tcurrent - $tout;
+
+
+									if ($total > 0 && $result->stock_type == "instock") {
+										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$result->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
+									}elseif ($result->stock_type == "nonstock") {
+										
+										$link = '<a javascript:; class="btn btn-default addToCart" data="'.$result->stock_id.'"> <i class="fa fa-hand-plus"></i> Add</a>';
+										
+									}else{
+										$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-ban"></i> Add</a>';
+									}
+
+									//echo $result->stock_name.' '.$total.' '.$link.'<br />';
+
+									$result2['data'][$key] = array(
 										$link,
-										$value->stockCat_name,
-										$value->stock_name,
-										$value->retail_price
+										$result->stockCat_name,
+										$result->stock_name,
+										$result->retail_price
 									);
 								}
 							}
@@ -78,24 +109,24 @@ class ClientPos extends CI_Controller {
 			}else{
 				if ($data !== false) {
 					$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-plus"></i> Add </a>';
-					foreach ($data as $key => $value) {
-						$result['data'][$key] = array(
+					foreach ($data as $key => $result) {
+						$result2['data'][$key] = array(
 							$link,
-							$value->stockCat_name,
-							$value->stock_name,
-							$value->retail_price
+							$result->stockCat_name,
+							$result->stock_name,
+							$result->retail_price
 						);
 					}
 				}
 			}
 		}
-		echo json_encode($result);
+		echo json_encode($result2);
 	}
 
 	function fetchOrderCart(){
 		$result = array('data' => array());
 
-		$where = array('order_status'=>"not_paid");
+		$where = array('order_status'=>"not_paid",'emp_id'=>$this->session->userdata('current_id'));
 		$data = $this->project_model->select('order',false,$where);
 
 		if ($data != false) {
@@ -116,11 +147,62 @@ class ClientPos extends CI_Controller {
 
 	function getItem(){
 		$id = $this->input->get('id');
-		$where = array("stockitem.stock_id"=>$id);
+		/*$where = array("stockitem.stock_id"=>$id);
 		$join = array(
 			array("stockcategory","stockitem","stockCat_id")
 		);
 		$result = $this->project_model->single_select("stockitem",$where,$join);
+		$dataarr = array();
+		$dataarr[] = array(
+
+		);*/
+
+		$where = array('stock_id'=>$id);
+
+		$join = array(
+			array("stockcategory","stockitem","stockCat_id")
+		);
+
+		$item = $this->project_model->single_select('stockitem',$where,$join);
+		
+		$tcurrent = 0;
+		$new = $this->project_model->select('stock_newlog',false,$where);
+		if ($new != false) {
+			foreach ($new as $value) {
+				$tcurrent = $tcurrent + $value->nstock_qqty;
+			}
+		}
+
+		
+		$branch = $this->project_model->select('branch_stocks',false,$where);
+		$tbranch = 0;
+		if ($branch != false) {
+			foreach ($branch as $value3) {
+				$tbranch = $tbranch + $value3->bstocks_qty;
+			}
+		}
+
+		
+		$sold = $this->project_model->select('ordered_item',false,$where);
+		$tsold = 0;
+		$tout = 0;
+		if ($sold != false) {
+			foreach ($sold as $value2) {
+				$tsold = $tsold + $value2->order_qty;
+			}
+		}
+
+		$tout = $tsold + $tbranch;
+
+		$total = $tcurrent - $tout;
+
+		$result['category'] = $item->stockCat_name;
+		$result['id'] = $item->stock_id;
+		$result['item'] = $item->stock_name;
+		$result['type'] = $item->stock_type;
+		$result['rp'] = $item->retail_price;
+		$result['current'] = $total;
+
 		echo json_encode($result);
 	}
 
@@ -140,9 +222,11 @@ class ClientPos extends CI_Controller {
 	function createCart(){
 		$this->form_validation->set_rules('cust_name','Customer Name','required');
 		$this->form_validation->set_rules('order_type','Order Type','required');
+		$this->form_validation->set_rules('tin','TIN','required');
+		//$this->form_validation->set_rules('address','Address','required');
 
 		$this->form_validation->set_rules('downpayment','Downpayment','required');
-		$this->form_validation->set_rules('tax','Tax','required');
+		// $this->form_validation->set_rules('tax','Tax','required');
 		if ($this->input->post('order_type') == "order") {
 			$this->form_validation->set_rules('date','Pick-up date','required');
 			$this->form_validation->set_rules('time','Pick-up time','required');
@@ -169,7 +253,8 @@ class ClientPos extends CI_Controller {
 					'or_num'=>'',
 					'tax_rate'=>set_value('tax'),
 					'pickup_date'=>set_value('date'),
-					'pickup_time'=>set_value('time')
+					'pickup_time'=>set_value('time'),
+					'cust_tin'=>set_value('tin')
 				);
 			}else{
 				$data = array(
@@ -180,7 +265,8 @@ class ClientPos extends CI_Controller {
 					'order_type'=>set_value('order_type'),
 					'order_downpayment'=>set_value('downpayment'),
 					'or_num'=>'',
-					'tax_rate'=>set_value('tax')
+					'tax_rate'=>set_value('tax'),
+					'cust_tin'=>set_value('tin')
 				);
 			}
 
@@ -194,29 +280,6 @@ class ClientPos extends CI_Controller {
 			}
 		}
 		echo json_encode($msg);
-	}
-
-	function fetchPosCart(){
-		$result = array('data' => array());
-
-		$where = array('order_status'=>"not_paid");
-		$data = $this->project_model->select('order',false,$where);
-
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->order_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->order_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
-				$result['data'][$key] = array(
-					$value->order_type,
-					$value->order_code,
-					$value->cust_name,
-					$link
-				);
-			}
-		}
-
-
-		echo json_encode($result);
 	}
 
 	function regPosCart(){
@@ -303,28 +366,63 @@ class ClientPos extends CI_Controller {
 
 			$item = $this->project_model->single_select("stockitem",$where);
 			if($item != false){
-        $newstock = $item->stock_qqty - set_value('qty');
-        $data = array(
-          "order_id"=>$cartid,
-          "order_name"=>$item->stock_name,
-          "order_price"=>$item->retail_price,
-          "order_qty"=>set_value('qty'),
-          "order_date"=>date("Y-m-d"),
-          "order_stock_type"=>$item->stock_type,
-          "stock_id"=>$item->stock_id,
-          "order_unit"=>$item->stock_unit
-        );
-        $updateMData = array(
-          "stock_qqty"=>$newstock
-        );
-        $wherecheck = array(
-          'order_id'=>$cartid,
-          'stock_id'=>$item->stock_id,
-          'order_name'=>$item->stock_name
-        );
-        // instock
+
+		        $data = array(
+					  "order_id"=>$cartid,
+					  "order_name"=>$item->stock_name,
+					  "order_price"=>$item->retail_price,
+					  "order_qty"=>set_value('qty'),
+					  "order_date"=>date("Y-m-d"),
+					  "order_stock_type"=>$item->stock_type,
+					  "stock_id"=>$item->stock_id,
+					  "order_unit"=>$item->stock_unit
+		        );
+		        /*$newstock = $item->stock_qqty - set_value('qty');
+				$newDispose = $item->stockDispose + set_value('qty');
+		        $updateMData = array(
+					"stock_qqty"=>$newstock,
+					"stockDispose"=>$newDispose
+		        );*/
+
+		        $wherecheck = array(
+					  'order_id'=>$cartid,
+					  'stock_id'=>$item->stock_id,
+					  'order_name'=>$item->stock_name
+		        );
+	        	// instock
 				if ($item->stock_type == "instock") {
-					if ($item->stock_qqty >= set_value('qty')) {
+					$where = array('stock_id'=>$item->stock_id);			
+					$tcurrent = 0;
+					$new = $this->project_model->select('stock_newlog',false,$where);
+					if ($new != false) {
+						foreach ($new as $value) {
+							$tcurrent = $tcurrent + $value->nstock_qqty;
+						}
+					}
+
+					$where3 = array('stock_id'=>$item->stock_id);
+					$branch = $this->project_model->select('branch_stocks',false,$where3);
+					$tbranch = 0;
+					if ($branch != false) {
+						foreach ($branch as $value3) {
+							$tbranch = $tbranch + $value3->bstocks_qty;
+						}
+					}
+
+					$where2 = array('stock_id'=>$item->stock_id);
+					$sold = $this->project_model->select('ordered_item',false,$where2);
+					$tsold = 0;
+					$tout = 0;
+					if ($sold != false) {
+						foreach ($sold as $value2) {
+							$tsold = $tsold + $value2->order_qty;
+						}
+					}
+
+					$tout = $tsold + $tbranch;
+					$total = $tcurrent - $tout;
+
+					if ($total >= set_value('qty')) {
 						$check = $this->project_model->single_select('ordered_item',$wherecheck);
 						if ($check != false) {
 							$newqty = set_value('qty')+$check->order_qty;
@@ -334,14 +432,15 @@ class ClientPos extends CI_Controller {
 							$where = array('order_item_id'=>$check->order_item_id);
 							$updateitem = $this->project_model->updateNew('ordered_item',$where,$updateOData);
 							if ($updateitem != false) {
-									$where = array("stock_id"=>$item->stock_id);
-									$update = $this->project_model->updateNew("stockitem",$where,$updateMData);
-									if ($update != false) {
-										$msg['success'] =  true;
-									}else{
-										$msg['success'] = false;
-										$msg['error'] = 'Error in updating menu_item.';
-									}
+								/*$where = array("stock_id"=>$item->stock_id);
+								$update = $this->project_model->updateNew("stockitem",$where,$updateMData);
+								if ($update != false) {
+									$msg['success'] =  true;
+								}else{
+									$msg['success'] = false;
+									$msg['error'] = 'Error in updating menu_item.';
+								}*/
+								$msg['success'] =  true;
 							}else{
 								$msg['success'] = false;
 								$msg['error'] = "Error update";
@@ -349,14 +448,15 @@ class ClientPos extends CI_Controller {
 						}else {
 							$insert = $this->project_model->insert('ordered_item',$data);
 							if ($insert != false) {
-									$where = array("stock_id"=>$item->stock_id);
+									/*$where = array("stock_id"=>$item->stock_id);	
 									$update = $this->project_model->updateNew("stockitem",$where,$updateMData);
 									if ($update != false) {
 										$msg['success'] =  true;
 									}else{
 										$msg['success'] = false;
-										$msg['error'] = 'Error in updating menu_item.';
-									}
+										$msg['error'] = 'Error in updating stock item.';
+									}*/
+								$msg['success'] =  true;
 							}else{
 								$msg['success'] = false;
 								$msg['error'] = "error insert";
@@ -368,31 +468,31 @@ class ClientPos extends CI_Controller {
 					}
 
 				}else{
-		        // not instock
-		        $check = $this->project_model->single_select('ordered_item',$wherecheck);
-		        if ($check != false) {
-		          $newqty = set_value('qty')+$check->order_qty;
-		          $updateOData = array(
-		            'order_qty'=>$newqty
-		          );
-		          $where = array('order_item_id'=>$check->order_item_id);
-		          $updateitem = $this->project_model->updateNew('ordered_item',$where,$updateOData);
-		          if ($updateitem != false) {
-		              $msg['success'] =  true;
-		          }else{
-		            $msg['success'] = false;
-		            $msg['error'] = "Error update";
-		          }
-		        }else {
-		          $insert = $this->project_model->insert('ordered_item',$data);
-		          if ($insert != false) {
-		              $msg['success'] =  true;
-		          }else{
-		            $msg['success'] = false;
-		            $msg['error'] = "error insert";
-		          }
-		        }
-		    }//else not instock
+			        // not instock
+			        $check = $this->project_model->single_select('ordered_item',$wherecheck);
+			        if ($check != false) {
+			          $newqty = set_value('qty')+$check->order_qty;
+			          $updateOData = array(
+			            'order_qty'=>$newqty
+			          );
+			          $where = array('order_item_id'=>$check->order_item_id);
+			          $updateitem = $this->project_model->updateNew('ordered_item',$where,$updateOData);
+			          if ($updateitem != false) {
+			              $msg['success'] =  true;
+			          }else{
+			            $msg['success'] = false;
+			            $msg['error'] = "Error update";
+			          }
+			        }else {
+			          $insert = $this->project_model->insert('ordered_item',$data);
+			          if ($insert != false) {
+			              $msg['success'] =  true;
+			          }else{
+			            $msg['success'] = false;
+			            $msg['error'] = "error insert";
+			          }
+			        }
+			    }//else not instock
 			}else{
 				$msg['success'] = false;
 				$msg['error'] = "Stock item not found.";
@@ -429,7 +529,8 @@ class ClientPos extends CI_Controller {
 					if ($item != false) {
 						foreach ($item as $item) {
 							$stock_data = array(
-								"stock_qqty"=>$item->stock_qqty + $ordereditem->order_qty
+								"stock_qqty"=>$item->stock_qqty + $ordereditem->order_qty,
+								"stockDispose"=>$item->stockDispose - $ordereditem->order_qty,
 							);
 							$return_stock = $this->project_model->updateNew('stockitem',$item_where,$stock_data);
 							if ($return_stock != false) {
@@ -701,11 +802,35 @@ class ClientPos extends CI_Controller {
 		}
 	}
 
+	function lastOR(){
+		$table = 'order';
+		$column = 'order_id';
+		$limit = 1;
+		$return = 'or_num';
+		$order = array('order'.'.'.$column,'DESC');
+		$prim = 1;
+		$where = array("or_num !="=>'');
+		$last_id = $this->project_model->select($table,$like=false,$where,$order,$group=false,$where_or=false,$limit);
+		if ($last_id != false) {
+			foreach ($last_id as $value) {
+				if ($value->or_num != 'none') {
+					$currentnum = $value->$return+1;
+					$data['num'] = str_pad($currentnum, 3, '0', STR_PAD_LEFT);
+				}else{
+					$data['num'] = str_pad($prim, 3, '0', STR_PAD_LEFT);
+				}
+			}
+		}else{
+			$data['num'] = false;
+		}
+		echo json_encode($data);
+	}
+
 	function order_payment(){
 		$this->form_validation->set_rules('cash','Cash Amount','required');
 		$this->form_validation->set_rules('discount','Discount','required');
 		$this->form_validation->set_rules('ornum','OR Number','required');
-		$this->form_validation->set_rules('tax','Tax','required');
+		//$this->form_validation->set_rules('tax','Tax','required');
 		if ($this->form_validation->run() == FALSE) {
 			$data['success'] = false;
 			$data['error'] = validation_errors();
@@ -735,8 +860,7 @@ class ClientPos extends CI_Controller {
 						'order_cash_amount'=>set_value('cash'),
 						'order_status'=>'paid',
 						'order_discount'=>set_value('discount'),
-						'or_num'=>set_value('ornum'),
-						'tax_amount'=>$tax_amount
+						'or_num'=>set_value('ornum')
 					);
 
 					if (set_value('cash') >= $total) {
@@ -783,6 +907,7 @@ class ClientPos extends CI_Controller {
 			$total = '0.00';
 			$taxes = '0.00';
 			$downpayment = $value->order_downpayment;
+			$change = '0.00';
 			if ($items != false) {
 				foreach ($items as $value2) {
 					$subtotal = $value2->order_qty * $value2->order_price;
@@ -791,7 +916,12 @@ class ClientPos extends CI_Controller {
 				// $taxes = $amount * $tax_rate;
 				// $amount = $amount + $taxes;
 				$total = $amount - $downpayment - $value->order_discount;
-				$change = $value->order_cash_amount - $total;
+
+				if ($value->order_cash_amount == 0) {
+					$change;
+				}else{
+					$change = $value->order_cash_amount - $total;
+				}
 			}
 			$data['change'] = $this->cart->format_number($change);
 			$data['amount'] = $this->cart->format_number($amount);
@@ -903,12 +1033,16 @@ class ClientPos extends CI_Controller {
 		}else{
 			$date = date('Y-m-d');
 			$emp = $this->session->userdata('current_id');
-			$where = array('log_date'=>$date,"emp_id"=>$emp);
-			$data = array(
-				"clo_money"=>set_value("closingCash")
-			);
-			$check = $this->project_model->check_multi_duplicate('cashier_logbook',$where);
+			$where = array('logid'=>$this->session->userdata('cashierLog'));
+			$check = $this->project_model->single_select('cashier_logbook',$where);
 			if ($check != false) {
+				$deposit = set_value("closingCash") - $check->opening_cash;
+				$data = array(
+					"logout_time"=>date("h:i A"),
+					"closing_cash"=>set_value("closingCash"),
+					"deposit"=>$deposit,
+					"log_status"=>"close"
+				);
 				$close = $this->project_model->updateNew('cashier_logbook',$where,$data);
 				if ($close != false) {
 					$msg['success'] = true;
@@ -938,12 +1072,17 @@ class ClientPos extends CI_Controller {
 	function checkClosing(){
 		$date = date('Y-m-d');
 		$emp = $this->session->userdata('current_id');
-		$where = array('log_date'=>$date,"emp_id"=>$emp);
-		$check = $this->project_model->check_multi_duplicate('cashier_logbook',$where);
+		$where = array('logid'=>$this->session->userdata('cashierLog'));
+		$check = $this->project_model->single_select('cashier_logbook',$where);
 		if ($check != false) {
-			$msg['success'] = true;
+			if ($check->deposit == "0.00" && $check->log_status == "open") {
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+			}
 		}else{
 			$msg['success'] = false;
+			$msg['error'] = "Can't find log-in history.";
 		}
 		echo json_encode($msg);
 	}
@@ -976,7 +1115,7 @@ class ClientPos extends CI_Controller {
 			//defind where here
 			$date = date('Y-m-d');
 			$emp = $this->session->userdata('current_id');
-			$where = array('log_date'=>$date,"employee.emp_id"=>$emp);
+			$where = array('logid'=>$this->session->userdata('cashierLog'));
 			$join = array(
 				array('employee','cashier_logbook','emp_id')
 			);
@@ -991,22 +1130,83 @@ class ClientPos extends CI_Controller {
 			$this->load->view('footer');
 	}
 
+	function voidOrder(){
+		$this->form_validation->set_rules('code','Order Code','required');
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$where = array("order_code"=>set_value("code"));
+			$check = $this->project_model->single_select('order',$where);
+			if ($check != false) {
+				$data = array(
+					'order_bill_amount'=>'0.00',
+					'order_cash_amount'=>'0.00',
+					'order_status'=>'not_paid'
+				);
+				$where = array('order_id'=>$check->order_id);
+				$void = $this->project_model->updateNew('order',$where,$data);
+				if ($void != false) {
+					$this->session->set_userdata('posCart',$check->order_id);
+					$msg['success'] = true;
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = 'Unable to void order.';
+				}
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Unable to find order';
+			}
+		}
+		echo json_encode($msg);
+	}
+
 /*========= test =======*/
 	function test(){
-		$date = date('Y-m-d');
-		$emp = $this->session->userdata('current_id');
-		$where = array('log_date'=>$date,"employee.emp_id"=>$emp);
-		$join = array(
-			array('employee','cashier_logbook','emp_id')
-		);
-		$log = $this->project_model->select_join('cashier_logbook',$join,false,$where);
-		if ($log != false) {
-			foreach ($log as $value) {
-				echo $value->emp_fname.' '.$value->emp_lname;
+		/*$where = array("order_code"=>'OC0717-226');
+		$check = $this->project_model->single_select('order',$where);
+		if ($check != false) {
+			$data = array(
+				'order_cash_amount'=>'0.00',
+				'order_status'=>'not_paid'
+			);
+			$where = array('order_id'=>$check->order_id);
+			$void = $this->project_model->updateNew('order',$where,$data);
+			if ($void != false) {
+				$this->session->set_userdata('posCart',$check->order_id);
+				$msg['success'] = true;
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Unable to void order.';
 			}
 		}else{
-			echo "false";
+			$msg['success'] = false;
+			$msg['error'] = 'Unable to find order.';
 		}
+		echo json_encode($msg);*/
+
+		$result = array('data' => array());
+
+		$emp = $this->session->userdata('current_id');
+		$where = array('order_status'=>"not_paid",'emp_id'=>$emp);
+		$data = $this->project_model->select('order',false,$where);
+
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->order_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
+				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->order_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
+				$result['data'][$key] = array(
+					$value->order_type,
+					$value->order_code,
+					$value->cust_name,
+					$link
+				);
+			}
+		}
+
+
+		echo json_encode($result); 
+		
 	}
 
 }

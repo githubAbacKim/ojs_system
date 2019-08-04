@@ -43,6 +43,7 @@
                 <tbody>
                   <?php
                       foreach ($log as $value) {
+                        $deposits = $value->closing_cash - $value->opening_cash;
                   ?>
                     <tr>
                         <td colspan="2">Cashier:</td>
@@ -58,15 +59,26 @@
                     </tr>
                     <tr>
                         <td colspan="2">TIME IN:</td>
-                        <td class="text-right" style="font-size:11pt!important;"><?php echo $value->log_time;?></td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo $value->login_time;?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">TIME LOGOUT:</td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo $value->logout_time;?></td>
                     </tr>
                     <tr>
                         <td colspan="2">Opening Cash:</td>
-                        <td class="text-right"><?php echo "P".$this->cart->format_number($value->op_money);?></td>
+                        <td class="text-right"><?php echo "P".$this->cart->format_number($value->opening_cash);?></td>
                     </tr>
                     <tr>
                         <td colspan="2">Closing Cash:</td>
-                        <td class="text-right"><?php echo "P".$this->cart->format_number($value->clo_money);?></td>
+                        <td class="text-right"><?php echo "P".$this->cart->format_number($value->closing_cash);?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><div style="border:solid 0.5px; width:100%;"></div></td>
+                    </tr>
+                    <tr style="font-weight:bold;">
+                        <td colspan="2">Total Deposits:</td>
+                        <td class="text-right"><?php echo "P".$this->cart->format_number($value->deposit);?></td>
                     </tr>
                     <?php
                         }

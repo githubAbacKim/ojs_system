@@ -37,6 +37,9 @@
                               <div class="form-group">
                                   <input class="form-control" placeholder="Country" name="country" type="text" required autofocus />
                               </div>
+                              <div class="form-group">
+                                  <input class="form-control" placeholder="TIN" name="tin" type="text" required autofocus />
+                              </div>
                           </fieldset>
 
                       </div>
@@ -84,6 +87,7 @@
                         $('input[name=state]').val(data.state);
                         $('input[name=zipcode]').val(data.zipcode);
                         $('input[name=country]').val(data.country);
+                        $('input[name=tin]').val(data.tin);
                         $('input[name=phone]').val(data.phone);
                         $('input[name=fax]').val(data.fax);
                         $('input[name=mobile]').val(data.mobile);

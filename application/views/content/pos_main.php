@@ -1,31 +1,30 @@
 
-<div class="col-lg-12" style="max-height:500px;min-height:520px;">
+<div class="col-lg-12" id="maindiv" style="max-height:500px;min-height:520px;">
   <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
-
 				<a href="javascript:;" id="cartBtn" class="list-group-item">
 						<i class="fa fa-shopping-cart fa-2x text-center"></i><br /> Cart
 				</a>
 				<div id="cartLoadedBut">
 					<a href="javascript:;" id="btnpayment" class="list-group-item">
-	            <i class="fa fa-money fa-2x text-center"></i><br /> Pay
-	        </a>
+						<i class="fa fa-money fa-2x text-center"></i><br /> Pay
+					</a>
 					<a href="javascript:;" id="btnbill" class="list-group-item">
-	            <i class="fa fa-print fa-2x text-center"></i><br /> Bill
-	        </a>
-					<a href="javascript:;" id="disabledPayment" class="list-group-item" style="display: none;">
-	            <i class="fa fa-print fa-2x text-center"></i><br /> Payment
-	        </a>
-					<a href="javascript:;" id="btnreceipt" class="list-group-item" style="display: none;">
-	            <i class="fa fa-print fa-2x text-center"></i><br /> Receipt
-	        </a>
+						<i class="fa fa-print fa-2x text-center"></i><br /> Bill
+					</a>
+							<a href="javascript:;" id="disabledPayment" class="list-group-item" style="display: none;">
+						<i class="fa fa-print fa-2x text-center"></i><br /> Payment
+					</a>
+							<a href="javascript:;" id="btnreceipt" class="list-group-item" style="display: none;">
+						<i class="fa fa-print fa-2x text-center"></i><br /> Receipt
+					</a>
 				</div>
-				<a href="javascript:;" id="return" class="list-group-item disabled">
-            <i class="fa fa-refresh fa-2x text-center"></i><br /> Return
-        </a>
+				<a href="javascript:;" id="" class="list-group-item disabled" disabled>
+					<i class="fa fa-refresh fa-2x text-center"></i><br /> Void
+				</a>
 				<a href="javascript:;" id="closeCart" class="list-group-item">
-            <i class="fa fa-times fa-2x text-center"></i><br /> Close
-        </a>
+					<i class="fa fa-times fa-2x text-center"></i><br /> Close
+				</a>
 				<a href="javascript:;" id="btnneworder" class="list-group-item">
             <i class="fa fa-plus fa-2x text-center"></i><br /> New
         </a>
@@ -39,10 +38,10 @@
             <table class="table table-striped table-bordered table-hover" id="menuItemTable" style="font-size:10pt;">
                 <thead>
                     <tr>
+                        <th style="width:25%;">Action</th>
                         <th>CAT</th>
                         <th>Item</th>
                         <th>Price</th>
-                        <th style="width:25%;">Action</th>
                     </tr>
                 </thead>
             </table>
@@ -67,11 +66,11 @@
               <table id="cartPosItem" class="table table-striped table-bordered" cellspacing="0" width="100%">
                   <thead>
                       <tr>
-													<th width="20%">Action</th>
                           <th width="30%">Item</th>
                           <th width="15%">Unit</th>
                           <th width="20%">Qty</th>
                           <th width="20%">Price</th>
+                          <th width="20%">Action</th>
                       </tr>
                   </thead>
               </table>
@@ -210,16 +209,16 @@
 										<div class="col-lg-6 col-md-6 col-xs-12">
 											<div class="form-group text-left">
 													<label>Customer Name:</label>
-													<input type="text" class="form-control" placeholder="Name" name="cust_name" value="cash" required >
+													<input type="text" class="form-control" placeholder="Name" name="cust_name" value="Cash" required >
 											</div>
 												<div class="form-group text-left">
 														<label>TIN</label>
-														<input type="text" class="form-control" placeholder="Downpayment" name="downpayment" value="000-000-000" required >
+														<input type="text" class="form-control" placeholder="TIN" name="tin" value="000-000-000" required >
 												</div>
-												<div class="form-group text-left">
+												<!-- <div class="form-group text-left">
 														<label>Address</label>
-														<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" value="none" required >
-												</div>
+														<input type="text" class="form-control" placeholder="Address" name="address" value="none" required >
+												</div> -->
 										</div>
                 </div>
               </div>
@@ -276,22 +275,22 @@
 													<label>Discount</label>
 													<div class="input-group">
 	                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-money fa-fx"></i></span>
-	                          <input type="text" name="discount" class="form-control" placeholder="Discount Amount" aria-describedby="basic-addon1" required>
+	                          <input type="text" name="discount" class="form-control" placeholder="Discount Amount" aria-describedby="basic-addon1" value="0" required>
 	                        </div>
 											</div>
                     </div>
 										<div class="col-lg-6 col-md-6 col-xs-12">
 											<div class="form-group text-left">
-												<label>SI/OR No:</label>
+												<label id="current_id">SI/OR No: </label>
 												<div class="input-group" style="margin-bottom:5px;">
 													<span class="input-group-addon" id="basic-addon1"><i class="fa fa-file-text-o fa-fx"></i></span>
-													<input type="text" name="ornum" class="form-control" placeholder="SI/OR" aria-describedby="basic-addon1" required>
+													<input type="text" name="ornum" class="form-control" placeholder="SI/OR" aria-describedby="basic-addon1" value="none" required>
 												</div>
 											</div>
-											<div class="form-group text-left">
+											<!-- <div class="form-group text-left">
 													<label>Tax Rate</label>
 													<input type="text" class="form-control" placeholder="Ex.: 3" name="tax" value="0" required >
-											</div>
+											</div> -->
 										</div>
                 </div>
               </div>
@@ -306,7 +305,7 @@
 <!-- /.modal -->
 
 <!-- vinyl and siser modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="custoModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="voidModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -315,45 +314,18 @@
                 <i class="fa fa-cart-plus"></i> <i class="fa fa-cart-plus"> </i>
             </h3>
           </div>
-            <form method="post" action="" id="custoForm">
-              <input type="hidden" name="id" value="" />
-              <input type="hidden" name="stocktype" value="" />
+            <form method="post" action="" id="voidForm">
               <div class="modal-body">
                 <div class="row">
-                    <div class="form-group col-lg-4">
-                        <label>Category</label>
-                        <input type="text" class="form-control" disabled name="category">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label>Item Name</label>
-                        <input type="text" class="form-control" disabled name="item">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label>Item Price</label>
-                        <input type="text" class="form-control" disabled name="price">
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label>Width</label>
-                        <input type="text" class="form-control" name="width" placeholder="Ex. 3 or 3.5" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label>Height</label>
-                        <input type="text" class="form-control" name="height" placeholder="Ex. 2 or 2.5" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label>Number of Color</label>
-                        <input type="text" class="form-control" name="color" placeholder="Ex. 2" />
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label>Quantity</label>
-                        <input type="text" class="form-control" name="quant" placeholder="Quantity" />
+                    <div class="form-group col-lg-6 col-lg-offset-3">
+                        <input type="text" class="form-control" name="code" placeholder="Order Code" />
                     </div>
                 </div>
 
               </div>
               <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="btnAddCust" type="button" class="btn btn-primary">Add Item</button>
+                    <button id="btnVoid" type="button" class="btn btn-primary">Void Order</button>
               </div>
             </form>
         </div><!-- /.modal-content -->
@@ -402,9 +374,11 @@
         checkCart();
 				showField();
         checkClosing();
+        showOR();
         setInterval(function(){
             checkClosing();
             checkCart();
+            showOR();
             cart.ajax.reload(null, false);
         },1000);
 
@@ -453,6 +427,12 @@
           $('#outForm').attr('action','<?php echo base_url("clientPos/processClosing")?>');
 
 				});
+        $("#void").click(function(){
+          $('#voidForm')[0].reset();
+          $('#voidModal').modal('show');
+          $('#voidModal').find('.modal-title').text("Void Order");
+          $('#voidForm').attr('action','<?php echo base_url("clientPos/voidOrder")?>');
+        });
     /*end of events*/
 
     /*Data retrieving functions*/
@@ -580,6 +560,21 @@
                 }
             });
         }
+        function showOR(){
+            $.ajax({
+                url:'<?php echo base_url("clientPos/lastOR")?>',
+                async:false,
+                dataType:'json',
+                success: function(data){
+                    var num = '';
+                        num +='<label>SI/OR No: Next OR('+ data.num +')</label>';
+                    $('#current_id').html(num);
+                },
+                error: function(){
+                    $('.alert-danger').html('Unable to retrieve cart info.').fadeIn().delay(2000).fadeOut('slow');
+                }
+            });
+        }
 
         function checkClosing(){
             $.ajax({
@@ -588,9 +583,16 @@
                 dataType:'json',
                 success: function(data){
                     if (data.success == true) {
-                        $('#btnOutPrint').show();
-                        $('#btnOutSwitch').show();
-                        $('#btnOut').hide();
+                        $('#btnOutPrint').hide();
+                        $('#btnOutSwitch').hide();
+                        $('#btnOut').show();
+                    }else{
+                      $('#btnOutPrint').show();
+                      $('#btnOutSwitch').show();
+                      $('#btnOut').hide();
+                      $('#outModal').modal({backdrop: 'static', keyboard: false});
+                      $('input[name=closingCash]'). attr("disabled","disabled");
+                      $('#outModal').find('.modal-title').text("End Shift Confirmation!");
                     }
                 },
                 error: function(){
@@ -614,12 +616,12 @@
                 async: false,
                 dataType: 'json',
                 success: function(data){
-                    $('input[name=id]').val(data.stock_id);
-                    $('input[name=category]').val(data.stockCat_name);
-                    $('input[name=item]').val(data.stock_name);
-                    $('input[name=stocktype]').val(data.stock_type);
-                    $('input[name=price]').val(data.stockCost);
-                    $('input[name=instock]').val(data.stock_qqty);
+                    $('input[name=id]').val(data.id);
+                    $('input[name=category]').val(data.category);
+                    $('input[name=item]').val(data.item);
+                    $('input[name=stocktype]').val(data.type);
+                    $('input[name=price]').val(data.rp);
+                    $('input[name=instock]').val(data.current);
                 },
                 error: function(){
                     alert('Could not Edit data');
@@ -640,12 +642,12 @@
                 async: false,
                 dataType: 'json',
                 success: function(data){
-                    $('input[name=id]').val(data.stock_id);
-                    $('input[name=category]').val(data.stockCat_name);
-                    $('input[name=item]').val(data.stock_name);
-                    $('input[name=stocktype]').val(data.stock_type);
-                    $('input[name=price]').val(data.retail_price);
-                    $('input[name=instock]').val(data.stock_qqty);
+                    $('input[name=id]').val(data.id);
+                    $('input[name=category]').val(data.category);
+                    $('input[name=item]').val(data.item);
+                    $('input[name=stocktype]').val(data.type);
+                    $('input[name=price]').val(data.rp);
+                    $('input[name=instock]').val(data.current);
                 },
                 error: function(){
                     alert('Could not Edit data');
@@ -708,11 +710,9 @@
                         menuItem.ajax.reload(null, false);
                         cart.ajax.reload(null, false);
                     }
-
                 },
                 error: function(){
                     $('.alert-danger').html('Could not check cart.').fadeIn().delay(2000).fadeOut('slow');
-                    //return false;
                 }
             });
         }
@@ -852,68 +852,31 @@
             });
         });
 
-        $('#btnAddCust').click(function(){
-            var url = $('#custoForm').attr('action');
-            var data = $('#custoForm').serialize();
-            //validate form
-            var quant = $('input[name=quant]');
-            var width = $('input[name=width]');
-            var height = $('input[name=height]');
-            var color = $('input[name=color]');
-
-            var result = '';
-            if (quant.val()=='') {
-                quant.parent().parent().addClass('has-error');
-            }else{
-                quant.parent().parent().removeClass('has-error');
-                result +='1';
-            }
-
-            if (width.val()=='') {
-                width.parent().parent().addClass('has-error');
-            }else{
-                width.parent().parent().removeClass('has-error');
-                result +='2';
-            }
-
-            if (height.val()=='') {
-                height.parent().parent().addClass('has-error');
-            }else{
-                height.parent().parent().removeClass('has-error');
-                result +='3';
-            }
-
-            if (color.val()=='') {
-                color.parent().parent().addClass('has-error');
-            }else{
-                color.parent().parent().removeClass('has-error');
-                result +='4';
-            }
-
-            if (result == '1234') {
-                $.ajax({
-                    type:'ajax',
-                    method: 'post',
-                    url: url,
-                    data: data,
-                    async: false,
-                    dataType: 'json',
-                    success: function(response){
-                        if (response.success) {
-                            $('#custoModal').modal('hide');
-                            $('#custoForm')[0].reset();
-                            $('.alert-success').html('Cart successfully created!').fadeIn().delay(2000).fadeOut('slow');
-                            menuItem.ajax.reload(null, false);
-                            posCartItem.ajax.reload(null, false);
-                        }else{
-                            $('.alert-danger').html('Error response!').fadeIn().delay(2000).fadeOut('slow');
-                        }
-                    },
-                    error: function(){
-                        $('.alert-danger').html('Could not add data.').fadeIn().delay(2000).fadeOut('slow');
+        $('#btnVoid').click(function(){
+            var url = $('#voidForm').attr('action');
+            var data = $('#voidForm').serialize();
+            $.ajax({
+                type:'ajax',
+                method: 'post',
+                url: url,
+                data: data,
+                async: false,
+                dataType: 'json',
+                success: function(response){
+                    if (response.success) {
+                        $('#voidModal').modal('hide');
+                        $('#voidForm')[0].reset();
+                        $('.alert-success').html('Order successfully void!').fadeIn().delay(2000).fadeOut('slow');
+                        menuItem.ajax.reload(null, false);
+                        posCartItem.ajax.reload(null, false);
+                    }else{
+                        $('.alert-danger').html('Error response!').fadeIn().delay(2000).fadeOut('slow');
                     }
-                });
-            }
+                },
+                error: function(){
+                    $('.alert-danger').html('Could not add data.').fadeIn().delay(2000).fadeOut('slow');
+                }
+            });
         });
 
         $('#cartPosItem').on('click','.delete-cartitem',function(){
@@ -1026,6 +989,9 @@
                             $('.alert-success').html('Payment successfully process!').fadeIn().delay(2000).fadeOut('slow');
                             menuItem.ajax.reload(null, false);
                             cart.ajax.reload(null, false);
+
+                            var link = '<?php echo base_url("clientPos/posReceipt")?>';
+                            window.open(link,"newwindow", "width=900, height=400");
                         }else{
                             $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
                         }

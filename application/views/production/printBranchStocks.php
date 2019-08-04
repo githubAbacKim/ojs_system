@@ -52,6 +52,7 @@
                           <th>Item</th>
                           <th style="width:5%">Unit</th>
                           <th style="width:5%">Qty</th>
+                          <th>RP</th>
                           <th style="width:10%">Cost</th>
                           <th style="width:15%">Employee</th>
                       </tr>
@@ -62,7 +63,7 @@
                               $total = 0;
                               $subtotal = 0;
                                 foreach ($result as $item) {
-                                  $subtotal = $item->stockCost*$item->bstocks_qty;
+                                  $subtotal = $item->retail_price*$item->bstocks_qty;
                                   $total = $total+$subtotal;
                         ?>
                         <tr>
@@ -71,7 +72,8 @@
                             <td><?php echo $item->stock_name;?></td>
                             <td><?php echo $item->bstocks_unit;?></td>
                             <td><?php echo $item->bstocks_qty;?></td>
-                            <td><?php echo $subtotal;?></td>
+                            <td><?php echo $this->cart->format_number($item->retail_price);?></td>
+                            <td><?php echo $this->cart->format_number($subtotal);?></td>
                             <td><?php echo $item->emp_fname.' '.$item->emp_lname;?></td>
                         </tr>
                         <?php
@@ -86,7 +88,7 @@
                         ?>
                         <tr>
                           <td colspan="5" class="text-center">Total Amount</td>
-                          <td colspan="1"><?php echo $total;?></td>
+                          <td colspan="2" class="text-right"><?php echo 'P'.$this->cart->format_number($total);?></td>
                           <td></td>
                         </tr>
                     </tbody>

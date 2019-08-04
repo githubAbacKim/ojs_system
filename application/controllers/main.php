@@ -3,7 +3,7 @@
 class Main extends CI_Controller {
 	function __construct(){
 		parent::__construct();
-		$this->load->dbforge();
+		//$this->load->dbforge();
 		$this->is_log_in();
 		date_default_timezone_set('Asia/Manila');
 		//echo $this->my_mac();
@@ -12,6 +12,7 @@ class Main extends CI_Controller {
 		}else{
 			$this->is_log_in();
 		} */
+		//echo getenv("username");
 	}
 
 	private function my_mac(){
@@ -161,22 +162,25 @@ class Main extends CI_Controller {
 				$logwhere = array(
 					'emp_id'=>$log[1],
 					'log_date'=>date("Y-m-d"),
-					'clo_money'=>null
+					'closing_cash'=>"0.00",
+					'log_status'=>"open"
 				);
-				$logcheck = $this->project_model->select('cashier_logbook',false,$logwhere);
+				$logcheck = $this->project_model->single_select('cashier_logbook',$logwhere);
 				if ($logcheck != true) {
 					// add init log here
 					$data = array(
 						"emp_id"=>$log[1],
 						"log_date"=>date("Y-m-d"),
-						"log_time"=>date("h:i A"),
-						"op_money"=>set_value('op_money')
+						"login_time"=>date("h:i A"),
+						"opening_cash"=>set_value('op_money'),
+						'log_status'=>"open"
 					);
 					$logbook = $this->project_model->insert('cashier_logbook',$data,'logid');
 					if ($logbook != false) {
 						$newdata = array(
 							'ispos_log'=>$log[0],
-							'current_id'=>$log[1]
+							'current_id'=>$log[1],
+							'cashierLog'=>$logbook[1]
 							);
 						$this->session->set_userdata($newdata);
 						if ($this->session->userdata('current_id') == FALSE || $this->session->userdata('current_id') == "") {
@@ -200,7 +204,8 @@ class Main extends CI_Controller {
 				}else{
 					$newdata = array(
 						'ispos_log'=>$log[0],
-						'current_id'=>$log[1]
+						'current_id'=>$log[1],
+						'cashierLog'=>$logcheck->logid
 						);
 					$this->session->set_userdata($newdata);
 					if ($this->session->userdata('current_id') == FALSE || $this->session->userdata('current_id') == "") {
@@ -537,7 +542,8 @@ class Main extends CI_Controller {
 		foreach ($data as $value) {
 			echo $value->account_type;
 		} */
-		$this->checkNewInstall();
+		//$this->checkNewInstall();
+		echo getenv("username");
 	}
 }
 

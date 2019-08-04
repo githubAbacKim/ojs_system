@@ -51,7 +51,18 @@
                             <th style="font-size:12pt;">Description</th>
                             <th style="font-size:12pt;">Unit</th>
                             <th style="font-size:12pt;">Quantity</th>
+                            <?php
+                                if ($this->uri->segment(4) == "finished") {
+                            ?>
+                            <th class="text-right" style="font-size:12pt;">Retail Price</th>
+                            <?php
+                                }else{
+                            ?>
                             <th class="text-right" style="font-size:12pt;">Cost</th>
+                            <?php
+                                }
+                            ?>
+                            
                             <th class="text-right" style="font-size:12pt;">Amount</th>
                         </tr>
                     </thead>
@@ -60,17 +71,24 @@
                             if ($result != false) {
                                 $expstocks_amount = 0;
                                 $expstocks_tamount = 0;
+                                $cost = 0;
                                 foreach ($result as $item) {
-                                    $expstocks_amount = $item->expstocks_qty * $item->expstocks_price;
+                                    $expstocks_amount = $item->nstock_qqty * $item->retail_price;
                                     $expstocks_tamount = $expstocks_tamount + $expstocks_amount;
+
+                                    if ($this->uri->segment(4) == "finished") {
+                                        $cost = $item->retail_price;
+                                    }else{
+                                        $cost = $item->stockCost;
+                                    }
 
                         ?>
                         <tr>
-                            <td style="font-size:12pt;"><?php echo $item->expstocks_date;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->expstocks_desc;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->expstocks_unit;?></td>
-                            <td style="font-size:12pt;"><?php echo $item->expstocks_qty;?></td>
-                            <td class="text-right" style="font-size:12pt;"><?php echo $item->expstocks_price;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->delivery_date;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->stock_name;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->nstock_unit;?></td>
+                            <td style="font-size:12pt;"><?php echo $item->nstock_qqty;?></td>
+                            <td class="text-right" style="font-size:12pt;"><?php echo $item->retail_price;?></td>
                             <td class="text-right" style="font-size:12pt;"><?php echo $expstocks_amount;?></td>
                         </tr>
                         <?php 
@@ -84,7 +102,7 @@
                             }else{
                         ?>
                         <tr>
-                            <td colspan="4">No Record Found.</td>
+                            <td colspan="6">No Record Found.</td>
                         </tr>
                         <?php
                             }

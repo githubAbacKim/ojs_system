@@ -1,11 +1,11 @@
 <div class="col-lg-12" style="max-height:500px;min-height:520px;">
-  <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
+  <!-- <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
         <a href="javascript:;" id="printOut" data="<?php echo base_url('production/printGoodStock');?>" class="list-group-item">
             <i class="fa fa-print fa-2x text-center"></i><br /> Out Stock
         </a>
     </div>
-  </div>
+  </div> -->
   <div class="col-lg-4" style="max-height:500px;min-height:520px;">
     <div class="row">
       <div class="col-lg-12">
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-7" style="max-height:500px;min-height:520px;background-color:#ececec;">
+  <div class="col-lg-8" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="row">
       <div class="col-lg-12">
         <h2 class="page-header text-center">Out Stocks</h2>
@@ -183,6 +183,8 @@
   var newItemTable;
   var arrivalLogTabl;
   setInterval(function(){
+    newItemTable.ajax.reload(null, false);
+    arrivalLogTable.ajax.reload(null, false);
   },3000);
 
   // functions here
@@ -257,18 +259,18 @@
       $.ajax({
           type: 'ajax',
           method: 'get',
-          url: '<?php echo base_url("production/getItem")?>',
+          url: '<?php echo base_url("production/getProdItem")?>',
           data: {id: id},
           async: false,
           dataType: 'json',
           success: function(data){
-              $('input[name=id]').val(data.stock_id);
-              $('input[name=category]').val(data.stockCat_name);
-              $('input[name=item]').val(data.stock_name);
-              $('input[name=stocktype]').val(data.stock_type);
-              $('input[name=price]').val(data.stockCost);
-              $('input[name=unit]').val(data.stock_unit);
-              $('input[name=instock]').val(data.stock_qqty);
+              $('input[name=id]').val(data.id);
+              $('input[name=category]').val(data.category);
+              $('input[name=item]').val(data.item);
+              $('input[name=stocktype]').val(data.type);
+              $('input[name=unit]').val(data.unit);
+              $('input[name=price]').val(data.rp);
+              $('input[name=instock]').val(data.current);
           },
           error: function(){
               alert('Could not Edit data');

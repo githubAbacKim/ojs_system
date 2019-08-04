@@ -1,8 +1,18 @@
 <div class="col-lg-12" style="max-height:500px;min-height:520px;">
   <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
+        <a href="javascript:;" id="printLowStock" data="<?php echo base_url('production/printLowStock');?>" class="list-group-item">
+            <i class="fa fa-print fa-2x"></i><br />Low Stock
+        </a>
+    </div>
+    <div class="list-group text-center" style="margin: 0 auto !important;">
+        <a href="javascript:;" id="printStockList" data="<?php echo base_url('production/printStockList');?>" class="list-group-item">
+            <i class="fa fa-print fa-2x"></i><br />Stock List
+        </a>
+    </div>
+    <div class="list-group text-center" style="margin: 0 auto !important;">
         <a href="javascript:;" id="printList" data="<?php echo base_url('production/printLowStock');?>" class="list-group-item">
-            <i class="fa fa-print fa-2x"></i><br />PRINT
+            <i class="fa fa-print fa-2x"></i><br />Supplier Stocks
         </a>
     </div>
   </div>
@@ -16,7 +26,8 @@
                       <th>Category</th>
                       <th>Item</th>
                       <th>Unit</th>
-                      <th>Current Stocks</th>
+                      <th>InStocks</th>
+                      <th>OutStocks</th>
                       <th>Total Stocks</th>
                       <th>Supplier</th>
                       <th>Tel#</th>
@@ -76,7 +87,12 @@ $(document).ready(function() {
           itemTable.ajax.reload( null, false ); // user paging is not reset on reload
       }, 1000 );
 
-      $('#printList').on('click',function(){
+      $('#printLowStock').on('click',function(){
+          var link =  $(this).attr('data');
+          window.open(link,"newwindow", "width=900, height=400");
+      });
+
+      $('#printStockList').on('click',function(){
           var link =  $(this).attr('data');
           window.open(link,"newwindow", "width=900, height=400");
       });

@@ -4,35 +4,34 @@
         <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Incomestatement</h2>
     </div>
   </div>
-	<div class="row">
-	<div class="row" style="margin-bottom: 5px;height: 65px;">
-		<div class="col-lg-6">
-			<!-- <div class="messages" ></div> -->
-			<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-			<div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-		</div>
-		<div class="col-lg-6">
-			<button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Expenses</button>
-		</div>
-	</div>
-	<div class="col-lg-12">
+  <div class="row">
+  	<div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
+      <div class="col-lg-6">
+        <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 15px;">Genarate Statement</button>
+      </div>
+  		<div class="col-lg-6">
+  			<!-- <div class="messages" ></div> -->
+  			<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+  			<div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+  		</div>
+  	</div>
+  	<div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover" id="incomeStatement" style="min-height: 150px !important;">
         	<thead>
                 <tr>
                     <th>Statement Date</th>
-                    <th>Total Sales</th>
+                    <th>Gross Income</th>
+                    <th>Gross Taxable</th>
+                    <th>Tax</th>
                     <th>Total Expenses</th>
                     <th>Net Profit</th>
-                    <th>Shop Share(40%)</th>
-                    <th>Kim Share(60%)</th>
-                    <th>Bank Bal.</th>
-                    <th>Deposit Amount</th>
+                    <th>Deposits</th>
                     <th>Action</th>
                 </tr>
             </thead>
         </table>
     </div>
-</div>
+  </div>
 </div>
 	<!-- add member -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
@@ -75,14 +74,6 @@
 		                        <legend>Record Year</legend>
 		                        <div class="form-group">
 		                            <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
-		                        </div>
-		                    </fieldset>
-		                </div>
-		                <div class="col-md-6">
-		                    <fieldset>
-		                        <legend>Current Bank Balance</legend>
-		                        <div class="form-group">
-		                            <input type="text" class="form-control" id="bankBalance" name="bankBalance" placeholder="0.00" required autofocus />
 		                        </div>
 		                    </fieldset>
 		                </div>
@@ -190,7 +181,7 @@
 			},
             "dom": '<"top"l>rt<"bottom"ip><"clear">',
             'bProcessing': false,
-            "scrollY":        "325px",
+            "scrollY":        "250px",
             "scrollCollapse": true,
             "paging":         false
 		});

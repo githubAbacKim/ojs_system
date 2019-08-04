@@ -1,12 +1,12 @@
 <div class="col-lg-12" style="max-height:500px;min-height:520px;">
-  <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
+  <!-- <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
         <a href="javascript:;" id="printmisc" data="<?php echo base_url('production/printGoodStock');?>" class="list-group-item">
             <i class="fa fa-print fa-2x text-center"></i><br /> Out Stock
         </a>
     </div>
-  </div>
-  <div class="col-lg-4" style="max-height:500px;min-height:520px;">
+  </div> -->
+  <div class="col-lg-5" style="max-height:500px;min-height:520px;">
     <div class="row">
       <div class="col-lg-12">
           <h2 class="page-header"><i class="fa fa-cubes fa-fw"></i> Expenses Details</h2>
@@ -127,6 +127,7 @@
   $(document).ready(function() {
 
   setInterval(function(){
+    miscTable.ajax.reload(null, false);
   },3000);
 
   $('#misc thead th').each( function () {

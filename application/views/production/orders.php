@@ -1,18 +1,5 @@
-<style scoped="true">
-  #itemFalse h3{
-    border:solid 1px;
-    padding: 15px;
-    text-align: center;
-  }
-</style>
+
 <div class="col-lg-12" style="max-height:500px;min-height:520px;">
-  <div class="col-lg-12" style="margin-bottom: 5px;min-height: 35px;">
-      <div class="col-lg-6">
-          <!-- <div class="messages" ></div> -->
-          <div class="alert alert-success" style="display:none;font-size:9pt;padding:5px;margin:5px;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          <div class="alert alert-danger" style="display:none;font-size:9pt;padding:5px;margin:5px;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-      </div>
-  </div>
   <div class="col-lg-1 col-md-1 col-xs-12" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
         <a href="javascript:;" id="btnToday" class="list-group-item">
@@ -20,9 +7,6 @@
         </a>
         <a href="javascript:;" id="btnsearch" class="list-group-item">
             <i class="fa fa-search fa-2x"></i><br />Search
-        </a>
-        <a href="javascript:;" id="printMiscForm" class="list-group-item">
-            <i class="fa fa-print fa-2x"></i><br />PRINT
         </a>
     </div>
   </div>
@@ -82,12 +66,31 @@
             </thead>
         </table>
       </div>
+      <div class="col-lg-12" style="margin-bottom: 5px;min-height: 35px;">
+          <div class="col-lg-6">
+              <!-- <div class="messages" ></div> -->
+              <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+              <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+      </div>
     </div>
-
     <div id="itemFalse" style="display:none;">
       <h3 class="">No Order Selected</h3>
+      <div class="col-lg-12" style="margin-bottom: 5px;min-height: 35px;">
+          <div class="col-lg-6">
+              <!-- <div class="messages" ></div> -->
+              <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+              <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+      </div>
     </div>
-
+    <style scoped="true">
+      #itemFalse h3{
+        border:solid 1px;
+        padding: 15px;
+        text-align: center;
+      }
+    </style>
   </div>
   <div class="modal fade" tabindex="-1" role="dialog" id="searchModal">
     <div class="modal-dialog" role="document">

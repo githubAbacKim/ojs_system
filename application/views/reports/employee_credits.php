@@ -1,31 +1,38 @@
-<div class="row">
-    <div class="row" style="margin-bottom: 5px;height: 65px;">
-        <div class="col-lg-6">
-            <!-- <div class="messages" ></div> -->
-            <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-            <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-        </div>
-        <div class="col-lg-6">
-            <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Credit</button>
-            <button id="btnPrint" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> Print Record</button>
-        </div>          
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header"><i class="fa fa-money fa-fw"></i> Employee Credit</h2>
     </div>
-    <div class="col-lg-12">     
-        <table class="table table-striped table-bordered table-hover" id="credit">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Employee</th>
-                    <th>Item Desc</th>
-                    <th>Unit Price</th>
-                    <th>Qty</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead> 
-        </table>            
-    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
+          <div class="col-lg-6">
+              <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right: 5px;"><i class="fa fa-plus"></i>Add Credit</button>
+              <button id="btnPrint" class="btn btn-default pull pull-left" style="margin-top: 15px;"><i class="fa fa-print"></i> Print Record</button>
+          </div>
+          <div class="col-lg-6">
+              <!-- <div class="messages" ></div> -->
+              <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+              <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+      </div>
+      <div class="col-lg-12">
+          <table class="table table-striped table-bordered table-hover" id="credit">
+              <thead>
+                  <tr>
+                      <th>Date</th>
+                      <th>Employee</th>
+                      <th>Item Desc</th>
+                      <th>Unit Price</th>
+                      <th>Qty</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+  </div>
 </div>
 
     <!-- add member -->
@@ -50,7 +57,7 @@
                         <legend>Transaction Date</legend>
                         <div class="form-group">
                             <input class="form-control" placeholder="Date" name="date" value="<?php echo date('Y-m-d')?>" type="date" required autofocus />
-                        </div>                        
+                        </div>
                     </fieldset>
                 </div>
                 <div class="col-md-6">
@@ -67,7 +74,7 @@
                         </div>
 
                     </fieldset>
-                </div> 
+                </div>
             </div>
           </div>
       <div class="modal-footer">
@@ -87,7 +94,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Title</h4>
       </div>
-      
+
           <div class="modal-body">
             <div class="row">
             <form id="printForm" action="" method="post">
@@ -120,7 +127,7 @@
                                 <?php
                                         }
                                     }
-                                ?>                                
+                                ?>
                             </select>
                         </div>
                     </fieldset>
@@ -134,9 +141,9 @@
                     </fieldset>
                 </div>
             </form>
-            </div>     
+            </div>
           </div>
-      
+
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" id="conPrint" class="btn btn-primary">Print File</button>
@@ -186,15 +193,15 @@
             },
             "dom": '<"top"l>rt<"bottom"ip><"clear">',
             'bProcessing': false,
-            "scrollY":        "325px",
+            "scrollY":        "250px",
             "scrollCollapse": true,
-            "paging":         false 
+            "paging":         false
         });
 
         // Apply the search
         creditTable.columns().every( function () {
             var that = this;
-     
+
             $( 'input', this.header() ).on( 'keyup change', function () {
                 if ( that.search() !== this.value ) {
                     that
@@ -212,7 +219,7 @@
             $('#myForm').attr('action','<?php echo base_url("admin/add_EmpCredit")?>');
         });
 
-        $('#btnSave').click(function(){            
+        $('#btnSave').click(function(){
             var url = $('#myForm').attr('action');
             var data = $('#myForm').serialize();
             $.ajax({
@@ -226,7 +233,7 @@
                     var error = response.error;
                     var type = response.type;
                     if (response.success) {
-                        $('#myForm')[0].reset();                                
+                        $('#myForm')[0].reset();
                         $('.alert-success').html(type + ' added overtime.').fadeIn().delay(2000).fadeOut('slow');
                             creditTable.ajax.reload(null, false);
                             if (type == "Update") {$('#myModal').modal('hide');}
@@ -241,7 +248,7 @@
                     $('#myModal').modal('hide');
                 }
             });
-                
+
         });
 
         //edit
@@ -309,8 +316,8 @@
     $('#conPrint').click(function(){
         /*var link =  $(this).attr('data');
         window.open(link,"newwindow", "width=1200, height=800");*/
-        var month = $('select[name=mon2]'); 
-        var emp = $('select[name=employee2]'); 
+        var month = $('select[name=mon2]');
+        var emp = $('select[name=employee2]');
         var year = $('input[name=year]');
         var url = '<?php echo base_url('admin/printCreditList')?>/'  + month.val() + '/' + year.val() + '/' + emp.val();
         window.open(url,"newwindow", "width=900, height=600");
@@ -323,7 +330,7 @@
             success: function(data){
                 var html = '';
                 var i;
-                for(i=0; i<data.length; i++) {                      
+                for(i=0; i<data.length; i++) {
                     var name = data[i].emp_fname+ ' ' +data[i].emp_mname+ ' '+data[i].emp_lname;
                     html +='<option value="'+data[i].emp_id+'">'+ name +'</option>';
                 }
@@ -333,7 +340,7 @@
             error: function(){
                 $('.alert-danger').html('Server error. Unable to retrieve data.').fadeIn().delay(2000).fadeOut('slow');
             }
-        });             
+        });
     }
 
     function showOTType(){
@@ -344,7 +351,7 @@
             success: function(data){
                 var html = '';
                 var i;
-                for(i=0; i<data.length; i++) {         
+                for(i=0; i<data.length; i++) {
                     html +='<option value="'+data[i].ot_type_id+'">'+ data[i].ot_type_name +'</option>';
                 }
                 $('#credit_type').html(html);
@@ -352,7 +359,7 @@
             error: function(){
                 $('.alert-danger').html('Server error. Unable to retrieve data.').fadeIn().delay(2000).fadeOut('slow');
             }
-        });             
+        });
     }
 
 </script>

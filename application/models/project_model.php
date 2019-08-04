@@ -177,15 +177,18 @@ class Project_Model extends CI_Model {
 		}
 	}
 
-  function updateNew($table_name,$where,$data){
-			$this->db->where($where);
-			$this->db->update($table_name,$data);
+  	function updateNew($table_name,$where=false,$data){
+  		if ($where != false) {
+  			$this->db->where($where);
+  		}
+			
+		$this->db->update($table_name,$data);
 
-			if ($this->db->affected_rows() > 0) {
-				return true;
-			}else{
-				return false;
-			}
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	function delete($table_name,$table_id,$id){

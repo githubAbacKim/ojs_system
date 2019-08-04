@@ -1,15 +1,18 @@
 <div class="col-lg-12" style="max-height:500px;min-height:520px;">
-  <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
+  <!-- <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
         <a href="javascript:;" id="printGood" data="<?php echo base_url('production/printGoodStock');?>" class="list-group-item">
-            <i class="fa fa-print fa-2x text-center"></i><br /> Good Stock
+            <i class="fa fa-print fa-2x text-center"></i><br /> Good Finished
         </a>
         <a href="javascript:;" id="printDamage" data="<?php echo base_url('production/printDamageStock');?>" class="list-group-item">
-            <i class="fa fa-print fa-2x text-center"></i><br /> Damage Stock
+            <i class="fa fa-print fa-2x text-center"></i><br /> Damage Finished
+        </a>
+		<a href="javascript:;" id="printRawGood" data="<?php echo base_url('production/printRawGood');?>" class="list-group-item">
+            <i class="fa fa-print fa-2x text-center"></i><br /> Raw Stock
         </a>
     </div>
-  </div>
-  <div class="col-lg-4" style="max-height:500px;min-height:520px;">
+  </div> -->
+  <div class="col-lg-5" style="max-height:500px;min-height:520px;">
     <div class="row">
       <div class="col-lg-12">
 
@@ -18,9 +21,10 @@
             <table class="table table-striped table-bordered table-hover" id="newItems" style="font-size:10pt;">
                 <thead>
                     <tr>
+						            <th style="width:15%;">Class</th>
                         <th style="width:30%;">Supplier</th>
                         <th>Item</th>
-                        <th style="width:25%;">Action</th>
+                        <th style="width:30%;">Action</th>
                     </tr>
                 </thead>
             </table>
@@ -126,7 +130,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
-<div class="modal fade" tabindex="-1" role="dialog" id="printGModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="printModal1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -135,51 +139,27 @@
       </div>
       <div class="modal-body">
             <div class="row">
-            <form id="printGForm" action="" method="post">
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Month</legend>
-                        <div class="form-group">
-                            <select class="form-control" id="mon2" name="mon2" required>
-                                <option value="">Select</option>
-                                <?php
-                                    $mon = date('m');
-                                    $months = array('01' => 'January', '02' => 'Febuary', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
-                                    foreach ($months as $key => $value) {
-                                        if ($mon == $key) {
-                                ?>
-                                    <option value="<?php echo $key?>" selected><?php echo $value?></option>
-                                <?php
-                                        }else{
-                                ?>
-                                    <option value="<?php echo $key?>"><?php echo $value?></option>
-                                <?php
-                                        }
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Year</legend>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
-                        </div>
-                    </fieldset>
+            <form id="printForm1" action="" method="post">
+                <div class="col-md-6 col-md-offset-3">
+                  <fieldset>
+                      <legend>Date</legend>
+                      <div class="form-group">
+                          <input type="date" name="date1" class="form-control" id="date2" value="<?php echo date("Y-m-d");?>" />
+                      </div>
+                  </fieldset>
                 </div>
             </form>
             </div>
           </div>
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="conGPrint" class="btn btn-primary">Print File</button>
+            <button type="button" id="conPrint1" class="btn btn-primary">Print File</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div class="modal fade" tabindex="-1" role="dialog" id="printDModal">
+
+<div class="modal fade" tabindex="-1" role="dialog" id="printModal2">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -187,47 +167,51 @@
         <h4 class="modal-title">Title</h4>
       </div>
       <div class="modal-body">
-            <div class="row">
-            <form id="printDForm" action="" method="post">
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Month</legend>
-                        <div class="form-group">
-                            <select class="form-control" id="mon2" name="mon2" required>
-                                <option value="">Select</option>
-                                <?php
-                                    $mon = date('m');
-                                    $months = array('01' => 'January', '02' => 'Febuary', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
-                                    foreach ($months as $key => $value) {
-                                        if ($mon == $key) {
-                                ?>
-                                    <option value="<?php echo $key?>" selected><?php echo $value?></option>
-                                <?php
-                                        }else{
-                                ?>
-                                    <option value="<?php echo $key?>"><?php echo $value?></option>
-                                <?php
-                                        }
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Year</legend>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
-                        </div>
-                    </fieldset>
-                </div>
-            </form>
-            </div>
-          </div>
+        <div class="row">
+          <form id="printForm2" action="" method="post">
+              <div class="col-md-6 col-md-offset-3">
+                <fieldset>
+                    <legend>Date</legend>
+                    <div class="form-group">
+                        <input type="date" name="date1" class="form-control" id="date2" value="<?php echo date("Y-m-d");?>" />
+                    </div>
+                </fieldset>
+              </div>
+          </form>
+        </div>
+      </div>
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="conDPrint" class="btn btn-primary">Print File</button>
+            <button type="button" id="conPrint2" class="btn btn-primary">Print File</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="printModal3">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form id="printForm3" action="" method="post">
+              <div class="col-md-6 col-md-offset-3">
+                <fieldset>
+                    <legend>Date</legend>
+                    <div class="form-group">
+                        <input type="date" name="date1" class="form-control" id="date2" value="<?php echo date("Y-m-d");?>" />
+                    </div>
+                </fieldset>
+              </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="conPrint3" class="btn btn-primary">Print File</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -238,6 +222,8 @@
   var newItemTable;
   var arrivalLogTabl;
   setInterval(function(){
+    newItemTable.ajax.reload(null, false);
+    arrivalLogTable.ajax.reload(null, false);
   },3000);
 
   // functions here
@@ -318,12 +304,12 @@
           async: false,
           dataType: 'json',
           success: function(data){
-              $('input[name=id]').val(data.stock_id);
-              $('input[name=category]').val(data.stockCat_name);
-              $('input[name=item]').val(data.stock_name);
-              $('input[name=stocktype]').val(data.stock_type);
-              $('input[name=price]').val(data.stockCost);
-              $('input[name=instock]').val(data.stock_qqty);
+              $('input[name=id]').val(data.id);
+              $('input[name=category]').val(data.category);
+              $('input[name=item]').val(data.item);
+              $('input[name=stocktype]').val(data.type);
+              $('input[name=price]').val(data.rp);
+              $('input[name=instock]').val(data.current);
           },
           error: function(){
               alert('Could not Edit data');

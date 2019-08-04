@@ -6,14 +6,14 @@
   </div>
 	<div class="row">
 	<div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
+    <div class="col-lg-6">
+      <!-- <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 25px;margin-right: 5px;"><i class="fa fa-plus"></i> Add Expenses</button> -->
+      <button id="btnPrint" class="btn btn-default pull pull-left" style="margin-top: 25px;"><i class="fa fa-print"></i> Print Record</button>
+    </div>
 		<div class="col-lg-6">
 			<!-- <div class="messages" ></div> -->
 			<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
 			<div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-		</div>
-		<div class="col-lg-6">
-			<button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Expenses</button>
-			<button id="btnPrint" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> Print Record</button>
 		</div>
 	</div>
 	<div class="col-lg-12">
@@ -241,7 +241,7 @@
 		$('#miscItem').on('click','.item-edit',function(){
 			var id =  $(this).attr('data');
 			$('#myModal').modal('show');
-			$('#myModal').find('.modal-title').text('Edit Item');
+			$('#myModal').find('.modal-title').text('Edit Miscellanous');
 			$('#myForm').attr('action','<?php echo base_url("admin/updateMisc")?>');
 			$.ajax({
 				type: 'ajax',

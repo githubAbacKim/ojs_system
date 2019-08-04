@@ -6,25 +6,30 @@
   </div>
 	<div class="row">
 		<div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
+      <div class="col-lg-6">
+        <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right: 5px;">Add Stock Item</button>
+        <button id="btnReset" class="btn btn-danger pull pull-left" style="margin-top: 15px;">Reset Stocks</button>
+      </div>
 			<div class="col-lg-6">
 				<!-- <div class="messages" ></div> -->
 				<div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
 				<div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-			</div>
-			<div class="col-lg-6">
-				<button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Stock Item</button>
 			</div>
 		</div>
 		<div class="col-lg-12">
 	        <table class="table table-striped table-bordered table-hover" id="stockItems">
 	        	<thead>
 	                <tr>
+	                	<th>Class</th>
 	                    <th>Category</th>
+                      	<th>Supplier</th>
 	                    <th>Item</th>
 	                    <th>Unit</th>
 	                    <th>Qtty</th>
+	                    <th>Dispose</th>
+	                    <th>Alert</th>
 	                    <th>Cost</th>
-                      <th>Supplier</th>
+	                    <th>RP</th>
 	                    <th>Total Cost</th>
 	                    <th>Action</th>
 	                </tr>
@@ -88,18 +93,18 @@
 						</div>
             <div class="form-group col-lg-3">
                 <label for="category">Type *</label>
-                    <div class="col-lg-12">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="stock_type" id="newStockBut" value="instock">InStock
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="stock_type" id="newStockBut" value="nonstock">NonStock
-                            </label>
-                        </div>
+                <div class="col-lg-12">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="stock_type" id="newStockBut" value="instock">InStock
+                        </label>
                     </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="stock_type" id="newStockBut" value="nonstock">NonStock
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="form-group col-lg-3">
               <label for="unit">Unit *</label>
@@ -160,6 +165,24 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div id="resetModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Confirm Stock RESET!</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to proceed with resetting the stocks?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="btnConReset" class="btn btn-danger">Reset</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script type="text/javascript">
 	var itemTable;
 	$(document).ready(function() {
@@ -191,13 +214,13 @@
 			},
             "dom": '<"top"l>rt<"bottom"ip><"clear">',
             'bProcessing': false,
-            "scrollY":        "325px",
+            "scrollY":        "250px",
             "scrollCollapse": true,
             "paging":         false
 		});
 
 		    // Apply the search
-	  itemTable.columns().every( function () {
+	  	itemTable.columns().every( function () {
 	        var that = this;
 
 	        $( 'input', this.header() ).on( 'keyup change', function () {
@@ -231,7 +254,7 @@
 				success: function(response){
           var error = response.error;
 					if (response.success) {
-						$('#myForm')[0].reset();
+						//$('#myForm')[0].reset();
 						if (response.type=='update') {
 								var type = 'update';
 								$('#myModal').modal('hide');
@@ -241,7 +264,7 @@
 						$('.alert-success').html('Item '+type+' successfully').fadeIn().delay(2000).fadeOut('slow');
 							itemTable.ajax.reload(null, false);
 					}else{
-						$('#myModal').modal('hide');
+						//$('#myModal').modal('hide');
 						$('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
 					}
 				},
@@ -249,6 +272,35 @@
 					alert('Error connecting server.');
 				}
 			});
+
+		});
+
+		$('#btnReset').click(function(){
+			$('#resetModal').modal('show');
+			$('#btnConReset').unbind().click(function(){
+				var url = '<?php echo base_url("admin/resetStocks");?>';
+				$.ajax({
+					type:'ajax',
+					method: 'post',
+					url: url,
+					async: true,
+					dataType: 'json',
+					success: function(response){
+	          		var error = response.error;
+						if (response.success) {
+							$('.alert-success').html('Item stocks successfully reset').fadeIn().delay(2000).fadeOut('slow');
+								itemTable.ajax.reload(null, false);
+							$('#resetModal').modal('hide');
+						}else{
+							//$('#myModal').modal('hide');
+							$('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
+						}
+					},
+					error: function(){
+						alert('Error connecting server.');
+					}
+				});
+			});			
 
 		});
 

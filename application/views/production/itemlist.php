@@ -34,6 +34,9 @@
     </div>
     <div class="row" style="font-size: 11pt!important;padding:0px;">
         <div class="col-lg-12 col-md-12 col-xs-12 text-center" style="font-weight:bold;">
+          <h5><?php echo $bill->cust_name;?></h5>
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 text-center" style="font-weight:bold;">
           <h5><?php echo $bill->order_code.' ('.$bill->order_status.')';?></h5>
         </div>
         <div class="col-lg-12 col-md-12 col-xs-12 text-center">

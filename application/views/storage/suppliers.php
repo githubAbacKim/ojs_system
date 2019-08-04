@@ -7,12 +7,12 @@
   <div class="col-lg-12">
       <div class="row" style="min-height: 80px;">
           <div class="col-lg-6">
+              <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 15px;">Add Supplier</button>
+          </div>
+          <div class="col-lg-6">
               <!-- <div class="messages" ></div> -->
               <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
               <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          </div>
-          <div class="col-lg-6">
-              <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;">Add Class</button>
           </div>
       </div>
       <table class="table" id="supplierTable">
@@ -104,15 +104,37 @@
 
     $(document).ready(function() {
 
+        $('#supplierTable thead th').each( function () {
+            var title = $(this).text();
+            $(this).html( '<input style="width:100%;font-size:12px;" type="text" placeholder="'+title+'" />' );
+        } );
+
         supplierTable = $("#supplierTable").DataTable({
             'processing':true,
             'serverside':true,
             'ajax': {
                 "url": "<?php echo site_url('admin/fetchSuppliers')?>",
                 "type": "POST"
-            }
+            },
+            "dom": '<"top"l>rt<"bottom"ip><"clear">',
+            'bProcessing': false,
+            "scrollY":        "250px",
+            "scrollCollapse": true,
+            "paging":         false
         });
 
+        // Apply the search
+        supplierTable.columns().every( function () {
+              var that = this;
+
+              $( 'input', this.header() ).on( 'keyup change', function () {
+                  if ( that.search() !== this.value ) {
+                      that
+                          .search( this.value )
+                          .draw();
+                  }
+              } );
+          } );
         //add new function
         $('#btnAdd').click(function(){
             $('#myForm')[0].reset();
@@ -169,7 +191,7 @@
         $('#supplierTable').on('click','.item-edit',function(){
             var id =  $(this).attr('data');
             $('#myModal').modal('show');
-            $('#myModal').find('.modal-title').text('Edit Class');
+            $('#myModal').find('.modal-title').text('Edit Supplier');
             $('#myForm').attr('action','<?php echo base_url("admin/updateSupplier")?>');
             $.ajax({
                 type: 'ajax',

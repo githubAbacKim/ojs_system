@@ -9,18 +9,18 @@ class Admin extends CI_Controller {
 	}
 
 	// new panel
-			function newpanel(){
-				$data['title'] = "Administrator";
-				$data['sub_heading'] = "Main Page";
-				$data['page'] = 'Frontdesk';
+	function newpanel(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "Main Page";
+		$data['page'] = 'Frontdesk';
 
-				$data['record'] = $this->admin_model->property_info();
+		$data['record'] = $this->admin_model->property_info();
 
-				$this->load->view('adminpanel/header',$data);
-				$this->load->view('adminpanel/newnav',$data);
-				$this->load->view('adminpanel/home',$data);
-				$this->load->view('adminpanel/footer',$data);
-			}
+		$this->load->view('adminpanel/header',$data);
+		$this->load->view('adminpanel/newnav',$data);
+		$this->load->view('adminpanel/home',$data);
+		$this->load->view('adminpanel/footer',$data);
+	}
 
 /* frontdesk admin funtions*/
 	function index(){
@@ -61,6 +61,7 @@ class Admin extends CI_Controller {
 		$this->form_validation->set_rules('state','State','required');
 		$this->form_validation->set_rules('zipcode','Zipcode','required');
 		$this->form_validation->set_rules('country','Country','required');
+		$this->form_validation->set_rules('tin','TIN','required');
 
 		$this->form_validation->set_rules('phone','Phone Number','required');
 		$this->form_validation->set_rules('fax','Fax','required');
@@ -77,6 +78,7 @@ class Admin extends CI_Controller {
 				"municipality"=>set_value('municipality'),
 				"state"=>set_value('state'),
 				"country"=>set_value('country'),
+				"tin"=>set_value('tin'),
 				"zipcode"=>set_value('zipcode'),
 				"phone"=>set_value('phone'),
 				"mobile"=>set_value('mobile'),
@@ -152,6 +154,83 @@ class Admin extends CI_Controller {
 			}
 		}
 
+		echo json_encode($msg);
+	}
+
+	function access_control(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "Manage Access";
+		$data['page'] = 'Administrator';
+
+		$data['term'] = $this->admin_model->get_table_record('assign_access',false,false,false);
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('admin/nav_v2',$data);
+		$this->load->view('admin/access',$data);
+		$this->load->view('admin/footer',$data);
+	}
+	function fetchAccess(){
+		$result = array('data' => array());
+		$data = $this->project_model->select('assign_access');
+		if ($data != false) {
+			foreach ($data as $key => $value) {
+				$buttons = '
+					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->assign_access_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
+				';
+				$result['data'][$key] = array(
+					$value->account_type,
+					$value->mac_address,
+					$value->computer,
+					$buttons
+				);
+			}
+		}
+		echo json_encode($result);
+	}
+	function addAccess(){
+		$this->form_validation->set_rules('account_type','Account Type','required');
+		$this->form_validation->set_rules('mac','MAC Address','required');
+		$this->form_validation->set_rules('computer','Computer Name','required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$msg['error'] = validation_errors();
+			$msg['success'] = false;
+		}else{
+			$data = array(
+				"account_type"=>set_value('account_type'),
+				"mac_address"=>set_value('mac'),
+				"computer"=>set_value('computer')
+			);
+			$table_name = 'assign_access';
+			$cwhere = array(
+				'account_type'=>set_value('account_type'),
+				'mac_address'=>set_value('mac')
+			);
+			$check_duplicate = $this->admin_model->check_multi_duplicate($table_name,$cwhere);
+			if ($check_duplicate != true) {
+				$add = $this->project_model->insert('assign_access',$data);
+				if ($add != false) {
+					$msg['success'] = true;
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = 'Error adding data.';
+				}
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = 'Error! Duplicate data detected.';
+			}
+		}
+		$msg['type'] = 'Add';
+		echo json_encode($msg);
+	}
+	function deleteAccess(){
+		$id = $this->input->get('id');
+		$result = $this->project_model->delete('assign_access','assign_access_id',$id);
+		if ($result) {
+			$msg['success'] = true;
+		}else{
+			$msg['success'] = false;
+		}
 		echo json_encode($msg);
 	}
 
@@ -451,14 +530,15 @@ class Admin extends CI_Controller {
 		echo json_encode($result);
 	}
 	function addEmployee(){
-		$this->form_validation->set_rules('lname','Last Name','required|alpha');
-		$this->form_validation->set_rules('mname','Middle Name','required|min_length[2]|alpha');
-		$this->form_validation->set_rules('fname','First Name','required|alpha');
-		$this->form_validation->set_rules('bdate','Birthdate','required');
+		$this->form_validation->set_rules('lname','Last Name','required');
+		$this->form_validation->set_rules('mname','Middle Name','required');
+		$this->form_validation->set_rules('fname','First Name','required');
+		$this->form_validation->set_rules('bdate','Birthdate','');
 		$this->form_validation->set_rules('home_address','Home Address','required');
-		$this->form_validation->set_rules('contact_num','Contact Number','required');
-		$this->form_validation->set_rules('email_address','Email Address','required|valid_email');
+		$this->form_validation->set_rules('contact_num','Contact Number','');
+		$this->form_validation->set_rules('email_address','Email Address','');
 		$this->form_validation->set_rules('position','Position','required');
+		$this->form_validation->set_rules('status','Status','required');
 
 		if ($this->form_validation->run() == FALSE) {
 			$msg['error'] = validation_errors();
@@ -489,7 +569,7 @@ class Admin extends CI_Controller {
 				"emp_contact"=>set_value('contact_num'),
 				"emp_email"=>set_value('email_address'),
 				"job_position_id"=>set_value('position'),
-				"emp_status"=>'active'
+				"emp_status"=>set_value('status')
 				);
 			$table_name = 'employee';
 			$cwhere = array(
@@ -524,14 +604,15 @@ class Admin extends CI_Controller {
 		echo json_encode($result);
 	}
 	function updateEmployee(){
-		$this->form_validation->set_rules('lname','Last Name','required|alpha');
-		$this->form_validation->set_rules('mname','Middle Name','required|min_length[2]|alpha');
-		$this->form_validation->set_rules('fname','First Name','required|alpha');
-		$this->form_validation->set_rules('bdate','Birthdate','required');
+		$this->form_validation->set_rules('lname','Last Name','required');
+		$this->form_validation->set_rules('mname','Middle Name','required');
+		$this->form_validation->set_rules('fname','First Name','required');
+		$this->form_validation->set_rules('bdate','Birthdate','');
 		$this->form_validation->set_rules('home_address','Home Address','required');
-		$this->form_validation->set_rules('contact_num','Contact Number','required');
-		$this->form_validation->set_rules('email_address','Email Address','required|valid_email');
+		$this->form_validation->set_rules('contact_num','Contact Number','');
+		$this->form_validation->set_rules('email_address','Email Address','');
 		$this->form_validation->set_rules('position','Position','required');
+		$this->form_validation->set_rules('status','Status','required');
 		$this->form_validation->set_rules('id','ID','required');
 
 		if ($this->form_validation->run() == FALSE) {
@@ -547,7 +628,7 @@ class Admin extends CI_Controller {
 				"emp_contact"=>set_value('contact_num'),
 				"emp_email"=>set_value('email_address'),
 				"job_position_id"=>set_value('position'),
-				"emp_status"=>'active'
+				"emp_status"=>set_value('status')
 				);
 			$id = set_value('id');
 			$where = array('emp_id'=>$id);
@@ -637,13 +718,24 @@ class Admin extends CI_Controller {
 				"emp_password"=>sha1(set_value('password')),
 				"emp_dept"=>set_value('dept')
 			);
-			$add = $this->project_model->insert('emp_accounts',$data);
-			if ($add != false) {
-				$msg['success'] = true;
+			$where = array(
+				"emp_username"=>set_value('username'),
+				"emp_dept"=>set_value('dept')
+			);
+			$check = $this->project_model->check_multi_duplicate('emp_accounts',$where);
+				if ($check != true) {
+					$add = $this->project_model->insert('emp_accounts',$data);
+				if ($add != false) {
+					$msg['success'] = true;
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = 'Error adding data.';
+				}
 			}else{
 				$msg['success'] = false;
-				$msg['error'] = 'Error adding data.';
+				$msg['error'] = 'Error duplicate record found.';
 			}
+			
 		}
 		$msg['type'] = 'Add';
 		echo json_encode($msg);
@@ -1049,651 +1141,6 @@ class Admin extends CI_Controller {
 		}
 	}
 
-/*====== Store Menu =========*/
-	function store_menu(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Manage Store Menu";
-		$data['page'] = 'Stock';
-
-		$data['menu'] = $this->admin_model->get_table_record('store_menu',false,false,false);
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
-		$this->load->view('admin/restaurant_menu',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-
-	function getMenuData(){
-		$result = array('data' => array());
-
-		$data = $this->project_model->select('store_menu');
-
-		foreach ($data as $key => $value) {
-			$buttons = '
-				<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->menu_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
-				<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->menu_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-			';
-			$result['data'][$key] = array(
-				$value->menu_name,
-				$buttons
-			);
-		}
-
-		echo json_encode($result);
-	}
-
-	function getStockCat(){
-		$result = array('data' => array());
-
-		$data = $this->project_model->select('stockCategory');
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$buttons = '
-					<a href="javascript:;" class="btn btn-success copy-category" data="'.$value->stockCat_id.'" title="Cancel"> <i class="fa fa-angle-double-left"></i></a>
-				';
-				$result['data'][$key] = array(
-					$buttons,
-					$value->stockCat_name
-				);
-			}
-		}
-
-		echo json_encode($result);
-	}
-
-	function addMenu(){
-		$data = array(
-			'menu_name'=>ucwords($this->input->post('menu'))
-		);
-		$where = array('menu_name'=>$this->input->post('menu'));
-
-		$process = $this-> processAddMenu($data,$where);
-		$msg['type'] = 'add';
-		if ($process != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-	private function processAddMenu($data,$where){
-		$check = $this->project_model->check_multi_duplicate('store_menu',$where);
-		if ($check != true) {
-			$insert = $this->project_model->insert('store_menu',$data);
-			if ($insert != false) {
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			return false;
-		}
-	}
-
-	function editMenu(){
-		$id = $this->input->get('id');
-		$where = array("menu_id"=>$id);
-		$result = $this->project_model->single_select('store_menu',$where);
-		echo json_encode($result);
-	}
-
-	function updateMenu(){
-		$msg['type'] = 'update';
-		$data = array(
-			'menu_name'=>$this->input->post('menu')
-		);
-		$id = $this->input->post('menuId');
-		$where =  array('menu_id'=>$id);
-		$result = $this->project_model->updateNew('store_menu',$where,$data);
-		if ($result != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function deleteMenu(){
-		$id = $this->input->get('id');
-		$result = $this->project_model->delete('store_menu','menu_id',$id);
-		if ($result) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	function loadMenu(){
-		$id = $this->input->get('id');
-		if ($this->processLoadMenu($id) != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-	private function processLoadMenu($id){
-		$where = array("stockCat_id"=>$id);
-		$get = $this->project_model->select('stockcategory',false,$where);
-		if ($get != false) {
-			foreach ($get as $getdata) {
-				$check_where = array('menu_name'=>$getdata->stockCat_name);
-				$check = $this->project_model->check_multi_duplicate('store_menu',$check_where);
-
-				if ($check != true) {
-					$data = array(
-						"menu_name"=>$getdata->stockCat_name
-					);
-
-					$insert = $this->project_model->insert('store_menu',$data);
-
-					if ($insert != false) {
-						return true;
-					}else{
-						return false;
-						//return "error insert";
-					}
-				}else{
-					return false;
-					//return "error check";
-				}
-			}
-		}else{
-			return false;
-			//return "error get";
-		}
-	}
-
-/*====== Store Item =========*/
-
-	function menu_item(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Manage Store Item";
-		$data['page'] = 'Stock';
-
-		$data['menu'] = $this->admin_model->get_table_record('store_menu',false,false,false);
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_header',$data);
-		$this->load->view('admin/restaurant_menu_item',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-
-	function getRestuItems(){
-		$result = array('data' => array());
-
-		$join = array(
-				array('store_menu','menu_item','menu_id')
-			);
-		$data = $this->project_model->select_join('menu_item',$join);
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$tcost = $this->cart->format_number($value->item_price*$value->stock);
-				$buttons = '
-					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->menu_item_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
-					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->menu_item_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
-				';
-				$result['data'][$key] = array(
-					$value->menu_name,
-					$value->item_name,
-					$value->unit,
-					$value->stock_type,
-					$value->stock,
-					$value->item_price,
-					$tcost,
-					$buttons
-				);
-			}
-		}
-		echo json_encode($result);
-	}
-
-	function editMenuItem(){
-		$id = $this->input->get('id');
-		$where = array("menu_item_id"=>$id);
-		$result = $this->project_model->single_select('menu_item',$where);
-		echo json_encode($result);
-	}
-
-	function updateMenuItem(){
-		$msg['type'] = 'update';
-		$type = $this->input->post('stock_type');
-		if ($type == "instock") {
-			$data = array(
-				'menu_id'=>$this->input->post('category'),
-				'item_name'=>ucwords($this->input->post('name')),
-				'item_price'=>$this->input->post('cost'),
-				'stock'=>$this->input->post('qty'),
-				'unit'=>$this->input->post('unit'),
-				'stock_type'=>$this->input->post('stock_type'),
-				'stock_dispose'=>$this->input->post('dispose')
-			);
-		}else{
-			$data = array(
-					'menu_id'=>$this->input->post('category'),
-					'item_name'=>ucwords($this->input->post('name')),
-					'item_price'=>$this->input->post('cost'),
-					'stock'=>0,
-					'unit'=>'none',
-					'stock_type'=>$this->input->post('stock_type')
-			);
-		}
-		$id = $this->input->post('id');
-		$where =  array('menu_item_id'=>$id);
-		$result = $this->project_model->updateNew('menu_item',$where,$data);
-		if ($result != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function addRestoItem(){
-		$type = $this->input->post('stock_type');
-		$where = array(
-		'item_name'=>$this->input->post('name')
-		);
-		if ($type == "instock") {
-			$data = array(
-				'menu_id'=>$this->input->post('category'),
-				'item_name'=>ucwords($this->input->post('name')),
-				'item_price'=>$this->input->post('cost'),
-				'stock'=>$this->input->post('qty'),
-				'unit'=>$this->input->post('unit'),
-				'stock_type'=>$this->input->post('stock_type')
-			);
-		}else{
-			$data = array(
-					'menu_id'=>$this->input->post('category'),
-					'item_name'=>ucwords($this->input->post('name')),
-					'item_price'=>$this->input->post('cost'),
-					'stock'=>0,
-					'unit'=>'none',
-					'stock_type'=>$this->input->post('stock_type')
-			);
-		}
-
-		if ($this->processaddRestoItem($type,$data,$where) != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-
-	}
-	private function processaddRestoItem($type,$data,$where){
-		$table_name = 'menu_item';
-		if($type == 'instock'){
-				$check_duplicate = $this->project_model->check_multi_duplicate($table_name,$where);
-				if ($check_duplicate != true) {
-					$add = $this->project_model->insert($table_name,$data);
-					if ($add != false) {
-						return true;
-					}else{
-						return false;
-					}
-				}else{
-					return false;
-				}
-		}else{
-			$check_duplicate = $this->project_model->check_multi_duplicate($table_name,$where);
-
-			if ($check_duplicate != true) {
-				$add = $this->project_model->insert($table_name,$data);
-
-				if ($add != false) {
-					return true;
-				}else{
-					return false;
-				}
-			}else{
-				return false;
-			}
-		}
-	}
-
-	function loadRestuItem(){
-		$id = $this->input->post('category');
-
-		if ($this->processLoadRestuItem($id) != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-	private function processLoadRestuItem($id){
-		//get cat info
-		$where1 = array("stockCat_id"=>$id);
-		$menu = $this->project_model->select('stockcategory',false,$where1);
-		foreach ($menu as $value) {
-			$name = $value->stockCat_name;
-			$where2 = array('menu_name'=>$name);
-			$valmenu = $this->project_model->select('store_menu',false,$where2);
-			if ($valmenu != false) {
-				foreach ($valmenu as $value2) {
-					$menuid = $value2->menu_id;
-
-					$where = array(
-						"stockCat_id"=>$id
-					);
-					$item = $this->project_model->select('stockitem',false,$where);
-					if ($item != false) {
-						$data = array();
-						foreach ($item as $value) {
-							$data[] = array(
-							"menu_id"=>$menuid,
-							"item_name"=>$value->stock_name,
-							"unit"=>$value->stock_unit,
-							"stock"=>0,
-							"item_price"=>$value->stockCost	,
-							"stock_type"=>'instock'
-							);
-						}
-
-						$result = $this->project_model->insert_batch('menu_item',$data);
-
-						if ($result != false) {
-							return true;
-						}else{
-							return "error insert";
-						}
-					}else{
-						return "error item";
-					}
-				}
-			}else{
-				return "error menu";
-				//if category not found in restaurant menu
-			}
-		}
-	}
-
-	function deleteMenuItem(){
-		$id = $this->input->get('id');
-		$result = $this->processDeleteMenuItem($id);
-		if ($result) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	function bulkDeleteRestu(){
-		$id = $this->input->post('idcat');
-		$result = $this->processBulkDeleteRestu($id);
-		if ($result) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function fetchCategoryRestu(){
-		$join = array(
-			array('store_menu','menu_item','menu_id')
-		);
-		$groupby = 'menu_name';
-		$tempData = $this->project_model->select_join('menu_item',$join,false,false,false,$groupby);
-		$where_not_in = array();
-
-		if ($tempData) {
-			foreach ($tempData as $value) {
-				$where_not_in[] = $value->menu_name;
-			}
-		}else{
-			$where_not_in[] = "";
-		}
-		$result = $this->project_model->select('stockcategory',$like=false,$where=false,$order=false,$group=false,$where_or=false,$limit=false,$or_like=false,$where_not_in,'stockCat_name');
-
-		echo json_encode($result);
-	}
-
-	function fetchRestuCat(){
-		$join = array(
-			array('store_menu','menu_item','menu_id')
-		);
-		$groupby = 'menu_name';
-		$result = $this->project_model->select_join('menu_item',$join,false,false,false,$groupby);
-
-		echo json_encode($result);
-	}
-
-	private function processDeleteMenuItem($id){
-		$where = array('menu_item_id'=>$id);
-		$get = $this->project_model->select('menu_item',false,$where);
-		if ($get != false) {
-			foreach ($get as $value) {
-				if ($value->stock_type == "instock") {
-					$name = $value->item_name;
-					$stock = $value->stock;
-
-					if ($stock > 0) {
-						$where2 = array('stock_name'=>$name);
-						$getstock = $this->project_model->select('stockitem',false,$where2);
-						if ($getstock != false) {
-							foreach ($getstock as $value2) {
-								$item = $value2->stock_id;
-								$newstock = $value2->stock_qqty+$stock;
-								$newdispose = $value2->stockDispose-$stock;
-
-								$where3 = array("stock_id"=>$item);
-								$data = array(
-									"stock_qqty"=>$newstock,
-									"stockDispose"=>$newdispose
-								);
-								$update = $this->project_model->updateNew("stockitem",$where3,$data);
-								if ($update != false) {
-									$where4 = array('menu_item_id'=>$id);
-									$delete = $this->project_model->deleteNew('menu_item',$where4);
-									if ($delete != false) {
-										return true;
-									}else{
-										return "error delete";
-									}
-								}else{
-									return "error update";
-								}
-							}
-
-						}else{
-							return "error get stock";
-						}
-					}else{
-						$where4 = array('menu_item_id'=>$id);
-						$delete = $this->project_model->deleteNew('menu_item',$where4);
-						if ($delete != false) {
-							return true;
-						}else{
-							return "error delete";
-						}
-					}
-
-				}else{
-					$where = array('menu_item_id'=>$id);
-					$delete = $this->project_model->deleteNew('menu_item',$where);
-					if ($delete != false) {
-						return true;
-					}else{
-						return false;
-					}
-				}
-
-			}
-		}else{
-			return false;
-		}
-	}
-	private function processBulkDeleteRestu($id){
-		$where = array('menu_id'=>$id);
-		$get = $this->project_model->select('menu_item',false,$where);
-		if ($get != false) {
-			$count = count($get);
-			$i = 0;
-			foreach ($get as $value) {
-				$type = $value->stock_type;
-				if ($type == "instock") {
-					$name = $value->item_name;
-					$stock = $value->stock;
-
-					if ($stock != 0) {
-						$where2 = array('stock_name'=>$name);
-						$getstock = $this->project_model->select('stockitem',false,$where2);
-						if ($getstock != false) {
-							foreach ($getstock as $value2) {
-								$item = $value2->stock_id;
-								$newstock = $value2->stock_qqty+$stock;
-								$newdispose = $value2->stockDispose-$stock;
-
-								$where3 = array("stock_id"=>$item);
-								$data = array(
-									"stock_qqty"=>$newstock,
-									"stockDispose"=>$newdispose
-								);
-								$update = $this->project_model->updateNew("stockitem",$where3,$data);
-								if ($update != false) {
-									$i++;
-								}else{
-									//return false;
-									echo "error 1";
-								}
-							}
-
-						}else{
-							//return false;
-							echo "error 2";
-						}
-					}else{
-						$i++;
-					}
-
-
-				}else{
-					$i++;
-				}
-
-			}
-
-			if ($i == $count ) {
-				$where = array('menu_id'=>$id);
-				$delete = $this->project_model->deleteNew('menu_item',$where);
-				if ($delete != false) {
-					return true;
-				}else{
-					//return false;
-					echo "error 3";
-				}
-
-			}
-			else{
-				//return false;
-				echo "error 4";
-			}
-		}else{
-			//return false;
-			echo "error menu item.";
-		}
-	}
-
-	function getManualRestuItem(){
-		$result = array('data' => array());
-		$where_not_in = array();
-		$getItems = $this->project_model->select('menu_item');
-		if($getItems != false){
-			foreach($getItems as $val){
-				$where_not_in[] = $val->item_name;
-			}
-		}
-
-		$wni_column = "stock_name";
-		$join = array(
-			array('stockcategory','stockitem','stockCat_id')
-		);
-		$data = $this->project_model->select_join("stockitem",$join,$like=false,$where=false,$order=false,$group=false,$or_where=false,$or_like=false,$where_not_in,$wni_column,$where_in = false);
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$buttons = '
-					<a href="javascript:;" class="item-add btn btn-success" data="'.$value->stock_id.'"> <i class="fa fa-plus fa-fw"></i> add</a>
-				';
-				$result['data'][$key] = array(
-					$buttons,
-					$value->stockCat_name,
-					$value->stock_name,
-					$value->stock_unit,
-					$value->stock_qqty
-				);
-			}
-		}
-		echo json_encode($result);
-	}
-
-	function manualAddRestu(){
-		$id = $this->input->get('id');
-
-		$result = $this->processmanualAddRestu($id);
-		if ($result != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	private function processmanualAddRestu($id){
-		$where = array("stock_id"=>$id);
-		$join = array(
-				array("stockcategory","stockitem","stockCat_id")
-			);
-		$get = $this->project_model->single_select('stockitem',$where,$join);
-		if ($get != false) {
-			$where2 = array('menu_name'=>$get->stockCat_name);
-			$getmenu = $this->project_model->single_select('store_menu',$where2);
-			if ($getmenu != false) {
-				$data = array(
-					"menu_id"=>$getmenu->menu_id,
-					"item_name"=>$get->stock_name,
-					"unit"=>$get->stock_unit,
-					"stock"=>0,
-					"item_price"=>$get->stockCost
-				);
-
-				$where2 = array('item_name'=>$get->stock_name);
-				$check = $this->project_model->check_multi_duplicate("menu_item",$where2);
-				if($check != true){
-					$insert = $this->project_model->insert("menu_item",$data);
-					if($insert != false){
-						return true;
-					}else{
-						return false;
-					}
-				}else{
-					return false;
-				}
-			}else{
-				return false;
-			}
-		}else{
-			return false;
-		}
-	}
-
-
-/*End of restaurant functions*/
-
-/*====================*/
 
 /*====== printable forms*/
 
@@ -2124,19 +1571,146 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/footer',$data);
 	}
 
-	function stockList_sheet(){
+	function stockFinished_sheet(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "POS System";
-		$data['page'] = 'Stock Inventory';
+		$data['page'] = 'Finished Stock Inventory';
 
-		$order = array('stockCat_id','ASC');
+		// $order = array('stockCat_id','ASC');
+		// $join = array(
+		// 	array('suppliers','stockitem','supplier_id'),
+		// 	array('stockcategory','stockitem','stockCat_id'),
+		// 	array('stock_class','stockitem','stockclass_id')
+		// );
+		// $data['result'] = $this->project_model->select_join('stockitem',$join,$like=false,$where=false,$order);
+		$date = $this->uri->segment(3);
+		$dataarray = array();
+		$iwhere = array('stockclass_name'=>"FINISHED","stock_type"=>"instock");
+		$join  = array(
+				array('suppliers','stockitem','supplier_id'),
+				array('stockcategory','stockitem','stockCat_id'),
+				array('stock_class','stockitem','stockclass_id')
+		);
+		$items = $this->project_model->select_join('stockitem',$join,false,$iwhere);
+		foreach ($items as $result) {
+			$where = array('stock_id'=>$result->stock_id,'delivery_date <='=>$date);			
+			$tcurrent = 0;
+			$new = $this->project_model->select('stock_newlog',false,$where);
+			if ($new != false) {
+				foreach ($new as $value) {
+					$tcurrent = $tcurrent + $value->nstock_qqty;
+				}
+			}
+
+			$where3 = array('stock_id'=>$result->stock_id);
+			$like = array('transfer_date <='=>$date);
+			$branch = $this->project_model->select('branch_stocks',false,$where3);
+			$tbranch = 0;
+			if ($branch != false) {
+				foreach ($branch as $value3) {
+					$tbranch = $tbranch + $value3->bstocks_qty;
+				}
+			}
+
+			$where2 = array('stock_id'=>$result->stock_id,'order_date <='=>$date);
+			$sold = $this->project_model->select('ordered_item',false,$where2);
+			$tsold = 0;
+			$tout = 0;
+			if ($sold != false) {
+				foreach ($sold as $value2) {
+					$tsold = $tsold + $value2->order_qty;
+				}
+			}
+
+			$tout = $tsold + $tbranch;
+
+
+			$total = $tcurrent - $tout;
+			//echo $result->stock_name.': '.$tcurrent.' - '.$tbranch.' - '.$tsold.' = [out:'.$tout.'][left:'.$total.']<br />';
+			//echo $result->stock_name.': '.$tcurrent.' - '.$tbranch.' = '.$total.'<br />';
+			$dataarray[] = array(
+				"category"=>$result->stockCat_name,
+				"supplier"=>$result->supplier_name,
+				"item"=>$result->stock_name,
+				"unit"=>$result->stock_unit,
+				"total"=>$total,
+				"receive"=>$tcurrent,
+				"out"=>$tout
+			);
+			$data['result'] = $dataarray;
+		}
+
+		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
+		$this->load->view('admin/header',$data);
+		$this->load->view('print_form/stocklist',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
+	function stockRaw_sheet(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Raw Stock Inventory';
+
+		// $order = array('stockCat_id','ASC');
+		// $join = array(
+		// 	array('suppliers','stockitem','supplier_id'),
+		// 	array('stockcategory','stockitem','stockCat_id'),
+		// 	array('stock_class','stockitem','stockclass_id')
+		// );
+		// $data['result'] = $this->project_model->select_join('stockitem',$join,$like=false,$where=false,$order);
+		$date = $this->uri->segment(3);
+		$dataarray = array();
+		$iwhere = array('stockclass_name'=>"RAW","stock_type"=>"instock");
+		$join  = array(
+				array('suppliers','stockitem','supplier_id'),
+				array('stockcategory','stockitem','stockCat_id'),
+				array('stock_class','stockitem','stockclass_id')
+		);
+		$items = $this->project_model->select_join('stockitem',$join,false,$iwhere);
+		foreach ($items as $result) {
+			$where = array('stock_id'=>$result->stock_id);
+			$tcurrent = 0;
+			$new = $this->project_model->select('stock_newlog',false,$where);
+			if ($new != false) {
+				foreach ($new as $value) {
+					$tcurrent = $tcurrent + $value->nstock_qqty;
+				}
+			}
+			$sold = $this->project_model->select('releaseditem',false,$where);
+			$tsold = 0;
+			if ($sold != false) {
+				foreach ($sold as $value2) {
+					$tsold = $tsold + $value2->releaseitem_qty;
+				}
+			}
+
+			$total = $tcurrent - $tsold;
+			//echo $result->stock_name.': '.$tcurrent.' - '.$tsold.' = '.$total.'<br />';
+			$dataarray[] = array("category"=>$result->stockCat_name,"supplier"=>$result->supplier_name,"item"=>$result->stock_name,"unit"=>$result->stock_unit,"total"=>$total,"receive"=>$tcurrent,"out"=>$tsold);
+			$data['result'] = $dataarray;
+		}
+
+		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
+		$this->load->view('admin/header',$data);
+		$this->load->view('print_form/stocklist',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
+	function stockInfo_sheet(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = ' Stock Information Sheet';
+
+		$order = array('supplier_id','ASC');
 		$join = array(
-			array('stockcategory','stockitem','stockCat_id')
+			array('suppliers','stockitem','supplier_id'),
+			array('stockcategory','stockitem','stockCat_id'),
+			array('stock_class','stockitem','stockclass_id')
 		);
 		$data['result'] = $this->project_model->select_join('stockitem',$join,$like=false,$where=false,$order);
 		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
 		$this->load->view('admin/header',$data);
-		$this->load->view('print_form/stocklist',$data);
+		$this->load->view('print_form/printStockDetails',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -2182,6 +1756,49 @@ class Admin extends CI_Controller {
 
 	}
 
+	function production_form(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Produce Stocks Form';
+
+		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
+		$this->load->view('admin/header',$data);
+		$this->load->view('print_form/produce_stocks',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
+	function damagestocks_form(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Damage Stocks Form';
+
+		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
+		$this->load->view('admin/header',$data);
+		$this->load->view('print_form/damage_stock',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
+	function withdrawal_form(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Stock Withdrawal Form';
+
+		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
+		$this->load->view('admin/header',$data);
+		$this->load->view('print_form/stock_withdrawal',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
+	function request_form(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Produce Stocks Form';
+
+		$data['property']= $this->admin_model->get_table_record('property_info',false,false,false);
+		$this->load->view('admin/header',$data);
+		$this->load->view('print_form/request_form',$data);
+		$this->load->view('admin/footer',$data);
+	}
 /*====== Stock Settings*/
 	function storageHOme(){
 		$data['title'] = "Administrator";
@@ -2494,12 +2111,30 @@ class Admin extends CI_Controller {
 	}
 
 /*====== Stock Item AJAX ======*/
+	function resetStocks(){
+		$where = array('stockclass_name'=>'FINISHED');
+		$get = $this->project_model->single_select('stock_class',$where);
+		$data = array(
+			"stock_qqty"=>0,
+			"stockDispose"=>0
+			);
+		$where2 = array('stockclass_id'=>$get->stockclass_id);
+		$reset = $this->project_model->updateNew('stockitem',$where2,$data);
+		if ($reset != false) {
+			$msg['success'] = true;
+		}else{
+			$msg['success'] = false;
+			$msg['error'] = "Unable to reset stocks.";
+		}
+		echo json_encode($msg);
+	}
 	function fetchStockItem(){
 		$result = array('data' => array());
 
 		$join = array(
 				array('stockcategory','stockitem','stockCat_id'),
-				array('suppliers','stockitem','supplier_id')
+				array('suppliers','stockitem','supplier_id'),
+				array('stock_class','stockitem','stockclass_id')
 			);
 		$data = $this->project_model->select_join('stockitem',$join);
 		if ($data != false) {
@@ -2509,13 +2144,60 @@ class Admin extends CI_Controller {
 					<a href="javascript:;" class="btn btn-primary item-edit" data="'.$value->stock_id.'" title="Cancel"> <i class="fa fa-pencil"></i></a>
 					<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->stock_id.'" title="Cancel"> <i class="fa fa-times"></i></a>
 				';
+
+				$where = array('stock_id'=>$value->stock_id);
+
+				$join = array(
+					array("stockcategory","stockitem","stockCat_id")
+				);
+
+				$item = $this->project_model->single_select('stockitem',$where,$join);
+				
+				$tcurrent = 0;
+				$new = $this->project_model->select('stock_newlog',false,$where);
+				if ($new != false) {
+					foreach ($new as $value1) {
+						$tcurrent = $tcurrent + $value1->nstock_qqty;
+					}
+				}
+
+				
+				$branch = $this->project_model->select('branch_stocks',false,$where);
+				$tbranch = 0;
+				if ($branch != false) {
+					foreach ($branch as $value3) {
+						$tbranch = $tbranch + $value3->bstocks_qty;
+					}
+				}
+
+				
+				$sold = $this->project_model->select('ordered_item',false,$where);
+				$tsold = 0;
+				$tout = 0;
+				if ($sold != false) {
+					foreach ($sold as $value2) {
+						$tsold = $tsold + $value2->order_qty;
+					}
+				}
+
+				$total= 0;
+
+				if ($value->stock_type=="instock") {
+					$tout = $tsold + $tbranch;
+					$total = $tcurrent - $tout;
+				}
+
 				$result['data'][$key] = array(
+					$value->stockclass_name,
 					$value->stockCat_name,
+					$value->supplier_name,
 					$value->stock_name,
 					$value->stock_unit,
-					$value->stock_qqty,
+					$total,
+					$tout,
+					$value->stock_alert,
 					$value->stockCost,
-					$value->supplier_name,
+					$value->retail_price,
 					$tcost,
 					$buttons
 				);
@@ -2571,17 +2253,21 @@ class Admin extends CI_Controller {
 					"retail_price"=>set_value('rp')
 			  );
 			}
-
-			$result = $this->project_model->insert('stockitem',$data);
-
-			$msg['type'] = 'add';
-			if ($result) {
-				$msg['success'] = true;
+			$like = array('stock_name'=>ucwords(set_value('name')),"stockCat_id"=>set_value('category'));
+			$check = $this->project_model->check_multi_duplicate('stockitem',$where=false,$return=false,$like,$join=false);
+			if ($check != true) {
+					$result = $this->project_model->insert('stockitem',$data);
+					$msg['type'] = 'add';
+					if ($result) {
+						$msg['success'] = true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = 'Error adding item';
+					}
 			}else{
 				$msg['success'] = false;
-				$msg['error'] = 'Error adding item';
+				$msg['error'] = 'Duplicate record found.';
 			}
-
 		}
 
 		$msg['type'] = 'add';
@@ -2655,7 +2341,6 @@ class Admin extends CI_Controller {
 			}
 		}
 		echo json_encode($msg);
-
 	}
 	function deleteItem(){
 		$id = $this->input->get('id');
@@ -2776,10 +2461,10 @@ class Admin extends CI_Controller {
 		}
 		function addSupplier(){
 			$this->form_validation->set_rules("company","Company/Suppliers Name","required");
-			$this->form_validation->set_rules("telephone","Telephone","required|is_natural");
-			$this->form_validation->set_rules("mobile","Mobile","required|is_natural");
-			$this->form_validation->set_rules("email","Email Address","required|valid_email");
-			$this->form_validation->set_rules("desc","Supplies","required");
+			$this->form_validation->set_rules("telephone","Telephone","");
+			$this->form_validation->set_rules("mobile","Mobile","");
+			$this->form_validation->set_rules("email","Email Address","");
+			$this->form_validation->set_rules("desc","Supplies","");
 			if ($this->form_validation->run() == FALSE) {
 				$msg['success'] = false;
 				$msg['error'] = validation_errors();
@@ -2818,10 +2503,10 @@ class Admin extends CI_Controller {
 		function updateSupplier(){
 			$msg['type'] = 'update';
 			$this->form_validation->set_rules("company","Company/Suppliers Name","required");
-			$this->form_validation->set_rules("telephone","Telephone","required|is_natural");
-			$this->form_validation->set_rules("mobile","Mobile","required|is_natural");
-			$this->form_validation->set_rules("email","Email Address","required|valid_email");
-			$this->form_validation->set_rules("desc","Supplies","required");
+			$this->form_validation->set_rules("telephone","Telephone","");
+			$this->form_validation->set_rules("mobile","Mobile","");
+			$this->form_validation->set_rules("email","Email Address","");
+			$this->form_validation->set_rules("desc","Supplies","");
 			$this->form_validation->set_rules("supplierId","Data Id","required");
 			if ($this->form_validation->run() == FALSE) {
 				$msg['success'] = false;
@@ -3389,1159 +3074,17 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/footer',$data);
 	}
 
-/*====== Stocking Interface ======*/
-	function stockManInterface(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Restocking Interface";
-		$data['page'] = 'stockman';
-
-		$data['category'] = $this->project_model->select('stockcategory');
-		$data['record'] = $this->admin_model->property_info();
-
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_headStock',$data);
-		$this->load->view('stockMan/restockingUI',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-
-	private function lastCode($table,$limit,$column,$return){
-		$order = array($table.'.'.$column,'DESC');
-		$last_id = $this->project_model->select($table,$like=false,$where=false,$order,$group=false,$where_or=false,$limit);
-		if ($last_id != false) {
-			foreach ($last_id as $value) {
-				return $value->$return;
-			}
-		}else{
-			return 0;
-		}
-	}
-
-	function createCart(){
-		$msg['type'] = "add";
-		$id = $this->input->post('channelid');
-		$table = "restockcart";
-		$release = date("Y-m-d");
-		$length = strlen($this->lastCode('restockcart',1,'restock_code','restock_code'));
-		$code = substr($this->lastCode('restockcart',1,'restock_code','restock_code'),3,$length);
-		$code = $code+1;
-		$code  = str_pad($code, 2, '0', STR_PAD_LEFT);
-		$data = array(
-			"channel_id"=>$id,
-			"restock_date"=>$release,
-			"restock_code"=>'RSK'.$code,
-			"restock_status"=>"restocking"
-		);
-
-		$insert = $this->project_model->insert('restockcart',$data,true);
-
-		if ($insert[0]) {
-			$this->session->set_userdata('regCart',$insert[1]);
-			$msg['success'] = true;
-
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	function fetchChannelList(){
-		$where = array('restock_status'=>"restocking");
-		$cart = $this->project_model->select('restockcart',false,$where);
-
-		$cartList = array();
-
-		if ($cart != false) {
-			foreach ($cart as $val) {
-				$cartList[] = $val->channel_id;
-			}
-		}
-
-		$wherenotin = $cartList;
-		$wni_col = "channel_id";
-		$result = $this->project_model->select('stockchannel',$like=false,$where=false,$order=false,$group=false,$where_or=false,$limit=false,$or_like=false,$wherenotin,$wni_col);
-
-		echo json_encode($result);
-	}
-
-	function fetchRestockCart(){
-		$result = array('data' => array());
-
-		$where = array('restock_status'=>"restocking");
-		$join = array(
-			array('stockchannel','restockcart','channel_id')
-		);
-		$data = $this->project_model->select_join('restockcart',$join,false,$where);
-
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->restock_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->restock_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
-				$result['data'][$key] = array(
-					$value->channel_name,
-					$value->restock_code,
-					$link
-				);
-			}
-		}
-
-
-		echo json_encode($result);
-	}
-
-	function regCart(){
-		$id = $this->input->get('id');
-		$this->session->set_userdata('regCart',$id);
-
-		if ($this->session->userdata('regCart')) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function closeCart(){
-		$this->session->unset_userdata('regCart');
-		if ($this->session->userdata('regCart') == FALSE) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function checkRegCart(){
-		if ($this->session->userdata('regCart')) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	function fetchRestockable(){
-		$result = array('data' => array());
-
-		$list = array();
-		$whererestock = array('restock_items.restock_id'=>$this->session->userdata('regCart'));
-		$join = array(
-			array('restockcart','restock_items','restock_id')
-		);
-		$cartitem = $this->project_model->select_join('restock_items',$join,false,$whererestock);
-
-		if ($cartitem !=false) {
-			foreach ($cartitem as $value0) {
-				$list[] = $value0->origin_id;
-			}
-		}
-		//check channel table
-		$wherecart = array(
-			"restock_id"=>$this->session->userdata('regCart')
-		);
-		$cart = $this->project_model->select('restockcart',false,$wherecart);
-		if ($cart != false) {
-			foreach ($cart as $value) {
-				$channel = $value->channel_id;
-			}
-			$whereChannel = array(
-				"channel_id"=>$channel
-			);
-			$checkChannel = $this->project_model->select('stockchannel',false,$whereChannel);
-			if ($checkChannel != false) {
-				foreach ($checkChannel as $value1) {
-					if ($value1->channel_name == "Store") {
-						$table = "menu_item";
-						$where = array("stock_type"=>"instock","stock_dispose >"=>0);
-						$stock = "stock";
-						$dispose = "stock_dispose";
-						$name = "item_name";
-						$id = "menu_item_id";
-						$unit = "unit";
-						$this->session->set_userdata('table',$table);
-						$join = array(
-						array('store_menu',$table,'menu_id')
-						);
-						$cat = 'menu_name';
-					}elseif ($value1->channel_name == "Production") {
-						$table = "productionitems";
-						$where = array("proditem_dispose >"=>0);
-						$stock = "proditem_stock";
-						$dispose = "proditem_dispose";
-						$name = "proditem_name";
-						$id = "production_id";
-						$unit = "proditem_unit";
-						$this->session->set_userdata('table',$table);
-						$join = array(
-						array('stockcategory',$table,'stockCat_id')
-						);
-						$cat = 'stockCat_name';
-					}elseif ($value1->channel_name == "Office") {
-						$table = "officeitems";
-						$where = array("offitem_dispose >"=>0);
-						$stock = "offitem_stock";
-						$dispose = "offitem_dispose";
-						$name = "offitem_name";
-						$id = "office_id";
-						$unit = "offitem_unit";
-						$this->session->set_userdata('table',$table);
-						$join = array(
-						array('stockcategory',$table,'stockCat_id')
-						);
-						$cat = 'stockCat_name';
-					}elseif ($value1->channel_name == "Stock Room") {
-						$table = "stockitem";
-						$where = array("stockDispose >"=>0);
-						$stock = "stock_qqty";
-						$dispose = "stockDispose";
-						$name = "stock_name";
-						$id = "stock_id";
-						$unit = "stock_unit";
-						$this->session->set_userdata('table',$table);
-						$join = array(
-						array('stockcategory',$table,'stockCat_id')
-						);
-						$cat = 'stockCat_name';
-					}
-				}
-
-
-				$data = $this->project_model->select_join($table,$join,false,$where,$order=false,$group=false,$where_or=false,$limit=false,$or_like=false,$list,$id);
-				if ($data !== false) {
-					foreach ($data as $key => $value) {
-						$tstock = $value->$stock + $value->$dispose;
-						if ($value->$stock < $tstock) {
-							$link = '<a href="javascript:;" class="btn btn-success addToCart" data="'.$value->$id.'" title="Select"><i class="fa fa-angle-double-left"></i></a>
-							';
-							$result['data'][$key] = array(
-								$value->$cat,
-								$value->$name,
-								$value->$unit,
-								$value->$dispose,
-								$link
-							);
-						}
-					}
-				}
-
-
-			}
-		}
-
-		echo json_encode($result);
-	}
-
-	function fetchCartItem(){
-		$result = array('data' => array());
-		$id = $this->session->userdata('regCart');
-		$where = array('restock_id'=>$id);
-		$data = $this->project_model->select('restock_items',false,$where);
-
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$link = '<a href="javascript:;" class="btn btn-danger delete-cartitem" data="'.$value->restockitem_id.'" title="Select"><i class="fa fa-times"></i></a>';
-				$result['data'][$key] = array(
-					$value->restockitem_name,
-					$value->restock_qqty.' ( '.$value->restock_unit.' ) ',
-					$value->restock_cost,
-					$link
-				);
-			}
-		}
-
-
-		echo json_encode($result);
-	}
-
-	function addCartItem(){
-		$id  = $this->input->get('id');
-		$process = $this->processAddCartItem($id);
-		if ($process !== false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	private function processAddCartItem($id){
-		//add items to cart items table
-		//update stock table item stocks
-		if ($this->session->userdata('table') == "menu_item") {
-			$where = array(
-			"menu_item_id"=>$id
-			);
-		}elseif ($this->session->userdata('table') == "productionitems") {
-			$where = array(
-			"production_id"=>$id
-			);
-		}elseif ($this->session->userdata('table') == "officeitems") {
-			$where = array(
-			"office_id"=>$id
-			);
-		}elseif ($this->session->userdata('table') == "stockitem") {
-			$where = array(
-			"stock_id"=>$id
-			);
-		}
-		$table = $this->session->userdata('table');
-		$cartid = $this->session->userdata('regCart');
-		$item = $this->project_model->select($table,false,$where);
-		if ($item != false) {
-			foreach ($item as $value) {
-				if ($this->session->userdata('table') == "menu_item") {
-					$newstock = $value->stock_dispose + $value->stock;
-					$name = $value->item_name;
-					$dispose = $value->stock_dispose;
-					$data = array(
-						"stockCat_id"=>$value->menu_id,
-						"restockitem_name"=>$value->item_name,
-						"restock_qqty"=>$value->stock_dispose,
-						"restock_cost"=>$value->item_price,
-						"restock_id"=>$this->session->userdata('regCart'),
-						"origin_id"=>$value->menu_item_id,
-						"left_stock"=>$newstock,
-						"restock_unit"=>$value->unit
-					);
-					$updateData = array(
-						"stock"=>$newstock,
-						"stock_dispose"=>'0'
-					);
-					$where = array("menu_item_id"=>$value->menu_item_id);
-				}elseif ($this->session->userdata('table') == "productionitems") {
-					$newstock = $value->proditem_dispose + $value->proditem_stock;
-					$name = $value->proditem_name;
-					$dispose = $value->proditem_dispose;
-					$data = array(
-						"stockCat_id"=>$value->stockCat_id,
-						"restockitem_name"=>$value->proditem_name,
-						"restock_qqty"=>$value->proditem_dispose,
-						"restock_cost"=>$value->proditem_cost,
-						"restock_id"=>$this->session->userdata('regCart'),
-						"origin_id"=>$value->production_id,
-						"left_stock"=>$newstock,
-						"restock_unit"=>$value->proditem_unit
-					);
-					$updateData = array(
-						"proditem_stock"=>$newstock,
-						"proditem_dispose"=>'0'
-					);
-					$where = array("production_id"=>$value->production_id);
-				}elseif ($this->session->userdata('table') == "officeitems") {
-					$newstock = $value->offitem_dispose + $value->offitem_stock;
-					$name = $value->offitem_name;
-					$dispose = $value->offitem_dispose;
-					$data = array(
-						"stockCat_id"=>$value->stockCat_id,
-						"restockitem_name"=>$value->offitem_name,
-						"restock_qqty"=>$value->offitem_dispose,
-						"restock_cost"=>$value->offitem_cost,
-						"restock_id"=>$this->session->userdata('regCart'),
-						"origin_id"=>$value->office_id,
-						"left_stock"=>$newstock,
-						"restock_unit"=>$value->offitem_unit
-					);
-					$updateData = array(
-						"offitem_stock"=>$newstock,
-						"offitem_dispose"=>'0'
-					);
-					$where = array("office_id"=>$value->office_id);
-				}elseif ($this->session->userdata('table') == "stockitem") {
-					$newstock = $value->stockDispose + $value->stock_qqty;
-					$name = $value->stock_name;
-					$dispose = $value->stockDispose;
-					$data = array(
-						"stockCat_id"=>$value->stockCat_id,
-						"restockitem_name"=>$value->stock_name,
-						"restock_qqty"=>$value->stockDispose,
-						"restock_cost"=>$value->stockCost,
-						"restock_id"=>$this->session->userdata('regCart'),
-						"origin_id"=>$value->stock_id,
-						"left_stock"=>$newstock,
-						"restock_unit"=>$value->stock_unit
-					);
-					$updateData = array(
-						"stock_qqty"=>$newstock,
-						"stockDispose"=>'0'
-					);
-					$where = array("stock_id"=>$value->stock_id);
-				}
-
-				$insert = $this->project_model->insert('restock_items',$data);
-
-				if ($insert != false) {
-					$update = $this->project_model->updateNew($this->session->userdata('table'),$where,$updateData);
-					if ($update != false) {
-						if ($this->session->userdata('table') !== "stockitem") {
-							$where2 = array('stock_name'=>$name);
-							$stockitem = $this->project_model->select('stockitem',false,$where2);
-							if ($stockitem != false) {
-								foreach ($stockitem as $value2) {
-									$updatedstock = $value2->stock_qqty - $dispose;
-									$updateddispose = $value2->stockDispose+$dispose;
-									$stockUpdate = array(
-										'stock_qqty'=>$updatedstock,
-										'stockDispose'=>$updateddispose
-									);
-									$stocktblwhere = array('stock_id'=>$value2->stock_id);
-									$updatestocktbl = $this->project_model->updateNew('stockitem',$stocktblwhere,$stockUpdate);
-									if ($updatestocktbl != false) {
-										return true;
-									}else{
-										return "error update stock table";
-									}
-								}
-							}else{
-								return "error retrieving stock info";
-							}
-						}else{
-							return true;
-						}
-						//retrieve data from stock table and update the existing data
-					}else{
-						//return false;
-						return "error update";
-					}
-				}else{
-					//return false;
-					return "error insert";
-				}
-			}//end foreach
-		}else{
-			//return false;
-			return "item error";
-		}
-	}
-
-	function delCartItem(){
-		//process data if Finish Button will be press.
-		$id = $this->input->get('id');
-		$result = $this->processDelCartItem($id);
-		if ($result) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	private function processDelCartItem($id){
-		$where = array('restockitem_id'=>$id);
-		$get = $this->project_model->select('restock_items',false,$where);
-		if ($get !== false) {
-			foreach ($get as $value) {
-				if ($this->session->userdata('table') == "menu_item") {
-					$updateData = array(
-						"stock"=>$value->left_stock,
-						"stock_dispose"=>$value->restock_qqty
-					);
-					$where = array("menu_item_id"=>$value->origin_id);
-				}elseif ($this->session->userdata('table') == "productionitems") {
-					$updateData = array(
-						"proditem_stock"=>$value->left_stock,
-						"proditem_dispose"=>$value->restock_qqty
-					);
-					$where = array("production_id"=>$value->origin_id);
-				}elseif ($this->session->userdata('table') == "officeitems") {
-					$updateData = array(
-						"offitem_stock"=>$value->left_stock,
-						"offitem_dispose"=>$value->restock_qqty
-					);
-					$where = array("office_id"=>$value->origin_id);
-				}elseif ($this->session->userdata('table') == "stockitem") {
-					$updateData = array(
-						"stock_qqty"=>$value->left_stock,
-						"stockDispose"=>$value->restock_qqty
-					);
-					$where = array("stock_id"=>$value->origin_id);
-				}
-					$dispose = $value->restock_qqty;
-					$name = $value->restockitem_name;
-					$table = $this->session->userdata('table');
-					$update = $this->project_model->updateNew($table,$where,$updateData);
-					if ($update !== false) {
-
-						if ($this->session->userdata('table') !== "stockitem") {
-							$where2 = array('stock_name'=>$name);
-							$stockitem = $this->project_model->select('stockitem',false,$where2);
-							if ($stockitem != false) {
-								foreach ($stockitem as $value2) {
-									$updatedstock = $value2->stock_qqty + $dispose;
-									$updateddispose = $value2->stockDispose-$dispose;
-									$stockUpdate = array(
-										'stock_qqty'=>$updatedstock,
-										'stockDispose'=>$updateddispose
-									);
-									$stocktblwhere = array('stock_id'=>$value2->stock_id);
-									$updatestocktbl = $this->project_model->updateNew('stockitem',$stocktblwhere,$stockUpdate);
-									if ($updatestocktbl != false) {
-
-										$del_where = array("restockitem_id"=>$id);
-										$delete = $this->project_model->deleteNew('restock_items',$del_where);
-										if ($delete === true) {
-											return true;
-										}else{
-											return false;
-											//return "delete error";
-										}
-
-									}else{
-										return false;
-									}
-								}
-							}else{
-								return false;
-							}
-						}else{
-							return true;
-						}
-
-
-
-					}else{
-						return false;
-						//return "update error";
-					}
-			}
-		}else{
-			return false;
-			//return "item error";
-		}
-	}
-
-	function delCart(){
-		$id = $this->input->get('id');
-		$get_where = array('restock_id'=>$id);
-		$getitem = $this->project_model->select('restock_items',false,$get_where);
-		if ($getitem !== false) {
-			$i = 0;
-			$counter = count($getitem);
-			foreach ($getitem as $value) {
-				$id = $value->restockitem_id;
-				if ($this->processDelCartItem($id) !== false) {
-					$i++;
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = "item delete error";
-				}
-			}
-			if ($i === $counter) {
-				$del_where = array('restock_id'=>$id);
-				$delete = $this->project_model->deleteNew('restockcart',$del_where);
-				if ($delete !== false) {
-					if ($this->clearCartSession() === true) {
-						$msg['success'] = true;
-					}else{
-						$msg['success'] = false;
-						$msg['error'] = "Eroor clearing session cart";
-					}
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = "Deleting cart error";
-				}
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = "Counter error";
-			}
-		}else{
-			$where = array('restock_id'=>$id);
-			$delete = $this->project_model->deleteNew('restockcart',$where);
-			if ($delete) {
-				if ($this->clearCartSession() === true) {
-					$msg['success'] = true;
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = "Unable to clear cart session.";
-				}
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = "Unable to directly delete cart.";
-			}
-		}
-
-		echo json_encode($msg);
-	}
-
-	function finishCart(){
-		/* $process = $this->processCart();
-		if ($process != false) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		} */
-		$wherecheck = array("restock_id"=>$this->session->userdata('regCart'));
-		$check = $this->project_model->check_numrows('restock_items',$wherecheck);
-		if ($check != false) {
-			$where = array("restock_id"=>$this->session->userdata('regCart'));
-			$data = array(
-				"restock_status"=>"stocked"
-			);
-			$update = $this->project_model->updateNew('restockcart',$where,$data);
-			if ($update) {
-				if ($this->clearCartSession() === true) {
-					$msg['success'] = true;
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = "Unable clear session.";
-				}
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = "Unable to update restock cart.";
-			}
-		}else {
-			$msg['success'] = false;
-			$msg['error'] = "Sorry can't accept empty.";
-		}
-		echo json_encode($msg);
-	}
-
-	private function clearCartSession(){
-		$sess_array  = array('table'=>'','regCart'=>'');
-		$this->session->unset_userdata($sess_array);
-		if ($this->session->userdata('regCart')==FALSE && $this->session->userdata('table')==FALSE) {
-			return true;
-		}else{
-			return false;
-		}
-	}
-
-/*====== Stock Disposing Interface ====*/
-	function stockReleasing(){
-		$data['title'] = "Administrator";
-		$data['sub_heading'] = "Releasing";
-		$data['page'] = 'stockman';
-
-		$data['category'] = $this->project_model->select('stockcategory');
-		$data['record'] = $this->admin_model->property_info();
-
-
-		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav',$data);
-		$this->load->view('admin/body_headStock',$data);
-		$this->load->view('stockMan/itemReleasing',$data);
-		$this->load->view('admin/body_footer',$data);
-		$this->load->view('admin/footer',$data);
-	}
-
-	function createRelCart(){
-
-		$this->form_validation->set_rules('orderid','Order','required');
-		$this->form_validation->set_rules('channelid','Channel','required');
-		$this->form_validation->set_rules('date','Date','required');
-		if ($this->form_validation->run() == FALSE) {
-				$msg['error'] = validation_errors();
-				$msg['success'] = false;
-		}else{
-			$code = substr($this->lastCode('releasecart',1,'release_code','release_code'),2)+1;
-			$data = array(
-				"channel_id"=>set_value('channelid'),
-				"release_date"=>set_value('date'),
-				"release_code"=>'RL'.$code,
-				"releasing_status"=>"releasing",
-				"order_id"=>set_value('orderid')
-			);
-
-			$insert = $this->project_model->insert('releasecart',$data,true);
-
-			if ($insert[0]) {
-				$this->session->set_userdata('relCart',$insert[1]);
-				$msg['success'] = true;
-
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = 'Error creating releasing cart.';
-			}
-		}
-
-		echo json_encode($msg);
-	}
-
-	function fetchRelChannelList(){
-		$where = array('restock_status'=>"releasing");
-		$cart = $this->project_model->select('restockcart',false,$where);
-
-		$cartList = array();
-
-		if ($cart != false) {
-			foreach ($cart as $val) {
-				$cartList[] = $val->channel_id;
-			}
-		}
-		$cartList[] = 1;
-		$cartList[] = 4;
-
-		$wherenotin = $cartList;
-		$wni_col = "channel_id";
-		$result = $this->project_model->select('stockchannel',$like=false,$where=false,$order=false,$group=false,$where_or=false,$limit=false,$or_like=false,$wherenotin,$wni_col);
-
-		echo json_encode($result);
-	}
-
-	function fetchRelCart(){
-		$result = array('data' => array());
-
-		$where = array('releasing_status'=>"releasing");
-		$join = array(
-			array('stockchannel','releasecart','channel_id'),
-			array('order','releasecart','order_id')
-		);
-		$data = $this->project_model->select_join('releasecart',$join,false,$where);
-
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$link = '<a href="javascript:;" class="btn btn-primary select-cart" data="'.$value->releaseCart_id.'" title="Select"><i class="fa fa-hand-pointer-o"></i></a>
-				<a href="javascript:;" class="btn btn-danger delCart" data="'.$value->releaseCart_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
-				$result['data'][$key] = array(
-					$value->channel_name,
-					$value->release_code,
-					$value->order_code,
-					$link
-				);
-			}
-		}
-		echo json_encode($result);
-	}
-
-	function fetchOrderList(){
-		$order_list = array();
-		$order = $this->project_model->select('releasecart');
-
-		if ($order != false) {
-			foreach ($order as $value) {
-				$order_list[] = $value->order_id;
-			}
-		}
-
-		$wherenotin = $order_list;
-		$wni_col = "order_id";
-		$result = $this->project_model->select('order',$like=false,$where=false,$order=false,$group=false,$where_or=false,$limit=false,$or_like=false,$wherenotin,$wni_col);
-
-		echo json_encode($result);
-	}
-
-	function checkRCInfo(){
-		$id = $this->session->userdata('relCart');
-		$where = array(
-			'releaseCart_id'=>$id
-		);
-		$join = array(
-			array('order','releasecart','order_id'),
-			array('stockchannel','releasecart','channel_id')
-		);
-		$result = $this->project_model->single_select('releasecart',$where,$join);
-			$data['ordercode'] = $result->order_code;
-			$data['channel'] = $result->channel_name;
-		echo json_encode($data);
-	}
-
-	function regRelCart(){
-		$id = $this->input->get('id');
-		$this->session->set_userdata('relCart',$id);
-
-		if ($this->session->userdata('relCart')) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function closeRelCart(){
-		$this->session->unset_userdata('relCart');
-		if ($this->session->userdata('relCart') == FALSE) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	function checkRegRelCart(){
-		if ($this->session->userdata('relCart')) {
-			$msg['success'] = true;
-		}else{
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	function fetchRelItem(){
-		$result = array('data' => array());
-
-		$wherecart = array(
-			"releaseCart_id"=>$this->session->userdata('relCart')
-		);
-		$cart = $this->project_model->select('releasecart',false,$wherecart);
-		if ($cart != false) {
-			foreach ($cart as $value) {
-				$channel = $value->channel_id;
-			}
-			$whereChannel = array(
-				"channel_id"=>$channel
-			);
-			$checkChannel = $this->project_model->select('stockchannel',false,$whereChannel);
-			if ($checkChannel != false) {
-				foreach ($checkChannel as $value1) {
-					if ($value1->channel_name == "Production") {
-						$table = "productionitems";
-						$where = array("proditem_stock >"=>0);
-						$stock = "proditem_stock";
-						$dispose = "proditem_dispose";
-						$name = "proditem_name";
-						$id = "production_id";
-						$unit = "proditem_unit";
-						$this->session->set_userdata('reltable',$table);
-					}elseif ($value1->channel_name == "Office") {
-						$table = "officeitems";
-						$where = array("offitem_stock >"=>0);
-						$stock = "offitem_stock";
-						$dispose = "offitem_dispose";
-						$name = "offitem_name";
-						$id = "office_id";
-						$unit = "offitem_unit";
-						$this->session->set_userdata('reltable',$table);
-					}
-				}
-				$join = array(
-					array('stockcategory',$table,'stockCat_id')
-				);
-				$data = $this->project_model->select_join($table,$join,false,$where);
-				if ($data !== false) {
-					foreach ($data as $key => $value) {
-						$link = '<a href="javascript:;" class="btn btn-success addToCart" data="'.$value->$id.'" title="Cancel"> <i class="fa fa-plus"></i></a>';
-						$result['data'][$key] = array(
-							$value->stockCat_name,
-							$value->$name,
-							$value->$unit,
-							$value->$stock,
-							$link
-						);
-					}
-				}
-
-
-			}
-		}
-
-		echo json_encode($result);
-	}
-
-	function fetchRelCartItem(){
-		$result = array('data' => array());
-		$id = $this->session->userdata('relCart');
-		$where = array('releaseCart_id'=>$id);
-		$data = $this->project_model->select('releaseditem',false,$where);
-
-		if ($data != false) {
-			foreach ($data as $key => $value) {
-				$link = '<a href="javascript:;" class="btn btn-danger delete-cartitem" data="'.$value->release_item_id.'" title="Cancel"> <i class="fa fa-times"></i></a>';
-				$result['data'][$key] = array(
-					$value->releaseitem_name,
-					$value->releaseitem_qty.' ( '.$value->releaseitem_unit.' ) ',
-					$value->releaseitem_cost,
-					$link
-				);
-			}
-		}
-		echo json_encode($result);
-	}
-
-	function cartItemEdit(){
-		$id = $this->input->get('id');
-		$table = $this->session->userdata('reltable');
-
-		if ($table == 'officeitems') {
-			$where = array("office_id"=>$id);
-		}elseif ($table == "productionitems") {
-			$where = array("production_id"=>$id);
-		}
-
-		$result = $this->project_model->single_select($table,$where);
-		echo json_encode($result);
-	}
-
-	function addRelCartItem(){
-		$this->form_validation->set_rules('itemDispId','Item','required');
-		$this->form_validation->set_rules('dispose','Dispose Qty','required');
-
-		if ($this->form_validation->run() == FALSE) {
-			$msg['error'] = validation_errors();
-			$msg['success'] = false;
-		}else{
-
-			$table = $this->session->userdata('reltable');
-			if ($table == "productionitems") {
-				$where = array(
-				"production_id"=>set_value('itemDispId')
-				);
-			}elseif ($table == "officeitems") {
-				$where = array(
-				"office_id"=>set_value('itemDispId')
-				);
-			}
-			$cartid = $this->session->userdata('relCart');
-			$item = $this->project_model->select($table,false,$where);
-			if ($item != false) {
-				foreach ($item as $value) {
-					if ($table == "productionitems") {
-						$newstock = $value->proditem_stock - set_value('dispose');
-						$newdispose = $value->proditem_dispose + set_value('dispose');
-						$data = array(
-							"releaseCart_id"=>$this->session->userdata('relCart'),
-							"releaseitem_name"=>$value->proditem_name,
-							"releaseitem_unit"=>$value->proditem_unit,
-							"releaseitem_qty"=>set_value('dispose'),
-							"releaseitem_cost"=>$value->proditem_cost,
-							"stockCat_id"=>$value->stockCat_id
-						);
-						$updateData = array(
-							"proditem_stock"=>$newstock,
-							"proditem_dispose"=>$newdispose
-						);
-						$where = array("production_id"=>$value->production_id);
-						$wherecheck = array(
-							'releaseitem_name'=>$value->proditem_name,
-							'releasecart.releaseCart_id'=>$cartid
-							);
-					}elseif ($table == "officeitems") {
-						$newstock = $value->offitem_stock - set_value('dispose');
-						$newdispose = $value->offitem_dispose + set_value('dispose');
-						$data = array(
-							"releaseCart_id"=>$this->session->userdata('relCart'),
-							"releaseitem_name"=>$value->offitem_name,
-							"releaseitem_unit"=>$value->offitem_unit,
-							"releaseitem_qty"=>set_value('dispose'),
-							"releaseitem_cost"=>$value->offitem_cost,
-							"stockCat_id"=>$value->stockCat_id
-						);
-						$updateData = array(
-							"offitem_stock"=>$newstock,
-							"offitem_dispose"=>$newdispose
-						);
-						$where = array("office_id"=>$value->office_id);
-						$wherecheck = array(
-							'releaseitem_name'=>$value->offitem_name,
-							'releasecart.releaseCart_id'=>$cartid
-						);
-					}
-					$join = array(
-						array('releasecart','releaseditem','releaseCart_id')
-					);
-					$check = $this->project_model->check_multi_duplicate('releaseditem',$wherecheck,'release_item_id',false,$join);
-					if($check[0] != true){
-						$insert = $this->project_model->insert('releaseditem',$data);
-
-						if ($insert != false) {
-							$update = $this->project_model->updateNew($table,$where,$updateData);
-							if ($update != false) {
-								$msg['success'] = true;
-							}else{
-								$msg['error'] = "Error updating ".$table." item.";
-								$msg['success'] = false;
-							}
-						}else{
-							$msg['error'] = "Error inserting item to release item table.";
-							$msg['success'] = false;
-						}
-					}else{
-						$whereupdate = array('release_item_id'=>$check[1]);
-						$get = $this->project_model->select("releaseditem",false,$whereupdate);
-						if($get != false){
-							foreach($get as $value){
-								$newqty = $value->releaseitem_qty+set_value('dispose');
-								$dataUpdate = array(
-									'releaseitem_qty'=>$newqty
-								);
-
-								$updateRe = $this->project_model->updateNew("releaseditem",$whereupdate,$dataUpdate);
-								if($updateRe != false){
-									$updateItem = $this->project_model->updateNew($table,$where,$updateData);
-									if ($updateItem != false) {
-										$msg['success'] = true;
-									}else{
-										$msg['error'] = "Error updating ".$table." item.";
-										$msg['success'] = false;
-									}
-								}else{
-									$msg['error'] = "Error updating released item data.";
-									$msg['success'] = false;
-								}
-							}
-						}else{
-							$msg['error'] = "Unable to find release item data.";
-							$msg['success'] = false;
-						}
-					}
-				}
-			}else{
-				$msg['error'] = "Item not found.";
-				$msg['success'] = false;
-			}
-		}
-		echo json_encode($msg);
-	}
-
-	function delRelCartItem(){
-		//process data if Finish Button will be press.
-		$id = $this->input->get('id');
-
-		$table = $this->session->userdata('reltable');
-		$where = array('release_item_id'=>$id);
-		$get = $this->project_model->select('releaseditem',false,$where);
-		if ($get !== false) {
-			foreach ($get as $value) {
-				if ($table == "productionitems") {
-					$name = $value->releaseitem_name;
-					$where2 = array('proditem_name'=> $name);
-					$get2 = $this->project_model->select('productionitems',false,$where2);
-					foreach ($get2 as $value2) {
-						$stock = $value2->proditem_stock+$value->releaseitem_qty;
-						$dispose = $value2->proditem_dispose-$value->releaseitem_qty;
-						$updateData = array(
-							"proditem_stock"=>$stock,
-							"proditem_dispose"=>$dispose
-						);
-						$where = array("production_id"=>$value2->production_id);
-					}
-
-				}elseif ($table == "officeitems") {
-					$name = $value->releaseitem_name;
-					$where2 = array('offitem_name'=> $name);
-					$get2 = $this->project_model->select('officeitems',false,$where2);
-					foreach ($get2 as $value2) {
-						$stock = $value2->offitem_stock+$value->releaseitem_qty;
-						$dispose = $value2->offitem_dispose-$value->releaseitem_qty;
-						$updateData = array(
-							"offitem_stock"=>$stock,
-							"offitem_dispose"=>$dispose
-						);
-						$where = array("office_id"=>$value2->office_id);
-					}
-
-				}
-					$update = $this->project_model->updateNew($table,$where,$updateData);
-					if ($update !== false) {
-						$del_where = array("release_item_id"=>$id);
-						$delete = $this->project_model->deleteNew('releaseditem',$del_where);
-						if ($delete != false) {
-							$msg['success'] = true;
-						}else{
-							$msg['error'] = "Unable to delete item.";
-							$msg['success'] = false;
-						}
-					}else{
-						$msg['error'] = "Unable to update ".$table." item.";
-						$msg['success'] = false;
-					}
-			}
-		}else{
-			$msg['error'] = "Item not found.";
-			$msg['success'] = false;
-		}
-
-		echo json_encode($msg);
-	}
-
-	function delRelCart(){
-		//process data if Finish Button will be press.
-		$id = $this->input->get('id');
-		$get_where = array('releaseCart_id'=>$id);
-		$getitem = $this->project_model->select('releaseditem',false,$get_where);
-		if ($getitem !== false) {
-			$i = 0;
-			$counter = count($getitem);
-			foreach ($getitem as $value) {
-				$id = $value->release_item_id;
-				if ($this->processDelRelCartItem($id) !== false) {
-					$i++;
-				}else{
-					//return false;
-					$msg['error'] = "Error deleting item.";
-					$msg['success'] = false;
-				}
-			}
-			if ($i === $counter) {
-				$del_where = array('releaseCart_id'=>$id);
-				$delete = $this->project_model->deleteNew('releasecart',$del_where);
-				if ($delete !== false) {
-					if ($this->clearRelCartSession() === true) {
-						$msg['success'] = true;
-					}else{
-						$msg['error'] = "Clearing session cart error.";
-						$msg['success'] = false;
-					}
-				}else{
-					$msg['error'] = "Delete cart error";
-					$msg['success'] = false;
-				}
-			}else{
-				$msg['error'] = "Counter error.";
-				$msg['success'] = false;
-			}
-		}else{
-			$where = array('releaseCart_id'=>$id);
-			$delete = $this->project_model->deleteNew('releasecart',$where);
-			if ($delete) {
-				if ($this->clearRelCartSession() === true) {
-					$msg['success'] = true;
-				}else{
-					//return false;
-					$msg['error'] = "Error clearing session";
-					$msg['success'] = false;
-				}
-			}else{
-				//return false;
-				$msg['error'] = "Error deleting release cart.";
-				$msg['success'] = false;
-			}
-		}
-
-		echo json_encode($msg);
-	}
-
-	function finishRelCart(){
-		$where = array("releaseCart_id"=>$this->session->userdata('relCart'));
-		$check = $this->project_model->check_numrows('releaseditem',$where);
-		if ($check != false) {
-			$data = array(
-				"releasing_status"=>"released"
-			);
-			$update = $this->project_model->updateNew('releasecart',$where,$data);
-			if ($update) {
-				if ($this->clearRelCartSession() == true) {
-					$msg['success'] = true;
-				}else{
-					$msg['error'] = "Error clearing session.";
-					$msg['success'] = false;
-				}
-			}else{
-				$msg['error'] = "Error updating release cart.";
-				$msg['success'] = false;
-			}
-		}else{
-			$msg['error'] = "Sorry! Cannot submit empty cart!";
-			$msg['success'] = false;
-		}
-		echo json_encode($msg);
-	}
-
-	private function clearRelCartSession(){
-		$sess_array  = array('reltable'=>'','relCart'=>'');
-		$this->session->unset_userdata($sess_array);
-		if ($this->session->userdata('relCart')=="" && $this->session->userdata('reltable')=="") {
-			return true;
-		}else{
-			return false;
-		}
-	}
-
 /*====== Monthly Reports ==========*/
+	function branchStocks(){
+		$data['title'] = "Administrator";
+		$data['sub_heading'] = "Branch Stocks";
+		$data['page'] = 'reports';
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('admin/nav_v2',$data);
+		$this->load->view('reports/branchStocks',$data);
+		$this->load->view('admin/footer',$data);
+	}
 	function miscExp(){
 		$data['title'] = "Administrator";
 		$data['sub_heading'] = "Miscellaneous Expenses";
@@ -4625,10 +3168,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'reports';
 
 		$this->load->view('admin/header',$data);
-		$this->load->view('admin/nav_v1',$data);
-		$this->load->view('admin/body_header',$data);
+		$this->load->view('admin/nav_v2',$data);
 		$this->load->view('reports/employee_credits',$data);
-		$this->load->view('admin/body_footer',$data);
 		$this->load->view('admin/footer',$data);
 	}
 
@@ -4699,6 +3240,7 @@ class Admin extends CI_Controller {
 	}
 
 /*====== Monthly Reports Processing ==========*/
+
 	/*miscellaneous*/
 		function fetchMisc(){
 			$result = array('data' => array());
@@ -4737,12 +3279,12 @@ class Admin extends CI_Controller {
 				$msg['success'] = false;
 			}else{
 				$data = array(
+					'misc_desc'=>ucwords(set_value('desc')),
 					'misc_qty'=>set_value('qty'),
 					'misc_unit'=>set_value('unit'),
 					'misc_price'=>set_value('cost'),
 					'misc_note'=>set_value('note'),
-					'misc_date'=>set_value('date'),
-					'misc_mon'=>set_value('mon')
+					'misc_date'=>set_value('date')
 				);
 				$add = $this->project_model->insert('expenses_misc',$data);
 				if ($add != false) {
@@ -4763,7 +3305,6 @@ class Admin extends CI_Controller {
 			echo json_encode($result);
 		}
 		function updateMisc(){
-			$this->form_validation->set_rules('mon','Month','required');
 			$this->form_validation->set_rules('desc','Desciption','required');
 			$this->form_validation->set_rules('unit','Unit','required');
 			$this->form_validation->set_rules('cost','Cost','required');
@@ -4782,8 +3323,7 @@ class Admin extends CI_Controller {
 					'misc_unit'=>set_value('unit'),
 					'misc_price'=>set_value('cost'),
 					'misc_note'=>set_value('note'),
-					'misc_date'=>set_value('date'),
-					'misc_mon'=>set_value('mon')
+					'misc_date'=>set_value('date')
 				);
 				$id = set_value('id');
 				$where = array('misc_id'=>$id);
@@ -4852,92 +3392,40 @@ class Admin extends CI_Controller {
 			}
 			echo json_encode($result);
 		}
-		function addExpProd(){
-			$this->form_validation->set_rules('mon','Month','required');
-			$this->form_validation->set_rules('desc','Desciption','required');
-			$this->form_validation->set_rules('unit','Unit','required');
-			$this->form_validation->set_rules('cost','Cost','required');
-			$this->form_validation->set_rules('qty','Quantity','required');
-			$this->form_validation->set_rules('date','Date','required');
-			$this->form_validation->set_rules('note','Note','required');
-
-			if ($this->form_validation->run() == FALSE) {
-				$msg['error'] = validation_errors();
-				$msg['success'] = false;
-			}else{
-				$data = array(
-					'prod_desc'=>ucwords(set_value('desc')),
-					'prod_qty'=>set_value('qty'),
-					'prod_unit'=>set_value('unit'),
-					'prod_price'=>set_value('cost'),
-					'prod_note'=>set_value('note'),
-					'prod_date'=>set_value('date'),
-					'prod_mon'=>set_value('mon')
-				);
-				$add = $this->project_model->insert('expenses_prod',$data);
-				if ($add != false) {
-					$msg['success'] = true;
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = 'Error adding data.';
-				}
-			}
-			$msg['type'] = 'Add';
-			echo json_encode($msg);
-		}
-		function editExpProd(){
+		function deleteExpProd(){
 			$id = $this->input->get('id');
-			$where = array("prod_id"=>$id);
-			$result = $this->project_model->single_select('expenses_prod',$where);
-			echo json_encode($result);
-		}
-		function updateExpProd(){
-			$this->form_validation->set_rules('mon','Month','required');
-			$this->form_validation->set_rules('desc','Desciption','required');
-			$this->form_validation->set_rules('unit','Unit','required');
-			$this->form_validation->set_rules('cost','Cost','required');
-			$this->form_validation->set_rules('qty','Quantity','required');
-			$this->form_validation->set_rules('date','Date','required');
-			$this->form_validation->set_rules('note','Note','required');
-			$this->form_validation->set_rules('id','Id','required');
 
-			if ($this->form_validation->run() == FALSE) {
-				$msg['error'] = validation_errors();
-				$msg['success'] = false;
-			}else{
-				$data = array(
-					'prod_desc'=>ucwords(set_value('desc')),
-					'prod_qty'=>set_value('qty'),
-					'prod_unit'=>set_value('unit'),
-					'prod_price'=>set_value('cost'),
-					'prod_note'=>set_value('note'),
-					'prod_date'=>set_value('date'),
-					'prod_mon'=>set_value('mon')
-				);
-				$id = set_value('id');
-				$where = array('prod_id'=>$id);
-				$result = $this->project_model->updateNew('expenses_prod',$where,$data);
+			$where = array(
+				'release_item_id'=>$id
+			);
+
+			$get = $this->project_model->single_select('releaseditem',$where);
+			$where2 = array(
+				'stock_id'=>$get->stock_id
+			);
+			$stock = $this->project_model->single_select('stockitem',$where2);
+
+			$newstock = $stock->stock_qqty + $get->releaseitem_qty;
+			$newdispose = $stock->stockDispose - $get->releaseitem_qty;
+			$data = array(
+				"stock_qqty"=>$newstock,
+				"stockDispose"=>$newdispose
+			);
+			$update = $this->project_model->updateNew('stockitem',$where2,$data);
+			if ($update != false) {
+				$result = $this->project_model->deleteNew('releaseditem',$where);
 				if ($result != false) {
 					$msg['success'] = true;
 				}else{
 					$msg['success'] = false;
-					$msg['error'] = 'Error adding data.';
+					$msg['error'] = "Unable to delete item.";
 				}
-			}
-			$msg['type'] = 'Update';
-			echo json_encode($msg);
-		}
-		function deleteExpProd(){
-			$id = $this->input->get('id');
-			$where = array(
-				'release_item_id'=>$id
-			);
-			$result = $this->project_model->deleteNew('releaseditem',$where);
-			if ($result != false) {
-				$msg['success'] = true;
 			}else{
 				$msg['success'] = false;
+				$msg['error'] = "Unable to update stocks!";
 			}
+
+
 			echo json_encode($msg);
 		}
 		function printProdList(){
@@ -4959,6 +3447,28 @@ class Admin extends CI_Controller {
 
 			$this->load->view('admin/header',$data);
 			$this->load->view('reports/prodList',$data);
+			$this->load->view('admin/footer',$data);
+		}
+		function printProdTPList(){
+			$data['title'] = "Administrator";
+			$data['sub_heading'] = "POS System";
+			$data['page'] = 'Production Third Party Stocks Expenses';
+
+			$month = $this->uri->segment(3);
+			$year = $this->uri->segment(4);
+			$param = $year.'-'.$month;
+			$like = array(
+				'order_date'=>$param
+			);
+			$join = array(
+				array('stockitem','ordered_item','stock_id'),
+				array('stock_class','stockitem','stockclass_id')
+			);
+			$data['result' ] = $this->project_model->select_join('ordered_item',$join,$like);
+			$data['property']= $this->project_model->select('property_info');
+
+			$this->load->view('admin/header',$data);
+			$this->load->view('reports/3rdPProdList',$data);
 			$this->load->view('admin/footer',$data);
 		}
 	/*equipment*/
@@ -5225,12 +3735,93 @@ class Admin extends CI_Controller {
 			$this->load->view('reports/returnList',$data);
 			$this->load->view('admin/footer',$data);
 		}
+	/*branch stocks*/
+		function fetchBranchItem(){
+			$result = array('data' => array());
+			$join = array(
+					array('stockitem','branch_stocks','stock_id'),
+					array('employee','branch_stocks','emp_id')
+				);
+			$data = $this->project_model->select_join('branch_stocks',$join);
+				if($data != false){
+					foreach ($data as $key => $value) {
+						$buttons = '
+						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->branch_stocksid.'" title="Select"><i class="fa fa-times"></i></a>';
+						$result['data'][$key] = array(
+							$value->transfer_date,
+							$value->branch_name,
+							$value->stock_name,
+							$value->bstocks_unit,
+							$value->bstocks_qty,
+							$value->emp_lname,
+							$buttons
+						);
+					}
+				}
+			echo json_encode($result);
+		}
+		function deleteBranchStocks(){
+			$id = $this->input->get('id');
+			$where = array('branch_stocksid'=>$id);
+			$info = $this->project_model->single_select('branch_stocks',$where);
+			if ($info != false) {
+				$where2 = array("stock_id"=>$info->stock_id);
+				$getStocks = $this->project_model->single_select('stockitem',$where2);
+
+				$newstock = $getStocks->stock_qqty + $info->bstocks_qty;
+				$data = array(
+					"stock_qqty"=>$newstock
+				);
+				$update = $this->project_model->updateNew('stockitem',$where2,$data);
+				if ($update != false) {
+					$result = $this->project_model->delete('branch_stocks','branch_stocksid',$id);
+					if ($result) {
+						$msg['success'] = true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = "Unable to delete record!";
+					}
+				}else{
+					$msg['success'] = false;
+					$msg['error'] = "Unable to return stocks!";
+				}
+			}else{
+				$msg['success'] = false;
+				$msg['error'] = "Unable to find record!";
+			}
+
+
+			echo json_encode($msg);
+		}
+		function printBranchStock(){
+			$data['title'] = "Production";
+			$data['sub_heading'] = "POS System";
+			$data['page'] = 'Branch Stock Report';
+
+			$date = $this->uri->segment(3);
+			$branch = $this->uri->segment(4);
+
+			$join = array(
+					array('stockitem','branch_stocks','stock_id'),
+					array('employee','branch_stocks','emp_id')
+				);
+
+			$like = array('transfer_date'=>$date);
+			$where = array('branch_name'=>$branch);
+			$data['result'] = $this->project_model->select_join('branch_stocks',$join,$like,$where);
+			$data['property']= $this->project_model->select('property_info');
+
+			$this->load->view('admin/header',$data);
+			$this->load->view('production/printBranchStocks',$data);
+			$this->load->view('admin/footer',$data);
+		}
 	/*stocks*/
 		function fetchExpStocks(){
 			$result = array('data' => array());
 
 			$join = array(
-				array('stockitem','stock_newlog','stock_id')
+				array('stockitem','stock_newlog','stock_id'),
+				array('stock_class','stockitem','stockclass_id')
 			);
 			$data = $this->project_model->select_join('stock_newlog',$join);
 			if ($data != false) {
@@ -5240,6 +3831,8 @@ class Admin extends CI_Controller {
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->stock_newid.'" title="Select"><i class="fa fa-times"></i></a>';
 					$result['data'][$key] = array(
 						$value->delivery_date,
+						$value->stockclass_name,
+						$value->nstock_status,
 						$value->stock_name,
 						$value->nstock_unit,
 						$value->nstock_qqty,
@@ -5319,15 +3912,22 @@ class Admin extends CI_Controller {
 		function printStockList(){
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
-			$data['page'] = 'Stocks Expenses';
+			$data['page'] = 'Daily New '.ucwords($this->uri->segment(4)).' Stocks - '.ucwords($this->uri->segment(5));
 
-			$month = $this->uri->segment(3);
-			$year = $this->uri->segment(4);
-			$param = $year.'-'.$month;
-			$like = array(
-				'delivery_date'=>$param
+			$date= $this->uri->segment(3);
+			$class = $this->uri->segment(4);
+			$stat = $this->uri->segment(5);
+
+			$where = array(
+				'delivery_date'=>$date,
+				'stockclass_name'=>$class,
+				'nstock_status'=>$stat
 			);
-			$data['result' ] = $this->project_model->select('stock_newlog',$like);
+			$join = array(
+				array('stockitem','stock_newlog','stock_id'),
+				array('stock_class','stockitem','stockclass_id')
+			);
+			$data['result'] = $this->project_model->select_join('stock_newlog',$join,false,$where);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -5335,6 +3935,24 @@ class Admin extends CI_Controller {
 			$this->load->view('admin/footer',$data);
 		}
 	/*sales*/
+		function voidOrder(){
+			$id = $this->input->get('id');
+					$where = array("order_id"=>$id);
+					$data = array(
+						'order_bill_amount'=>'0.00',
+						'order_cash_amount'=>'0.00',
+						'order_discount'=>'0.00',
+						'order_status'=>'not_paid'
+					);
+					$void = $this->project_model->updateNew('order',$where,$data);
+					if ($void != false) {
+						$msg['success'] = true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = 'Unable to void order.';
+					}
+			echo json_encode($msg);
+		}
 		function getRestoReceipt(){
 			$result = array('data' => array());
 			$join = array(
@@ -5349,7 +3967,8 @@ class Admin extends CI_Controller {
 					';*/
 					$link = base_url('admin/restaurant_bill_record/'.$value->order_id);
 					$buttons = '<a href="javascript:;" class="btn btn-primary item-print" data="'.$link.'" title="Print"><i class="fa fa-print"></i></a>
-						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->order_id.'" title="Select"><i class="fa fa-times"></i></a>
+						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->order_id.'" title="Delete"><i class="fa fa-times"></i></a>
+						<a href="javascript:;" class="btn btn-warning item-void" data="'.$value->order_id.'" title="Void"><i class="fa fa-exclamation-triangle"></i></a>
 					';
 
 					$result['data'][$key] = array(
@@ -5369,11 +3988,62 @@ class Admin extends CI_Controller {
 		function printSalesList(){
 			$data['title'] = "Administrator";
 			$data['sub_heading'] = "POS System";
-			$data['page'] = 'Monthly Sales Report';
+			$data['page'] = 'Daily Sales Report';
+
+			$date = $this->uri->segment(3);
+			$emp = $this->uri->segment(4);
+
+			$where = array(
+				'order.emp_id'=>$emp
+			);
+			$like = array(
+				'order_date'=>$date
+			);
+			$join = array(
+				array('employee','order','emp_id')
+			);
+			$data['result' ] = $this->project_model->select_join('order',$join,$like,$where);
+
+			$data['property']= $this->project_model->select('property_info');
+
+			$this->load->view('admin/header',$data);
+			$this->load->view('reports/salesList',$data);
+			$this->load->view('admin/footer',$data);
+		}
+		function printSalesItemList(){
+
+			$data['title'] = "Administrator";
+			$data['sub_heading'] = "POS System";
+			$data['page'] = 'Daily Sold Item Report';
+
+			$date = $this->uri->segment(3);
+			$emp = $this->uri->segment(4);
+
+			$where = array(
+				'order.emp_id'=>$emp,
+				'ordered_item.order_date'=>$date,
+			);
+			$join = array(
+				array('order','ordered_item','order_id'),
+				array('employee','order','emp_id')
+			);
+			$data['result' ] = $this->project_model->select_join('ordered_item',$join,false,$where);
+			$data['property']= $this->project_model->select('property_info');
+
+			$this->load->view('admin/header',$data);
+			$this->load->view('reports/salesItemList',$data);
+			$this->load->view('admin/footer',$data);
+		}
+		function printVatSales(){
+
+			$data['title'] = "Administrator";
+			$data['sub_heading'] = "POS System";
+			$data['page'] = 'Daily Vatable Sales Report';
 
 			$month = $this->uri->segment(3);
 			$year = $this->uri->segment(4);
-			$param = $year.'-'.$month;
+			$param =  $year.'-'.$month;
+
 			$like = array(
 				'order_date'=>$param
 			);
@@ -5381,7 +4051,7 @@ class Admin extends CI_Controller {
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
-			$this->load->view('reports/salesList',$data);
+			$this->load->view('reports/printvatSales',$data);
 			$this->load->view('admin/footer',$data);
 		}
 		function deleteSales(){
@@ -5559,6 +4229,15 @@ class Admin extends CI_Controller {
 
 			echo json_encode($data);
 		}
+		function fetchCashier(){
+			$where = array('emp_dept'=>'cashier');
+			$join = array(
+				array('emp_accounts','employee','emp_id')
+			);
+			$data = $this->project_model->select_join('employee',$join,$where);
+
+			echo json_encode($data);
+		}
 		function fetchSalary(){
 			$result = array('data' => array());
 			$table = "emp_salary";
@@ -5641,7 +4320,7 @@ class Admin extends CI_Controller {
 							$ot_tamount = $ot_tamount+$ot;
 							$thours = $thours+$empot->num_hours;*/
 							//echo $empot->emp_overtime_id.'('.$empot->num_hours.'*'.$empot->ot_rate.')<br />';
-							$ot = $empot->ot_rate;
+							$ot = $empot->ot_rate * $empot->num_hours;
 							$ot_tamount = $ot_tamount+$ot;
 							//$thours = $thours+$empot->num_hours;
 						}
@@ -6193,20 +4872,20 @@ class Admin extends CI_Controller {
 			$data = $this->project_model->select('incomeStatement');
 			if ($data != false) {
 				foreach ($data as $key => $value) {
-					$texp = $this->cart->format_number($value->total_miscexp+$value->total_prodexp+$value->total_stocksexp+$value->total_salexp);
+					$texp = $this->cart->format_number($value->prod_exp+$value->misc_exp+$value->stocks_exp+$value->salary_exp);
+					$tdeposit = $this->cart->format_number($value->net_income+$value->prod_exp);
 					$buttons = '
 						<a href="javascript:;" class="btn btn-primary item-print" data="'.$value->statement_id.'" title="Print"><i class="fa fa-print"></i></a>
 						<a href="javascript:;" class="btn btn-danger item-delete" data="'.$value->statement_id.'" title="Select"><i class="fa fa-times"></i></a>
 					';
 					$result['data'][$key] = array(
 						$value->statement_date,
-						$value->total_sales,
+						$value->gross_income,
+						$value->gross_taxable,
+						$value->tax,
 						$texp,
-						$value->net_profit,
-						$value->shop_share,
-						$value->kim_share,
-						$value->bank_balance,
-						$value->deposit_amount,
+						$value->net_income,
+						$tdeposit,
 						$buttons
 					);
 					/*<th>Statement Date</th>
@@ -6225,7 +4904,6 @@ class Admin extends CI_Controller {
 		function createIncomeStatement(){
 			$this->form_validation->set_rules('mon','Statement Month','required');
 			$this->form_validation->set_rules('year','Statement Year','required');
-			$this->form_validation->set_rules('bankBalance','Current Bank Balance','required');
 
 			if ($this->form_validation->run() == FALSE) {
 				$msg['error'] = validation_errors();
@@ -6239,160 +4917,131 @@ class Admin extends CI_Controller {
 				);
 				$misc = $this->project_model->select('expenses_misc',$like);
 				$misc_amount = 0;
-	            $misc_tamount = 0;
+							$misc_tamount = 0;
 				if ($misc != false) {
-	                foreach ($misc as $item) {
-	                    $misc_amount = $item->misc_qty * $item->misc_price;
-	                    $misc_tamount = $misc_tamount + $misc_amount;
-	                }
-            	}
+									foreach ($misc as $item) {
+											$misc_amount = $item->misc_qty * $item->misc_price;
+											$misc_tamount = $misc_tamount + $misc_amount;
+									}
+							}
 
-            	/*production*/
+							/*production*/
+				$tproduction_amount = 0;
 				$like = array(
-					'releasecart.release_date'=>$param
+					'release_date'=>$param
+				);
+				$rawMat = $this->project_model->select('releaseditem',$like);
+				$rawMat_amount = 0;
+				$rawMat_tamount = 0;
+				if ($rawMat != false) {
+						foreach ($rawMat as $item) {
+								$rawMat = $item->releaseitem_qty * $item->releaseitem_cost;
+								$rawMat_tamount = $prod_tamount + $prod_amount;
+						}
+				}
+
+				$like = array('order_date'=>$param);
+				$join = array(
+					array('stockitem','ordered_item','stock_id')
+				);
+				$whereinstock = array('stock_type'=>'instock');
+				$instock = $this->project_model->select_join('ordered_item',$join,$like);
+				$instock_amount = 0;
+				$instock_tamount = 0;
+				if ($instock != false) {
+						foreach ($instock as $item) {
+								$instock_amount = $item->order_qty * $item->stockCost;
+								$instock_tamount = $instock_tamount + $instock_amount;
+						}
+				}
+
+				$tproduction_amount = $rawMat_tamount + $instock_tamount;
+
+				$like = array(
+				'delivery_date'=>$param
 				);
 				$join = array(
-				array('releasecart','releaseditem','releaseCart_id'),
-				array('order','releasecart','order_id')
+					array('stockitem','stock_newlog','stock_id')
 				);
-				$prod = $this->project_model->select_join('releaseditem',$join,$like);
-                $prod_amount = 0;
-                $prod_tamount = 0;
-				if ($prod != false) {
-                    foreach ($prod as $item) {
-                        $prod_amount = $item->releaseitem_qty * $item->releaseitem_cost;
-                        $prod_tamount = $prod_tamount + $prod_amount;
-                    }
-                }
+				$stocks = $this->project_model->select_join('stock_newlog',$join,$like);
+					$expstocks_amount = 0;
+					$expstocks_tamount = 0;
+					if ($stocks != false) {
+							foreach ($stocks as $item) {
+									$expstocks_amount = $item->nstock_qqty * $item->stockCost;
+									$expstocks_tamount = $expstocks_tamount + $expstocks_amount;
+							}
+					}
 
-                /*equip*/
-				$like = array(
-				'expequip_date'=>$param
-				);
-				$equip = $this->project_model->select('expenses_equip',$like);
-                $expequip_amount = 0;
-                $expequip_tamount = 0;
-				if ($equip != false) {
-                    foreach ($equip as $item) {
-                        $expequip_amount = $item->expequip_qty * $item->expequip_price;
-                        $expequip_tamount = $expequip_tamount + $expequip_amount;
-                    }
-                }
-
-                /*stocks*/
-				$like = array(
-				'expstocks_date'=>$param
-				);
-				$stocks = $this->project_model->select('expenses_stocks',$like);
-                $expstocks_amount = 0;
-			    $expstocks_tamount = 0;
-			    if ($stocks != false) {
-			        foreach ($stocks as $item) {
-			            $expstocks_amount = $item->expstocks_qty * $item->expstocks_price;
-			            $expstocks_tamount = $expstocks_tamount + $expstocks_amount;
-			        }
-			    }
-
-			    /*salary*/
+					/*salary*/
 				$like = array(
 				'salary_date_start'=>$param
 				);
 				$salary = $this->project_model->select('emp_salary',$like);
 				$tsal = 0;
-			    if ($salary != false) {
-			        foreach ($salary as $value) {
-			            $initsal= $value->salary_amount+$value->overtime_tamount;
-			            $tsal= $initsal + $tsal;
-			        }
-			    }
+					if ($salary != false) {
+							foreach ($salary as $value) {
+									$initsal= $value->salary_amount+$value->overtime_tamount;
+									$tsal= $initsal + $tsal;
+							}
+					}
 
-			    /*returns*/
-				$like = array(
-				'returns_date'=>$param
-				);
-				$return = $this->project_model->select('expenses_returns',$like);
-				$aRefund_amount = 0;
-			    $total_aRefund = 0;
-			    $oRefund_amount = 0;
-			    $total_oRefund = 0;
-			    if ($return != false) {
-			        foreach ($return as $value) {
-			            // account_refund or other_refund
-			            if ($value->return_type == 'account_refund') {
-			                $aRefund_amount = $value->returns_price*$value->returns_qty;
-			                $total_aRefund = $total_aRefund + $aRefund_amount;
-			            }elseif ($value->return_type == 'other_refund'){
-			                $oRefund_amount = $value->returns_price*$value->returns_qty;
-			                $total_oRefund = $total_oRefund + $oRefund_amount;
-			            }
-			        }
-			    }
 
-			    /*sales*/
+					/*sales*/
 				$like = array(
 				'order_date'=>$param
 				);
-				$sales = $this->project_model->select('order',$like);
-				$tax = 0;
-			    $tamount = 0;
-			    $totalSales = 0;
-			    $sale = 0;
-			    $totaltax = 0;
-			    $totaldiscount = 0;
-			    $totalamount = 0;
-			    $tsales = 0;
-			    if ($sales != false) {
-			        foreach ($sales as $item) {
-			            $tax = $item->order_bill_amount * 0.03;
-			            $totaltax = $tax + $totaltax;
-			            $tsales = $item->order_bill_amount-$item->order_discount;
-			            $totalSales = $item->order_bill_amount + $totalSales;
-			            $totaldiscount = $item->order_discount + $totaldiscount;
+				$sales = 0;
+				$tsales = 0;
+				$gross = $this->project_model->select('order',$like);
+				if ($gross != false) {
+						foreach ($gross as $item) {
+							$sales = $item->order_bill_amount - $item->order_discount;
+							$tsales = $tsales + $sales;
+						}
+				}
 
-			            $tamount = $totalSales-$totaltax-$totaldiscount;
-			        }
-			    }
+				$where = array('or_num !='=>'none');
+				$txsales = 0;
+				$txtsales = 0;
+				$taxable = $this->project_model->select('order',$like,$where);
+				if ($taxable != false) {
+						foreach ($taxable as $itemtx) {
+							$txsales = $itemtx->order_bill_amount - $itemtx->order_discount;
+							$txtsales = $txtsales + $txsales;
+						}
+				}
 
-			    $totalSales = $totalSales-$totaldiscount;
-                $profit = $totalSales - $totaltax - $misc_tamount - $prod_tamount - $tsal - $expequip_tamount - $total_aRefund;
-			    $shop_share = $profit * 0.50;
-			    $kim_share = $profit * 0.50;
-			    $deposit  = $shop_share+$prod_tamount+$total_aRefund;
-			    $total_refund = $total_aRefund+$total_oRefund;
+				$tax = $txtsales * 0.03;
+				$net = $tsales - $tax - $tproduction_amount - $misc_tamount - $expstocks_tamount - $tsal;
 
-                $data = array(
-                	'total_sales'=>$totalSales,
-                	'total_taxexp'=>$totaltax,
-                	'total_miscexp'=>$misc_tamount,
-                	'total_prodexp'=>$prod_tamount,
-                	'total_stocksexp'=>$expstocks_tamount,
-                	'total_salexp'=>$tsal,
-                	'statement_date'=>$param,
-                	'net_profit'=>$profit,
-                	'shop_share'=>$shop_share,
-                	'kim_share'=>$kim_share,
-                	'bank_balance'=>set_value('bankBalance'),
-                	'deposit_amount'=>$deposit,
-                	'total_arefund'=>$aRefund_amount,
-                	'total_orefund'=>$oRefund_amount,
-                	'total_equipexp'=>$expequip_tamount
-                );
-                $like = array(
-                	'statement_date'=>$param
-                );
-                $check = $this->project_model->check_multi_duplicate('incomestatement',$where=false,$return=false,$like);
-                if ($check != true) {
-                	$create = $this->project_model->insert('incomestatement',$data);
-                	if ($create != false) {
-                		$msg['success'] = true;
-                	}else{
-                		$msg['error'] = "Unable to create statement.";
-                		$msg['success'] = false;
-                	}
-                }else{
-                	$msg['error'] = "Duplicate record detected.";
-                	$msg['success'] = false;
-                }
+				$data = array(
+					'gross_income'=>$tsales,
+					'prod_exp'=>$tproduction_amount,
+					'misc_exp'=>$misc_tamount,
+					'stocks_exp'=>$expstocks_tamount,
+					'salary_exp'=>$tsal,
+					'gross_taxable'=>$txtsales,
+					'tax'=>$tax,
+					'net_income'=> $net,
+					'statement_date'=>$param
+				);
+        $like = array(
+        	'statement_date'=>$param
+        );
+        $check = $this->project_model->check_multi_duplicate('incomestatement',$where=false,$return=false,$like);
+        if ($check != true) {
+        	$create = $this->project_model->insert('incomestatement',$data);
+        	if ($create != false) {
+        		$msg['success'] = true;
+        	}else{
+        		$msg['error'] = "Unable to create statement.";
+        		$msg['success'] = false;
+        	}
+        }else{
+        	$msg['error'] = "Duplicate record detected.";
+        	$msg['success'] = false;
+        }
 
 			}
 			echo json_encode($msg);
@@ -6423,7 +5072,7 @@ class Admin extends CI_Controller {
 			$where = array(
 				'statement_id'=>$id
 				);
-			$data['statement'] = $this->project_model->select('incomestatement',false,$where);
+			$data['statement'] = $this->project_model->single_select('incomestatement',$where);
 			$data['property']= $this->project_model->select('property_info');
 
 			$this->load->view('admin/header',$data);
@@ -6445,8 +5094,8 @@ class Admin extends CI_Controller {
 				$result['data'][$key] = array(
 					$value->log_date,
 					$name,
-					$value->op_money,
-					$value->clo_money
+					$value->opening_cash,
+					$value->closing_cash
 				);
 			}
 		}
@@ -6464,10 +5113,12 @@ class Admin extends CI_Controller {
 				$name = $value->emp_fname.' '.$value->emp_lname;
 				$result['data'][$key] = array(
 					$value->log_date,
-					$value->log_time,
 					$name,
-					$value->op_money,
-					$value->clo_money
+					$value->login_time,
+					$value->logout_time,
+					$value->opening_cash,
+					$value->closing_cash,
+					$value->deposit
 				);
 			}
 		}
@@ -6475,32 +5126,34 @@ class Admin extends CI_Controller {
 	}
 //testing center
 	function testFunction(){
-		$id = 4;
-		// update first the stock qty before deleting the record.
-		$where = array('stock_newid'=>$id);
-
-		$join = array(
-			array('stockitem','stock_newlog','stock_id')
+		$iwhere = array('stockclass_name'=>"FINISHED");
+		$join  = array(
+				array('stock_class','stockitem','stockclass_id'),
+				array('stock_newlog','stockitem','stock_newid'),
+				array()
 		);
-		$get = $this->project_model->select_join('stock_newlog',$join,false,$where);
-		foreach ($get as $value) {
-			$where2 = array('stock_id'=>$value->stock_id);
-			$newqty = $value->stock_qqty - $value->nstock_qqty;
-			$data = array('stock_qqty'=>$newqty);
-			$update = $this->project_model->updateNew('stockitem',$where2,$data);
-			if ($update != false) {
-				$result = $this->project_model->delete('stock_newlog','stock_newid',$id);
-				if ($result) {
-					$msg['success'] = true;
-				}else{
-					$msg['success'] = false;
-					$msg['error'] = "Unable to delete ";
+		$items = $this->project_model->select_join('stockitem',$join,false,$iwhere);
+		foreach ($items as $data) {
+			$where = array('stock_newlog.stock_id'=>$data->stock_id,'delivery_date'=>'2019-07-24');
+			$where2 = array('ordered_item.stock_id'=>$data->stock_id,'order_date'=>'2019-07-24');
+			$tcurrent = 0;
+			$new = $this->project_model->select('stock_newlog',false,$where);
+			if ($new != false) {
+				foreach ($new as $value) {
+					$tcurrent = $tcurrent + $value->nstock_qqty;
 				}
-			}else{
-				$msg['success'] = false;
-				$msg['error'] = "Unable to deduct stock quantity.";
 			}
+			$sold = $this->project_model->select('ordered_item',false,$where2);
+			$tsold = 0;
+			if ($sold != false) {
+				foreach ($sold as $value2) {
+					$tsold = $tsold + $value2->order_qty;
+				}
+			}
+
+			$total = $tcurrent - $tsold;
+			echo $data->stock_name.': '.$tcurrent.' - '.$tsold.' = '.$total.'<br />';
 		}
-		echo json_encode($msg);
+
 	}
 }

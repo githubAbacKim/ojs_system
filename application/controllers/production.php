@@ -131,11 +131,6 @@ class Production extends CI_Controller {
 		$this->load->view('production/footer',$data);
 	}
 
-	function test(){
-		$this->fetchNewItem();
-
-	}
-
 	// functions
 	function fetchcurrentorder(){
 		$date = date("Y-m-d");
@@ -240,7 +235,7 @@ class Production extends CI_Controller {
 
 	function fetchStockRoom(){
 		$result = array('data' => array());
-		$where = array('stockDispose >'=>0);
+		$where = array('stockDispose >='=>0,'stock_type'=>'instock');
 		$join = array(
 				array('stockcategory','stockitem','stockCat_id'),
 				array('suppliers','stockitem','supplier_id')
@@ -254,6 +249,7 @@ class Production extends CI_Controller {
 							$value->stock_name,
 							$value->stock_unit,
 							$value->stock_qqty,
+							$value->stockDispose,
 							$tstock,
 							$value->supplier_name,
 							$value->supplier_tel,
@@ -285,35 +281,99 @@ class Production extends CI_Controller {
 		$this->load->view('admin/footer',$data);
 	}
 
+	function printStockList(){
+		$data['title'] = "Production";
+		$data['sub_heading'] = "POS System";
+		$data['page'] = 'Stock List';
+
+		$join = array(
+				array('stockcategory','stockitem','stockCat_id'),
+				array('suppliers','stockitem','supplier_id')
+			);
+		$where = array(
+				"stock_type"=>"instock"
+		);
+		$data['result'] = $this->project_model->select_join('stockitem',$join,false,$where);
+		$data['property']= $this->project_model->select('property_info');
+
+		$this->load->view('admin/header',$data);
+		$this->load->view('production/stockList',$data);
+		$this->load->view('admin/footer',$data);
+	}
+
 	function getItem(){
 		$id = $this->input->get('id');
-		$where = array("stockitem.stock_id"=>$id);
+		$where = array('stock_id'=>$id);
+
 		$join = array(
 			array("stockcategory","stockitem","stockCat_id")
 		);
-		$result = $this->project_model->single_select("stockitem",$where,$join);
+
+		$item = $this->project_model->single_select('stockitem',$where,$join);
+		
+		$tcurrent = 0;
+		$new = $this->project_model->select('stock_newlog',false,$where);
+		if ($new != false) {
+			foreach ($new as $value) {
+				$tcurrent = $tcurrent + $value->nstock_qqty;
+			}
+		}
+
+		
+		$branch = $this->project_model->select('branch_stocks',false,$where);
+		$tbranch = 0;
+		if ($branch != false) {
+			foreach ($branch as $value3) {
+				$tbranch = $tbranch + $value3->bstocks_qty;
+			}
+		}
+
+		
+		$sold = $this->project_model->select('ordered_item',false,$where);
+		$tsold = 0;
+		$tout = 0;
+		if ($sold != false) {
+			foreach ($sold as $value2) {
+				$tsold = $tsold + $value2->order_qty;
+			}
+		}
+
+		$tout = $tsold + $tbranch;
+
+		$total = $tcurrent - $tout;
+
+		$result['category'] = $item->stockCat_name;
+		$result['id'] = $item->stock_id;
+		$result['item'] = $item->stock_name;
+		$result['type'] = $item->stock_type;
+		$result['unit'] = $item->stock_unit;
+		$result['rp'] = $item->retail_price;
+		$result['current'] = $this->cart->format_number($total);
+
 		echo json_encode($result);
 	}
 	function fetchNewItem(){
 		$result = array('data' => array());
 		$join = array(
-				array('suppliers','stockitem','supplier_id')
+				array('suppliers','stockitem','supplier_id'),
+				array('stock_class','stockitem','stockclass_id')
 			);
 		$where = array('stock_type'=>"instock");
 		$data = $this->project_model->select_join('stockitem',$join,false,$where);
-			if($data != false){
-				foreach ($data as $key => $value) {
-						$buttons = '
-							<a href="javascript:;" class="btn btn-success item-add" data="'.$value->stock_id.'" title="Add Good Item"> <i class="fa fa-plus"></i></a>
-							<a href="javascript:;" class="btn btn-danger item-addD" data="'.$value->stock_id.'" title="Add Damage Item"> <i class="fa fa-plus"></i></a>
-						';
-						$result['data'][$key] = array(
-							$value->supplier_name,
-							$value->stock_name,
-							$buttons
-						);
-					}
-			}
+		if($data != false){
+			foreach ($data as $key => $value) {				
+					$buttons = '
+						<a href="javascript:;" class="btn btn-success item-add" data="'.$value->stock_id.'" title="Add Good Item"> <i class="fa fa-plus"></i></a>
+						<a href="javascript:;" class="btn btn-danger item-addD" data="'.$value->stock_id.'" title="Add Damage Item"> <i class="fa fa-trash"></i></a>
+					';
+					$result['data'][$key] = array(
+						$value->stockclass_name,
+						$value->supplier_name,
+						$value->stock_name,
+						$buttons
+					);
+				}
+		}
 		echo json_encode($result);
 	}
 	function fetchItemArrivalLog(){
@@ -366,7 +426,22 @@ class Production extends CI_Controller {
 						"stock_qqty"=>$newstock,
 						"stockDispose"=>0
 					);
-					$wherecheck = array(
+
+					$insert = $this->project_model->insert('stock_newlog',$data);
+					if ($insert != false) {
+						$where = array("stock_id"=>$value->stock_id);
+						$update = $this->project_model->updateNew("stockitem",$where,$updateMData);
+						if ($update != false) {
+							$msg['success'] =  true;
+						}else{
+							$msg['success'] = false;
+							$msg['error'] = 'Error in updating item.';
+						}
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = "error insert";
+					}
+					/*$wherecheck = array(
 						'stock_id'=>$value->stock_id,
 						'delivery_date'=>$date,
 						'nstock_status'=>'GOOD'
@@ -411,7 +486,7 @@ class Production extends CI_Controller {
 							$msg['success'] = false;
 							$msg['error'] = "error insert";
 						}
-					}
+					}*/
 				}
 			}else{
 				$msg['success'] = false;
@@ -448,7 +523,14 @@ class Production extends CI_Controller {
 						"stock_qqty"=>$newstock,
 						"stockDispose"=>0
 					);
-					$wherecheck = array(
+					$insert = $this->project_model->insert('stock_newlog',$data);
+					if ($insert != false) {
+							$msg['success'] =  true;
+					}else{
+						$msg['success'] = false;
+						$msg['error'] = "error insert";
+					}
+					/*$wherecheck = array(
 						'stock_id'=>$value->stock_id,
 						'delivery_date'=>$date,
 						'nstock_status'=>'DAMAGE'
@@ -475,7 +557,7 @@ class Production extends CI_Controller {
 							$msg['success'] = false;
 							$msg['error'] = "error insert";
 						}
-					}
+					}*/
 				}
 			}else{
 				$msg['success'] = false;
@@ -642,6 +724,45 @@ class Production extends CI_Controller {
 		$this->load->view('admin/footer',$data);
 	}
 
+	function getProdItem(){
+		$id = $this->input->get('id');
+		$where = array('stock_id'=>$id);
+
+		$join = array(
+			array("stockcategory","stockitem","stockCat_id")
+		);
+
+		$item = $this->project_model->single_select('stockitem',$where,$join);
+		
+		$tcurrent = 0;
+		$new = $this->project_model->select('stock_newlog',false,$where);
+		if ($new != false) {
+			foreach ($new as $value) {
+				$tcurrent = $tcurrent + $value->nstock_qqty;
+			}
+		}
+
+		
+		$release = $this->project_model->select('releaseditem',false,$where);
+		$trelease = 0;
+		if ($release != false) {
+			foreach ($release as $value3) {
+				$trelease = $trelease + $value3->releaseitem_qty;
+			}
+		}
+
+		$total = $tcurrent - $trelease;
+
+		$result['category'] = $item->stockCat_name;
+		$result['id'] = $item->stock_id;
+		$result['item'] = $item->stock_name;
+		$result['type'] = $item->stock_type;
+		$result['unit'] = $item->stock_unit;
+		$result['rp'] = $item->retail_price;
+		$result['current'] = $total;
+
+		echo json_encode($result);
+	}
 	function fetchBranchItem(){
 		$result = array('data' => array());
 		$join = array(
@@ -670,17 +791,52 @@ class Production extends CI_Controller {
 				array('stockcategory','stockitem','stockCat_id'),
 
 			);
-		$where = array('stock_type'=>"instock",'stockclass_name'=>"FINISHED","stock_qqty >"=>0);
+		$where = array('stock_type'=>"instock",'stockclass_name'=>"FINISHED");
 		$data = $this->project_model->select_join('stockitem',$join,false,$where);
 			if($data != false){
 				foreach ($data as $key => $value) {
-						$buttons = '
-							<a href="javascript:;" class="btn btn-success item-add" data="'.$value->stock_id.'" title="Add Good Item"> <i class="fa fa-plus"></i></a>
-						';
+						$where = array('stock_id'=>$value->stock_id);			
+						$tcurrent = 0;
+						$new = $this->project_model->select('stock_newlog',false,$where);
+						if ($new != false) {
+							foreach ($new as $value1) {
+								$tcurrent = $tcurrent + $value1->nstock_qqty;
+							}
+						}
+
+						$branch = $this->project_model->select('branch_stocks',false,$where);
+						$tbranch = 0;
+						if ($branch != false) {
+							foreach ($branch as $value3) {
+								$tbranch = $tbranch + $value3->bstocks_qty;
+							}
+						}
+
+						$sold = $this->project_model->select('ordered_item',false,$where);
+						$tsold = 0;
+						$tout = 0;
+						if ($sold != false) {
+							foreach ($sold as $value2) {
+								$tsold = $tsold + $value2->order_qty;
+							}
+						}
+
+						$tout = $tsold + $tbranch;
+						$total = $tcurrent - $tout;
+
+
+						if ($total > 0) {
+							$link = '<a javascript:; class="btn btn-default item-add" data="'.$value->stock_id.'"> <i class="fa fa-hand-plus"></i> Add </a>';
+						}else{
+							$link = '<a javascript:; class="btn btn-danger disabled"> <i class="fa fa-hand-ban"></i> Add</a>';
+						}
+
+						//echo $result->stock_name.' '.$total.' '.$link.'<br />';
+
 						$result['data'][$key] = array(
 							$value->stockCat_name,
 							$value->stock_name,
-							$buttons
+							$link
 						);
 					}
 			}
@@ -744,17 +900,15 @@ class Production extends CI_Controller {
 		$data['sub_heading'] = "POS System";
 		$data['page'] = 'Branch Stock Report';
 
-		$month = $this->uri->segment(3);
-		$year = $this->uri->segment(4);
-		$branch = $this->uri->segment(5);
-		$param = $year.'-'.$month;
+		$date = $this->uri->segment(3);
+		$branch = $this->uri->segment(4);
 
 		$join = array(
 				array('stockitem','branch_stocks','stock_id'),
 				array('employee','branch_stocks','emp_id')
 			);
 
-		$like = array('transfer_date'=>$param);
+		$like = array('transfer_date'=>$date);
 		$where = array('branch_name'=>$branch);
 		$data['result'] = $this->project_model->select_join('branch_stocks',$join,$like,$where);
 		$data['property']= $this->project_model->select('property_info');
@@ -766,7 +920,10 @@ class Production extends CI_Controller {
 
 	function fetchMiscExp(){
 		$result = array('data' => array());
-		$data = $this->project_model->select('expenses_misc');
+		$join = array(
+			array('employee','expenses_misc','emp_id')
+		);
+		$data = $this->project_model->select_join('expenses_misc',$join);
 			if($data != false){
 				foreach ($data as $key => $value) {
 						$result['data'][$key] = array(
@@ -775,7 +932,7 @@ class Production extends CI_Controller {
 							$value->misc_qty,
 							$value->misc_unit,
 							$value->misc_price,
-							$value->misc_note
+							$value->emp_fname
 						);
 					}
 			}
@@ -799,7 +956,8 @@ class Production extends CI_Controller {
 				'misc_unit'=>set_value('unit'),
 				'misc_price'=>set_value('cost'),
 				'misc_note'=>set_value('note'),
-				'misc_date'=>set_value('date')
+				'misc_date'=>set_value('date'),
+				'emp_id'=>$this->session->userdata('current_id')
 			);
 			$add = $this->project_model->insert('expenses_misc',$data);
 			if ($add != false) {
@@ -831,6 +989,23 @@ class Production extends CI_Controller {
 		$this->load->view('admin/header',$data);
 		$this->load->view('production/printMisc',$data);
 		$this->load->view('admin/footer',$data);
+	}
+
+	function test(){
+		$date = date("2019-07-23");
+
+		$where = array("delivery_date"=>$date);
+		$new = $this->project_model->select("stock_newlog",false,$where);
+		foreach ($new as $data){
+			$where2 = array("stock_id"=>$data->stock_id);
+			$data = array("stock_qqty"=>$data->nstock_qqty);
+			$update = $this->project_model->updateNew("stockitem",$where2,$data);
+			if($update != false){
+				echo "good";
+			}else{
+				echo"bad";
+			}
+		}
 	}
 
 }

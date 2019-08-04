@@ -17,16 +17,21 @@
             </div>
             <!-- /.col-lg-12 -->
             <div class="col-lg-12 col-xs-12 text-center" style="font-size: 11pt!important;">
-              <p><?php echo $value->email?></p>
-              <p><?php echo $value->street_name.', '.$value->municipality.', '.$value->state.', '.$value->country.' '.$value->zipcode;
+				<p><?php echo $value->email?></p>
+				<p><?php echo $value->street_name.', '.$value->municipality.', '.$value->state.', '.$value->country.' '.$value->zipcode;
                 ?></p>
+				<p>TIN: <?php echo $value->tin?></p>
+                <p>NON-VAT</p>
             </div>
         <?php
             }
         ?>
     </div>
     <div class="row" style="font-size: 11pt!important;padding:0px;">
-        <div class="col-lg-12 col-md-12 col-xs-12 text-center">
+        <div class="col-lg-12 col-md-12 col-xs-6 text-left">
+          OR/SI#: <?php echo $bill->or_num;?>
+        </div>
+		 <div class="col-lg-12 col-md-12 col-xs-6 text-right">
           Code#: <?php echo $bill->order_code;?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-6">
@@ -85,26 +90,37 @@
                             $tsales = $tamount + $bill->tax_amount;
                     ?>
                     <tr>
-                      <td colspan="3" class="text-center">----------- <?php echo $numItems.' item(s)';?> -----------</td>
+                      <td colspan="3" class="text-center">---------------- <?php echo $numItems.' item(s)';?> ----------------</td>
                     </tr>
                     <!-- Total, Payment Amount and Balance -->
                     <tr>
                         <td colspan="2">Sub Total</td>
                         <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($tamount);?></td>
                     </tr>
-                    <tr style="font-size:9pt !important;font-weight:bold;">
+                    <tr style="font-weight:bold;">
                         <td colspan="2">Total</td>
                         <td class="text-right"><?php echo "P".$this->cart->format_number($tamount);?></td>
                     </tr>
-                    <!-- Downpayment -->
+                    <tr style="border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;">
+                      <td colspan="3" class="text-center">Less</td>
+                    </tr>
                     <tr>
                         <td colspan="2">Downpayment</td>
                         <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($bill->order_downpayment);?></td>
                     </tr>
+                    <tr>
+                        <td colspan="2">Discount</td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($bill->order_discount);?></td>
+                    </tr>
+                    <tr style="font-weight:bold;border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;">
+                        <td colspan="2">Total Due</td>
+                        <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($tbill);?></td>
+                    </tr>
+                    <tr>
                         <td colspan="2">Cash</td>
                         <td class="text-right" style="font-size:11pt!important;"><?php echo "P".$this->cart->format_number($bill->order_cash_amount);?></td>
                     </tr>
-                    <tr style="font-size:9pt !important;font-weight:bold;">
+                    <tr style="font-weight:bold;border-top: solid 0.25px !important;border-bottom: solid 0.25px !important;">
                         <td colspan="2">Change</td>
                         <td class="text-right">
                         <?php
@@ -121,11 +137,11 @@
             </table>
     </div>
     <div class="row" style="font-size: 11pt!important;padding:0px;">
-        <div class="col-lg-6 col-md-6 col-xs-6">
-          Name:
+        <div class="col-lg-6 col-md-6 col-xs-12">
+          Name: <?php echo $bill->cust_name;?>
         </div>
-        <div class="col-lg-6 col-md-6 col-xs-6">
-          TIN:
+        <div class="col-lg-6 col-md-6 col-xs-12">
+          TIN: <?php echo $bill->cust_tin;?>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-12">
           Address:

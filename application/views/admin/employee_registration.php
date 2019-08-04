@@ -7,12 +7,12 @@
   <div class="row">
       <div class="col-lg-12" style="margin-bottom: 5px;height: 65px;">
           <div class="col-lg-6">
+              <button id="btnAdd" class="btn btn-default pull pull-left" style="margin-top: 15px;"><i class="fa fa-plus"></i> New Employee</button>
+          </div>
+          <div class="col-lg-6">
               <!-- <div class="messages" ></div> -->
               <div class="alert alert-success" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
               <div class="alert alert-danger" style="display:none;"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          </div>
-          <div class="col-lg-6">
-              <button id="btnAdd" class="btn btn-default pull pull-right" style="margin-top: 25px;"><i class="fa fa-plus"></i> New Salary</button>
           </div>
       </div>
       <div class="col-lg-12">
@@ -84,6 +84,15 @@
                             </select>
                         </div>
                     </fieldset>
+                    <fieldset>
+                        <legend>Status</legend>
+                        <div class="form-group">
+                            <select class="form-control" id="status" name="status">
+                                <option value="active">Active</option>
+                                <option value="not_active">Not Active</option>
+                            </select>
+                        </div>
+                    </fieldset>
                 </div>
             </form>
             </div>
@@ -135,7 +144,7 @@
             },
             "dom": '<"top"l>rt<"bottom"ip><"clear">',
             'bProcessing': false,
-            "scrollY":        "325px",
+            "scrollY":        "250px",
             "scrollCollapse": true,
             "paging":         false
         });
@@ -245,6 +254,7 @@
                     $('input[name=contact_num]').val(data.emp_contact);
                     $('input[name=email_address]').val(data.emp_email);
                     $('select[name=position]').val(data.job_position_id);
+                    $('select[name=status]').val(data.emp_status);
                 },
                 error: function(){
                     $('.alert-danger').html('Unable load data from server.').fadeIn().delay(2000).fadeOut('slow');
