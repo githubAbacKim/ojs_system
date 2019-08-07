@@ -4930,13 +4930,16 @@ class Admin extends CI_Controller {
 				$like = array(
 					'release_date'=>$param
 				);
-				$rawMat = $this->project_model->select('releaseditem',$like);
+				$join = array(
+					array('stockitem','releaseditem','stock_id')
+				);
+				$rawMat = $this->project_model->select_join('releaseditem',$join,$like);
 				$rawMat_amount = 0;
 				$rawMat_tamount = 0;
 				if ($rawMat != false) {
 						foreach ($rawMat as $item) {
-								$rawMat = $item->releaseitem_qty * $item->releaseitem_cost;
-								$rawMat_tamount = $prod_tamount + $prod_amount;
+								$rawMat = $item->releaseitem_qty * $item->stockCost;
+								$rawMat_tamount = $rawMat_tamount + $rawMat;
 						}
 				}
 
@@ -5004,7 +5007,7 @@ class Admin extends CI_Controller {
 				$where = array('or_num !='=>'none');
 				$txsales = 0;
 				$txtsales = 0;
-				$taxable = $this->project_model->select('order',$like,$where);
+				$taxable = $this->project_model->select('order',$like);
 				if ($taxable != false) {
 						foreach ($taxable as $itemtx) {
 							$txsales = $itemtx->order_bill_amount - $itemtx->order_discount;
