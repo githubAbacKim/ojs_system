@@ -1,6 +1,6 @@
 
 <div class="col-lg-12" id="maindiv" style="max-height:500px;min-height:520px;">
-  <div class="col-lg-1" style="max-height:500px;min-height:520px;background-color:#ececec;">
+  <div class="col-lg-1" style="max-height:500px;min-height:auto;background-color:#ececec;">
     <div class="list-group text-center" style="margin: 0 auto !important;">
 				<a href="javascript:;" id="cartBtn" class="list-group-item">
 						<i class="fa fa-shopping-cart fa-2x text-center"></i><br /> Cart
@@ -40,7 +40,7 @@
                     <tr>
                         <th style="width:25%;">Action</th>
                         <th>CAT</th>
-                        <th>Item</th>
+                        <th>item</th>
                         <th>Price</th>
                     </tr>
                 </thead>
@@ -130,7 +130,7 @@
                 <div class="row">
                     <div class="form-group col-lg-4 col-lg-offset-4">
                         <label for="qty">Set Qty to add cart:</label>
-                        <input type="text" class="form-control" name="qty" placeholder="Instock" autofocus>
+                        <input type="text" class="form-control" name="qty" placeholder="Instock">
                     </div>
                 </div>
               </div>
@@ -366,6 +366,7 @@
 <script type="text/javascript">
     var menuItem;
 		var cart;
+    
     $(document).ready(function() {
         fetchMenuItems();
         fetchPosCartitem();
@@ -397,7 +398,7 @@
 								}
 	          });
 	      }
-
+        
     /*Button events*/
         $('#cartBtn').click(function(){
             $('#cartModal').modal('show');
@@ -433,13 +434,166 @@
           $('#voidModal').find('.modal-title').text("Void Order");
           $('#voidForm').attr('action','<?php echo base_url("clientPos/voidOrder")?>');
         });
+
+        function handleKeyDown(e) {
+         var ctrlPressed=0;
+         var altPressed=0;
+         var shiftPressed=0;
+
+         var evt = (e==null ? event:e);
+
+         shiftPressed=evt.shiftKey;
+         altPressed  =evt.altKey;
+         ctrlPressed =evt.ctrlKey;
+         
+
+         if (altPressed && evt.keyCode==78) //n
+         {
+            $('#createCart')[0].reset();
+            $('#newOrder').modal('show');
+            $('#newOrder').find('.modal-title').text("Create Order Cart");
+            $('#createCart').attr('action','<?php echo base_url("clientPos/createCart")?>');
+            return true;
+         } 
+
+         if (altPressed && evt.keyCode==67) //c
+         {
+            $('#cartModal').modal('show');
+            $('#cartModal').find('.modal-title').text("Order Cart");
+            return true;
+         }
+
+         /*if (altPressed && evt.keyCode==80) //p
+         {
+            $('#paymentForm')[0].reset();
+            $('#paymentModal').modal('show');
+            $('#paymentModal').find('.modal-title').text("Payment Section");
+            $('#paymentForm').attr('action','<?php echo base_url("clientPos/order_payment")?>');
+            return true;
+         } */
+
+         /*if (altPressed && evt.keyCode==82) //r
+         {
+            var link =  '<?php echo base_url('clientPos/posReceipt');?>';
+            window.open(link,"newwindow", "width=900, height=400");
+            return true;
+         }
+         
+         if (altPressed && evt.keyCode==66) //b
+         {
+            var link =  '<?php echo base_url('clientPos/posBill');?>';
+            window.open(link,"newwindow", "width=900, height=400");
+            return true;
+         }
+
+         if (altPressed && evt.keyCode==88) //x
+         {
+            $.ajax({
+                type: 'ajax',
+                method: 'get',
+                url: '<?php echo base_url("clientPos/closeCart")?>',
+                async: true,
+                dataType: 'json',
+                success: function(response){
+                    var error = response.error;
+                    if (response.success) {
+                        $('.alert-success').html('Cart successfully closed!').fadeIn().delay(2000).fadeOut('slow');
+                        checkCart();
+                    }else{
+                        $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
+                    }
+                },
+                error: function(){
+                    $('.alert-danger').html('Error closing cart!').fadeIn().delay(2000).fadeOut('slow');
+                }
+            });
+         }*/
+         
+        }
+        function handleKeyDown2(e) {
+         var ctrlPressed=0;
+         var altPressed=0;
+         var shiftPressed=0;
+
+         var evt = (e==null ? event:e);
+
+         shiftPressed=evt.shiftKey;
+         altPressed  =evt.altKey;
+         ctrlPressed =evt.ctrlKey;
+         
+         if (altPressed && evt.keyCode==78) //n
+         {
+            $('#createCart')[0].reset();
+            $('#newOrder').modal('show');
+            $('#newOrder').find('.modal-title').text("Create Order Cart");
+            $('#createCart').attr('action','<?php echo base_url("clientPos/createCart")?>');
+            return true;
+         } 
+
+         if (altPressed && evt.keyCode==67) //c
+         {
+            $('#cartModal').modal('show');
+            $('#cartModal').find('.modal-title').text("Order Cart");
+            return true;
+         }
+
+         if (altPressed && evt.keyCode==80) //p
+         {
+            $('#paymentForm')[0].reset();
+            $('#paymentModal').modal('show');
+            $('#paymentModal').find('.modal-title').text("Payment Section");
+            $('#paymentForm').attr('action','<?php echo base_url("clientPos/order_payment")?>');
+            return true;
+         } 
+
+         if (altPressed && evt.keyCode==82) //r
+         {
+            var link =  '<?php echo base_url('clientPos/posReceipt');?>';
+            window.open(link,"newwindow", "width=900, height=400");
+            return true;
+         }
+         
+         if (altPressed && evt.keyCode==66) //b
+         {
+            var link =  '<?php echo base_url('clientPos/posBill');?>';
+            window.open(link,"newwindow", "width=900, height=400");
+            return true;
+         }
+
+         if (altPressed && evt.keyCode==88) //b
+         {
+            $.ajax({
+                type: 'ajax',
+                method: 'get',
+                url: '<?php echo base_url("clientPos/closeCart")?>',
+                async: true,
+                dataType: 'json',
+                success: function(response){
+                    var error = response.error;
+                    if (response.success) {
+                        $('.alert-success').html('Cart successfully closed!').fadeIn().delay(2000).fadeOut('slow');
+                        checkCart();
+                    }else{
+                        $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
+                    }
+                },
+                error: function(){
+                    $('.alert-danger').html('Error closing cart!').fadeIn().delay(2000).fadeOut('slow');
+                }
+            });
+         }
+                         
+        }
+
+        document.onkeydown = handleKeyDown;
     /*end of events*/
 
     /*Data retrieving functions*/
         function fetchMenuItems(){
+
             $('#menuItemTable thead th').each( function () {
                 var title = $(this).text();
-                $(this).html( '<input style="width:100%;font-size:12px;" type="text" placeholder="'+title+'" />' );
+                $(this).html( '<input name="'+title+'" style="width:100%;font-size:12px;" type="text" placeholder="'+title+'" />' );
             } );
             menuItem = $("#menuItemTable").DataTable({
                 'processing':true,
@@ -456,17 +610,16 @@
             });
             menuItem.columns().every( function () {
                 var that = this;
-
                 $( 'input', this.header() ).on( 'keyup change', function () {
                     if ( that.search() !== this.value ) {
                         that
-                            .search( this.value )
-                            .draw();
+                        .search( this.value )
+                        .draw();
                     }
                 } );
-            } );
+            } );           
         }
-
+        
         function fetchPosCartitem(){
             $('#cartPosItem thead th').each( function () {
                 var title = $(this).text();
@@ -607,7 +760,7 @@
             var id =  $(this).attr('data');
             $('#addModal').modal('show');
             $('#addModal').find('.modal-title').text('Add Item To Cart');
-            $('#addForm').attr('action','<?php echo base_url("clientPos/addCartItem")?>');
+            $('#addForm').attr('action','<?php echo base_url("clientPos/addCartItem")?>');         
             $.ajax({
                 type: 'ajax',
                 method: 'get',
@@ -702,13 +855,16 @@
                         cart.ajax.reload(null, false);
                         posCartItem.ajax.reload(null, false);
                         showcartinfo();
-	                      checkOrderStat();
+	                      checkOrderStat();                    
+
+                        document.onkeydown = handleKeyDown2;
                     }else{
                         $('#cartLoaded').fadeOut('slow');
 												$('#cartLoadedBut').fadeOut('slow');
                         $('#cartFalse').fadeIn('slow');
                         menuItem.ajax.reload(null, false);
                         cart.ajax.reload(null, false);
+                        document.onkeydown = handleKeyDown;
                     }
                 },
                 error: function(){
@@ -765,6 +921,7 @@
                     }else{
                         $('.alert-danger').html(error).fadeIn().delay(2000).fadeOut('slow');
                     }
+
                 },
                 error: function(){
                     $('.alert-danger').html('Error closing cart!').fadeIn().delay(2000).fadeOut('slow');
