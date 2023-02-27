@@ -5463,6 +5463,7 @@ class Admin extends CI_Controller {
 					"salRate"=>0,
 					"num_OT"=>set_value('num_OT'),
 					"t_OT"=>set_value('t_OT'),
+					"duty"=>set_value('duty')
 					);
 				$table_name = 'emp_attendance';
 
@@ -5531,18 +5532,20 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules('num_OT','Number Of OT','required');
 			$this->form_validation->set_rules('t_OT','OT Total Amount','required');
 			$this->form_validation->set_rules('id','ID','required');
+			$this->form_validation->set_rules('duty','Duty','required');
+
 
 			if ($this->form_validation->run() == FALSE) {
 				$msg['success'] = false;
 				$msg['error'] = validation_errors();
 			}else{
-
 				$data = array(
 					"emp_id"=>set_value('employee'),
 					"attend_date"=>set_value('date'),
 					"salRate"=>0,
 					"num_OT"=>set_value('num_OT'),
 					"t_OT"=>set_value('t_OT'),
+					"duty"=>set_value('duty')
 				);
 				$table_name = 'emp_attendance';
 				$id = set_value('id');
