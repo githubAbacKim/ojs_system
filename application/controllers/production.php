@@ -486,7 +486,7 @@ class Production extends CI_Controller {
 			foreach ($data as $key => $value) {
 					$buttons = '
 						<a href="javascript:;" class="btn btn-success item-add" data="'.$value->stock_id.'" title="Add Good Item"> <i class="fa fa-plus"></i></a>
-						<!--<a href="javascript:;" class="btn btn-danger item-addD" data="'.$value->stock_id.'" title="Add Damage Item"> <i class="fa fa-trash"></i></a>--!>
+						<a href="javascript:;" class="btn btn-danger item-addD" data="'.$value->stock_id.'" title="Add Damage Item"> <i class="fa fa-trash"></i></a>
 					';
 					$result['data'][$key] = array(
 						$value->stockclass_name,

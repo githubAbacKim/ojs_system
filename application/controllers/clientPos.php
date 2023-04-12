@@ -21,6 +21,17 @@ class ClientPos extends CI_Controller {
 		$this->load->view('content/pos_main');
 		$this->load->view('footer');
 	}
+	public function posv2(){
+		$where = array('emp_id'=>$this->session->userdata('current_id'));
+		$data['employee'] = $this->project_model->single_select('employee',$where);
+		echo $this->session->userdata('discount_type');
+		$data['title'] = "Cashier";
+
+		$this->load->view('newHeader',$data);
+		// $this->load->view('content/newNav');
+		$this->load->view('content/cashierv2');
+		$this->load->view('footer');
+	}
 
 	function fetchItems(){
 		$result2 = array('data' => array());
