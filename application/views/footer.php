@@ -7,6 +7,6 @@
     <script src="<?php echo base_url('assets/DataTables/DataTables-1.11.3/js/jquery.dataTables.min.js');?>"></script>
     <script src="<?php echo base_url('assets/DataTables/DataTables-1.11.3/js/dataTables.bootstrap5.min');?>"></script>
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="assets/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 </body>
 </html>
