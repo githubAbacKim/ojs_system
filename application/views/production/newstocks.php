@@ -44,6 +44,7 @@
                     <th style="width:20%">Date</th>
                     <th style="width:20%">Supplier</th>
                     <th>Item</th>
+                    <th>Type</th>
                     <th style="width:15%">Unit</th>
                     <th style="width:15%">Qty</th>
                     <!-- <th style="width:10%">Stat</th> -->

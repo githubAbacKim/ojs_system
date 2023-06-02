@@ -418,7 +418,7 @@ class Production extends CI_Controller {
 	function getItem(){
 		$id = $this->input->get('id');
 		$where = array('stock_id'=>$id);
-		$nwhere = array('stock_id'=>$id,"delivery_stat"=>"received");
+		$nwhere = array('stock_id'=>$id,"delivery_stat"=>"received","nstock_status"=>"GOOD");
 		$join = array(
 			array("stockcategory","stockitem","stockCat_id")
 		);
@@ -521,6 +521,7 @@ class Production extends CI_Controller {
 							$value->delivery_date,
 							$value->supplier_name,
 							$value->stock_name,
+							$value->nstock_status,
 							$value->nstock_unit,
 							$value->nstock_qqty,
 							// $value->nstock_status,
@@ -594,7 +595,8 @@ class Production extends CI_Controller {
 						"nstock_unit"=>$value->stock_unit,
 						"nstock_status"=>"DAMAGE",
 						"delivery_date"=>$date,
-						"delivery_stat"=>"undeliver"
+						"delivery_stat"=>"undeliver",
+						"emp_id"=>$this->session->userdata('current_id')
 					);
 					$insert = $this->project_model->insert('stock_newlog',$data);
 					if ($insert != false) {

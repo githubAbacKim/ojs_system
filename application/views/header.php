@@ -22,14 +22,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <!-- Custom Fonts -->
     <link href="<?php echo base_url('assets/bower_components/font-awesome/css/font-awesome.min.css');?>" rel="stylesheet" type="text/css">
-    <!-- MetisMenu CSS -->
-    <link href="assets/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-    <!-- jQuery -->
 
+    <!-- jQuery -->
     <script type="text/javascript" src=<?php echo base_url("assets/DataTables/jQuery-3.6.0/jquery-3.6.0.min.js");?>></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?php echo base_url('assets/js/bootstrap.min.js');?>"></script>
+
+    <!-- Datatables Javascript -->
+    <script src="<?php echo base_url('assets/DataTables/DataTables-1.11.3/js/jquery.dataTables.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/DataTables/DataTables-1.11.3/js/dataTables.bootstrap5.min');?>"></script>
 
 </head>
 

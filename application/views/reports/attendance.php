@@ -54,6 +54,7 @@
                 <div class="form-group col-lg-6 col-md-6 col-xs-12 col-lg-offset-3">
                     <label>Duty: </label>
                     <select class="form-control" id="duty" name="duty">
+                        <option value="double">Double</option>
                         <option value="whole">Whole Day</option>
                         <option value="half">Half Day</option>
                     </select>

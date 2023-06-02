@@ -26,6 +26,7 @@
 	                    <th>Class</th>
 	                    <th>Status</th>
 	                    <th>Description</th>
+                      <th>Type</th>
 	                    <th>Unit</th>
 	                    <th>Qty</th>
 	                    <th>Cost</th>

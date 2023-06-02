@@ -21,14 +21,14 @@ class ClientPos extends CI_Controller {
 		$this->load->view('content/pos_main');
 		$this->load->view('footer');
 	}
-	public function posv2(){
+
+	public function newPos(){
 		$where = array('emp_id'=>$this->session->userdata('current_id'));
 		$data['employee'] = $this->project_model->single_select('employee',$where);
 		echo $this->session->userdata('discount_type');
 		$data['title'] = "Cashier";
 
 		$this->load->view('newHeader',$data);
-		// $this->load->view('content/newNav');
 		$this->load->view('content/cashierv2');
 		$this->load->view('footer');
 	}
@@ -196,7 +196,7 @@ class ClientPos extends CI_Controller {
 		);*/
 
 		$where = array('stock_id'=>$id);
-		$nwhere = array('stock_id'=>$id,"delivery_stat"=>"received");
+		$nwhere = array('stock_id'=>$id,"delivery_stat"=>"received","nstock_status"=>"GOOD");
 		$join = array(
 			array("stockcategory","stockitem","stockCat_id")
 		);
@@ -464,7 +464,7 @@ class ClientPos extends CI_Controller {
 		        );
 	        	// instock
 				if ($item->stock_type == "instock") {
-					$where = array('stock_id'=>$item->stock_id);
+					$where = array('stock_id'=>$item->stock_id,"delivery_stat"=>"received","nstock_status"=>"GOOD");
 					$tcurrent = 0;
 					$new = $this->project_model->select('stock_newlog',false,$where);
 					if ($new != false) {
@@ -1209,7 +1209,6 @@ class ClientPos extends CI_Controller {
 		}
 		echo json_encode($msg);
 	}
-
 	function closingPage(){
 		$data['title'] = "Closing Page";
 		$this->load->view('production/header',$data);
@@ -1220,7 +1219,6 @@ class ClientPos extends CI_Controller {
 		$this->load->view('content/closingPage',$data);
 		$this->load->view('production/footer');
 	}
-
 	function checkClosing(){
 		//$date = date('Y-m-d');
 		$emp = $this->session->userdata('current_id');
@@ -1238,7 +1236,6 @@ class ClientPos extends CI_Controller {
 		}
 		echo json_encode($msg);
 	}
-
 	function closingLogOut(){
 		if ($this->session->userdata('ispos_log') == true) {
 			$sess = array(
@@ -1260,7 +1257,6 @@ class ClientPos extends CI_Controller {
 
 		echo json_encode($msg);
 	}
-
 	function printClosingReceipt(){
 			$data['title'] = "Cashier";
 			$data['page'] = 'Closing Cash Receipt';

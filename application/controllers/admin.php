@@ -4045,6 +4045,7 @@ class Admin extends CI_Controller {
 						$value->stockclass_name,
 						$value->delivery_stat,
 						$value->stock_name,
+						$value->nstock_status,
 						$value->nstock_unit,
 						$value->nstock_qqty,
 						$tcost,
@@ -4910,6 +4911,7 @@ class Admin extends CI_Controller {
 				foreach ($employee as $empval) {
 					$wsalary = $empval->salary_rate;
 					$hsalary = $wsalary / 2;
+					$dsalary = $wsalary * 2;
 				}
 
 				//deduction
@@ -4966,7 +4968,14 @@ class Admin extends CI_Controller {
 						$date = $attendance->attend_date;
 						if ($date >= set_value('start') && $date <= set_value('end')) {
 							$days++;
-							$sal = ($attendance->duty === "" || $attendance->duty === "whole") ? $sal = $sal + $wsalary : $sal + $hsalary ;
+							//$sal = ($attendance->duty === "" || $attendance->duty === "whole") ? $sal = $sal + $wsalary : $sal + $hsalary ;
+							if($attendance->duty === "double"){
+								$sal += $dsalary;
+							}elseif ($attendance->duty === "" || $attendance->duty === "whole"){
+								$sal += $wsalary;
+							}else{
+								$sal += $hsalary;
+							}
 						}
 					}
 				}
