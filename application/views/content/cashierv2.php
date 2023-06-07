@@ -39,13 +39,10 @@
                                 Item Category <i class="fa fa-cube" aria-hidden="true"></i>
                             </a>
 
-                            <template>
+                            <template id="categoryTemplate">
                                 <li><a class="dropdown-item p-2" href="#" onclick="categoryHandler(this)">{{categoryName}}</a></li>
                             </template>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item p-2" href="#">Action</a></li>
-                                <li><a class="dropdown-item p-2" href="#">Another action</a></li>
-                                <li><a class="dropdown-item p-2" href="#">Something else here</a></li>
+                            <ul class="dropdown-menu" id="categoryContainer">
                             </ul>
                         </div>
                         <form class="d-flex" role="search">
@@ -54,7 +51,7 @@
                         </form>
                         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header bg-primary">
-                            <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><i class="fa fa-user" aria-hidden="true"></i> <?php echo $employee->emp_fname.' '.$employee->emp_lname;?></h5>
+                            <h5 class="offcanvas-title text-light" id="offcanvasNavbarLabel"><i class="fa fa-user" aria-hidden="true"></i> <?php echo $employee->emp_fname.' '.$employee->emp_lname;?></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <!-- offcanvas main menu option -->
@@ -197,5 +194,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/newPos/vendor.js')?>"></script>
+<script src="<?php echo base_url('assets/js/newPos/dom_newPos.js')?>"></script>
 <script src="<?php echo base_url('assets/js/newPos/handler_newPos.js')?>"></script>
 <script src="<?php echo base_url('assets/js/newPos/app_newPos.js')?>"></script>
