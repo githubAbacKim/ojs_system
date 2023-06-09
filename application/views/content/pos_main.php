@@ -494,7 +494,7 @@
         getprinturl();
         receipturl();
         checkCart();
-				showField();
+		showField();
         showdiscount();
         checkClosing();
         showOR();
@@ -503,32 +503,32 @@
             //checkCart();
             //cart.ajax.reload(null, false);
         },1000);
-				function showField(){
+		function showField(){
             $('#type_selector').change(function () {
-								var val = $(this).val();
-								if (val === "order") {
-									$('#pickInfo').show();
-								}else{
-									$('#pickInfo').hide();
-								}
-	          });
-	      }
+            var val = $(this).val();
+            if (val === "order") {
+                    $('#pickInfo').show();
+                }else{
+                    $('#pickInfo').hide();
+                }
+            });
+        }
 
         function showdiscount(){
-	          $('#discount_selector').change(function () {
-								var discval = $(this).val();
-								if (discval === "regular") {
-									$('#reginfo').show();
-                  $('#spwdinfo').hide();
-								}else if (discval === "spwd"){
-                  $('#reginfo').hide();
-                  $('#spwdinfo').show();
-                }else{
-									$('#reginfo').hide();
-                  $('#spwdinfo').hide();
-								}
-	          });
-	      }
+            $('#discount_selector').change(function () {
+                            var discval = $(this).val();
+                            if (discval === "regular") {
+                                $('#reginfo').show();
+                $('#spwdinfo').hide();
+                            }else if (discval === "spwd"){
+                $('#reginfo').hide();
+                $('#spwdinfo').show();
+            }else{
+                                $('#reginfo').hide();
+                $('#spwdinfo').hide();
+                            }
+            });
+        }
 
         function checkCart(){
             $.ajax({

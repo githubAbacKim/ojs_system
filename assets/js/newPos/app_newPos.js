@@ -1,5 +1,5 @@
-// #categoryContainer
-// #categoryTemplate
+import {arrInputs} from './input_newPos';
 
-const categoryContainer = document.getElementById('categoryContainer');
-const categoryTemplate = document.getElementById('categoryTemplate');
+const {categoryContainer,categoryTemplate} = arrInputs;
+
+console.log(categoryContainer, categoryTemplate);
