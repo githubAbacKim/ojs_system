@@ -18,9 +18,9 @@
     .navbar{
         background-color: gold !important;
     }
-    #cartCont{
+    /* #cartCont{
         height: 87vh;
-    }
+    } */
     #categoryLink{
       border: solid 1px;
     }
@@ -100,7 +100,7 @@
                 </div>
             </template>
             <div class="row p-3" id="itemCont">
-                <div class="col-lg-2" role="button" data-id="">
+                <div class="col-lg-2 itemsHeight" role="button" data-id="">
                     <div class="card p-3">
                         <i class="fa fa-cubes" aria-hidden="true"></i> Torta S
                     </div>
@@ -132,7 +132,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid col-lg-4 col-md-4 pe-3 ps-3" id="chartCont">
+        <div class="container-fluid position-relative col-lg-4 col-md-4 pe-3 ps-3" id="chartCont">
             <div class="row">
                 <nav class="navbar">
                     <div class="container">
@@ -141,7 +141,6 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                             </a>
-
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item p-2" href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Cart</a></li>
                                 <li><a class="dropdown-item p-2 text-danger" href="#"><i class="fa fa-shopping-cart " aria-hidden="true"></i>Unpaid</a></li>
@@ -154,8 +153,8 @@
                 </nav>
             </div>
             <div class="row overflow-auto" id="cartCont">
-                <table id="cartPosItem" class="table overflow-">
-                    <tbody class="overflow-scroll" id="itemTbody">
+                <table id="cartPosItem" class="table">
+                    <tbody id="itemTbody">
                         <tr data-id="1" role="button">
                             <td>Torta Small</td>
                             <td class="text-end">P20.00</td>
@@ -173,16 +172,12 @@
                             <td class="text-end">P20.00</td>
                         </tr>
                     </tbody>
-                    <tfoot class="text-bg-secondary ">
-                        <tr>
-                            <th>Total</th>
-                            <th class="text-end">P1000.00</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
-
-            <div class="row ">
+            <div class="d-flex position-absolute bottom-0 start-0 w-100 justify-content-evenly">
+                
+            </div>
+            <div class="d-flex position-absolute bottom-0 start-0 w-100 justify-content-evenly">
                 <div class="col p-3 text-bg-primary text-center" id="saveCart" role="button">Save</div>
                 <div class="col p-3 text-bg-success text-center" id="payCart" role="button">Pay</div>
                 <div class="col p-3 text-bg-danger text-center" id="closeCart" role="button">Close</div>
@@ -194,7 +189,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
-<script src="<?php echo base_url('assets/js/newPos/vendor.js')?>"></script>
-<script src="<?php echo base_url('assets/js/newPos/dom_newPos.js')?>"></script>
-<script src="<?php echo base_url('assets/js/newPos/handler_newPos.js')?>"></script>
-<script src="<?php echo base_url('assets/js/newPos/app_newPos.js')?>"></script>
+<script type="module" src="<?php echo base_url('assets/js/newPos/vendor.js')?>"></script>
+<script type="module" src="<?php echo base_url('assets/js/newPos/dom_newPos.js')?>"></script>
+<script type="module" src="<?php echo base_url('assets/js/newPos/handler_newPos.js')?>"></script>
+<script type="module" src="<?php echo base_url('assets/js/newPos/app_newPos.js')?>"></script>
