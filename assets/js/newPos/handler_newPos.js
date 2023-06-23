@@ -31,3 +31,43 @@ const printBillHandler = () =>{}
 const selectCategoryHandler = () =>{}
 // search item
 const searchItemHandler = () =>{}
+
+
+const testHandler = () =>{
+    let tmp = null;
+    $.ajax({
+      url: "/clientPos/fetchCategoryList",
+			async: false,
+			dataType: "json",
+			success: function (results) {
+				$.each(results, function (i, result) {
+					tmp = results;
+				});
+			},
+			error: function () {
+				console.log("error");
+			},
+    });
+    return tmp;
+}
+
+const testHandler2 = () =>{
+  const url = "/clientPos/fetchCategoryList";
+  getPromise(url)
+  .then((response) => {
+      console.log(response.data)
+  })
+  .catch((error) => {
+      console.log(error);
+  });
+}
+
+const testCallback = (response) =>{
+  const {success,data,error} = response;
+  console.log(data,response);
+}
+
+const errCallback = (error) =>{
+  console.log(error)
+}
+

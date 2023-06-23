@@ -1,5 +1,11 @@
-import {arrInputs} from './input_newPos';
+import {inputs} from './input_newPos';
 
-const {categoryContainer,categoryTemplate} = arrInputs;
+const {category,search} = inputs;
 
-console.log(categoryContainer, categoryTemplate);
+console.log(category, search);
+
+console.log(testHandler())
+
+testHandler2();
+
+asyncgetVendor("/clientPos/fetchCategoryList",testCallback,errCallback)

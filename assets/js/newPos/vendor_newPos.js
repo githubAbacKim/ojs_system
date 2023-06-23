@@ -2,12 +2,28 @@
 
 
 // ********************** reusable functions **********************
-    const asyncget = (url,callback,errcallback) => {
+    const asyncgetVendor = (url,callback,errcallback) => {
         $.get(url)
-        .done(response => callback(response))
+        .done(response => callback(JSON.parse(response)))
         .fail(error => errcallback(error));
     }
-    function postData(data, url) {
+    const getPromise = (url) => {
+      return new Promise((resolve, reject) => {
+        // const encodedUrl = encodeURIComponent(url);
+        $.ajax({
+          url: url,
+          dataType: "json",
+          contentType: "application/json",
+          success: function (response) {
+            resolve(response);
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            reject(xhr.responseText);
+          },
+        });
+      });
+    };
+    const postDataVendor = (data, url) => {
         return new Promise((resolve, reject) => {
           $.ajax({
             url: url,
@@ -28,7 +44,7 @@
           });
         });
     }
-    function putData(data, url) {
+    const putDataVendor = (data, url) => {
         return new Promise((resolve, reject) => {
           $.ajax({
             url: url,
@@ -50,7 +66,7 @@
           });
         });
     }
-    function deleteData(data,url) {
+    const deleteDataVendor = (data,url) => {
         return new Promise((resolve, reject) => {
           $.ajax({
             url: url,
@@ -67,7 +83,7 @@
           });
         });
     }
-    function ajaxpostImg(data,url){    
+    const ajaxpostImgVendor = (data,url) =>{    
         return new Promise((resolve, reject) => {
             $.ajax({
               url: url,
@@ -89,3 +105,11 @@
         });
     }
 // ***************************** end *********************************
+
+const cb_categoryListVendor = (response)=>{
+  console.log(response);
+}
+
+const cb_errorVendor = (error)=>{
+  console.log(error)
+}

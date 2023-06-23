@@ -18,15 +18,15 @@
     .navbar{
         background-color: gold !important;
     }
-    /* #cartCont{
-        height: 87vh;
-    } */
+    #cartCont{
+        max-height: 87vh;
+    }
     #categoryLink{
       border: solid 1px;
     }
 </style>
-<div class="container-fluid">
-    <div class="row" id="maincont2">
+<main class="container-fluid">
+    <section class="row" id="maincont2">
         <div class="col-lg-8 col-md-8" id="itemsCont">
             <div class="row">
                 <nav class="navbar bg-body-tertiary">
@@ -174,22 +174,25 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex position-absolute bottom-0 start-0 w-100 justify-content-evenly">
-                
+            <!-- cart section -->
+            <div class="row position-absolute bottom-0 w-100 justify-content-evenly">
+                <div class="row">
+                    <div class="col-lg-10">Total</div>
+                    <div class="col-lg-2 text-end">P0.00</div>
+                </div>
+                <div class="row ">
+                    <div class="col p-3 text-bg-primary text-center" id="saveCart" role="button">Save</div>
+                    <div class="col p-3 text-bg-success text-center" id="payCart" role="button">Pay</div>
+                    <div class="col p-3 text-bg-danger text-center" id="closeCart" role="button">Close</div>
+                </div>
             </div>
-            <div class="d-flex position-absolute bottom-0 start-0 w-100 justify-content-evenly">
-                <div class="col p-3 text-bg-primary text-center" id="saveCart" role="button">Save</div>
-                <div class="col p-3 text-bg-success text-center" id="payCart" role="button">Pay</div>
-                <div class="col p-3 text-bg-danger text-center" id="closeCart" role="button">Close</div>
-            </div>
-
         </div>
-    </div>
-</div>
-
+    </section>
+</main>
+<script src="<?php echo base_url('assets/mustache.js')?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
-<script type="module" src="<?php echo base_url('assets/js/newPos/vendor.js')?>"></script>
-<script type="module" src="<?php echo base_url('assets/js/newPos/dom_newPos.js')?>"></script>
-<script type="module" src="<?php echo base_url('assets/js/newPos/handler_newPos.js')?>"></script>
+<script src="<?php echo base_url('assets/js/newPos/vendor_newPos.js')?>"></script>
+<script src="<?php echo base_url('assets/js/newPos/dom_newPos.js')?>"></script>
+<script src="<?php echo base_url('assets/js/newPos/handler_newPos.js')?>"></script>
 <script type="module" src="<?php echo base_url('assets/js/newPos/app_newPos.js')?>"></script>
