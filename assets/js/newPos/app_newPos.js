@@ -1,11 +1,11 @@
-import {inputs} from './input_newPos';
+import {inputs,containerEl,templateEl} from './input_newPos';
 
 const {category,search} = inputs;
 
-console.log(category, search);
+const {categoryList} = containerEl;
 
-console.log(testHandler())
+const {categoryTemplate} = templateEl;
 
-testHandler2();
+console.log(categoryList, categoryTemplate);
 
-asyncgetVendor("/clientPos/fetchCategoryList",testCallback,errCallback)
+defaultHandler();

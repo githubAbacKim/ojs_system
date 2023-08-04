@@ -1,6 +1,6 @@
 export const inputs = {
-    category: $('#categoryContainer'),
-    search: $()
+    category: $(''),
+    search: $('')
 }
 
 export const accountMenu = {
@@ -23,9 +23,9 @@ export const buttonEl = {
 }
 
 export const containerEl = {
-    categoryList: $(''),
+    categoryList: $('#categoryContainer'),
 }
 
 export const templateEl = {
-    categoryList: $(''),
+    categoryTemplate: $('#categoryTemplate'),
 }

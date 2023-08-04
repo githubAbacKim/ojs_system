@@ -40,7 +40,7 @@
                             </a>
 
                             <template id="categoryTemplate">
-                                <li><a class="dropdown-item p-2" href="#" onclick="categoryHandler(this)">{{categoryName}}</a></li>
+                                <li><a class="dropdown-item p-2" href="#" data-id='{{id}}' onclick="categoryHandler(this)">{{name}}</a></li>
                             </template>
                             <ul class="dropdown-menu" id="categoryContainer">
                             </ul>
@@ -189,10 +189,10 @@
         </div>
     </section>
 </main>
-<script src="<?php echo base_url('assets/mustache.js')?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
-<script src="<?php echo base_url('assets/js/newPos/vendor_newPos.js')?>"></script>
+<script src="<?php echo base_url('assets/mustache.js')?>"></script>
 <script src="<?php echo base_url('assets/js/newPos/dom_newPos.js')?>"></script>
+<script src="<?php echo base_url('assets/js/newPos/vendor_newPos.js')?>"></script>
 <script src="<?php echo base_url('assets/js/newPos/handler_newPos.js')?>"></script>
 <script type="module" src="<?php echo base_url('assets/js/newPos/app_newPos.js')?>"></script>

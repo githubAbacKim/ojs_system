@@ -32,7 +32,7 @@ function dtDestroy(table, tbody) {
     $('#' + tbody).empty();
 }
 // mustache function
-const mustacheTemplating = (container,template,data) =>{
+const renderTemp = (container,template,data) =>{
     const $container = container;
     const $template = template.html();  
     

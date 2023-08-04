@@ -136,26 +136,6 @@ class ClientPos extends CI_Controller {
 		}
 		echo json_encode($result2);
 	}
-	function fetchCategoryList(){
-		$result = array('success' => false, 'data' => array(), 'error' => '');
-		$data = $this->project_model->select('stockCategory');
-	
-		if ($data != false) {
-			foreach ($data as $key => $row) {
-				$categoryId = preg_replace('/[^A-Za-z0-9_]/', '', $row->stockCat_id);
-				$categoryName = preg_replace('/[^A-Za-z0-9_]/', '', $row->stockCat_name);
-	
-				$result['data'][$key] = array(
-					'categoryId' => $categoryId,
-					'categoryName' => $categoryName
-				);
-			}
-			$result['success'] = true;
-		} else {
-			$result['error'] = 'No data found.';
-		}
-		echo json_encode($result);
-	}
 
 	function fetchOrderCart(){
 		$result = array('data' => array());
@@ -1331,6 +1311,30 @@ class ClientPos extends CI_Controller {
 	}
 
 /*========= test =======*/
+
+// ******************* newPOS *****************
+	function fetchCategoryList(){
+		$result = array('success' => false, 'data' => array(), 'error' => '');
+		$data = $this->project_model->select('stockCategory');
+
+		if ($data != false) {
+			foreach ($data as $key => $row) {
+				$categoryId = preg_replace('/[^A-Za-z0-9_]/', '', $row->stockCat_id);
+				$categoryName = preg_replace('/[^A-Za-z0-9_]/', '', $row->stockCat_name);
+
+				$result['data'][$key] = array(
+					'categoryId' => $categoryId,
+					'categoryName' => $categoryName
+				);
+			}
+			$result['success'] = true;
+		} else {
+			$result['error'] = 'No data found.';
+		}
+		echo json_encode($result);
+	}
+
+// *************************** end
 
 	function test(){
 			// $initcode = substr($this->session->userdata('setdate'),5,5);

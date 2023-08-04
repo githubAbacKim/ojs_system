@@ -168,4 +168,4 @@
     let printUrl = '<?php echo base_url("admin/printIncomeStatement");?>';
     let deleteurl = '<?php echo base_url("admin/deleteIncomeStatement")?>';
 </script>
-<script src="<?php echo base_url("assets/js/adminreports/incomestatement.js")?>"></script>
+<script src="<?php echo base_url("assets/js/ojsItem/ojsitems.js")?>"></script>

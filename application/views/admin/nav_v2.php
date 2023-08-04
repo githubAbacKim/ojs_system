@@ -174,6 +174,10 @@
                             </li>
                             <li class="divider"></li>
                             <li>
+                                <a href="<?php echo base_url("admin/ojsItems")?>">Ojs Items</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
                                 <a href="<?php echo base_url("admin/incomeStatement")?>">Income Statement</a>
                             </li>
                             <li class="divider"></li>

@@ -105,11 +105,22 @@
         });
     }
 // ***************************** end *********************************
-
-const cb_categoryListVendor = (response)=>{
-  console.log(response);
+const errCallback = (error)=>{
+  console.log(error)
 }
 
-const cb_errorVendor = (error)=>{
-  console.log(error)
+const cb_categoryListVedor = (response)=>{
+  const{success,data,error} = response;
+  const template = $('#categoryTemplate')
+  const container = $('#categoryContainer');
+
+  data.forEach(d => {
+    const newData = {name:d.categoryName,id:d.categoryId}
+    renderTemp(container,template,newData);
+  });
+}
+
+
+const cb_itemListVendor = (response)=>{
+  
 }
