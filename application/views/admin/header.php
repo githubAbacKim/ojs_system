@@ -57,6 +57,8 @@
     <!-- Print page -->
     <script src="<?php echo base_url('assets/dist/js/jquery.printPage.js')?>"></script>
 
+    <script src="<?php echo base_url('assets/mustache.js')?>"></script>
+
     <script type="text/javascript">
     $(document).ready(function() {
         $('.popup-with-zoom-anim').magnificPopup({

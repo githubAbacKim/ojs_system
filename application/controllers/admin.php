@@ -5932,22 +5932,71 @@ class Admin extends CI_Controller {
 		}
 
 		function getOjsProd(){
+			
+
+			$tmp = [];
+			/* $join = array(
+				array('stockitem','ordered_item','stock_id')
+			);
+			$like = array('ordered_item.order_date'=>'2022-04');
+			$where = array('stock_type'=>'instock');
+			$oiResponse = $this->project_model->select_join('ordered_item',$join,$like,$where);
+
+			$stockwhere = array("supplier_id"=>3);
+			$stocksResponse = $this->project_model->select('stockitem',$like=false,$stockwhere);
+			
+			foreach ($stocksResponse as $stock) {
+				$total = 0;
+				foreach ($oiResponse as $value) {
+					// echo $value->stock_id.'-'.$value->order_qty.'<br>';
+					
+					if ($stock->stock_id === $value->stock_id) {
+						$total += $value->order_qty;
+					}
+				}				
+				// echo $stock->stock_name .'-'. $total.'<br>';
+				array_push($tmp,array('name'=>$stock->stock_name,'qty'=>$total));
+			} */
+
+			echo json_encode($tmp);
+
+			
+		}
+
+		function getSupplier(){
+			$data = $this->project_model->select('suppliers');
+
+			echo json_encode($data);
+		}
+
+		function printProductReport(){
+
+			$data['title'] = "Administrator";
+			$data['sub_heading'] = "POS System";
+			$data['page'] = 'Product Report';
+
+			$month = $this->uri->segment(4);
+			$year = $this->uri->segment(3);
+			$param =  $year.'-'.$month;
+			$supplier = $this->uri->segment(5);
+			
+			$data['prodList'] = [];
 			$join = array(
 				array('stockitem','ordered_item','stock_id')
 			);
-			$like = array('ordered_item.order_date'=>'2023-04-02');
-			$data = $this->project_model->select_join('ordered_item',$join,$like);
+			$like = array('ordered_item.order_date'=>$param);
+			$where = array('stockitem.stock_type'=>'instock');
+			$data['orderItems'] = $this->project_model->select_join('ordered_item',$join,$like,$where);
 
-			$stockwhere = array("supplier_id"=>3);
-			$stocks = $this->project_model->select('stockitem',$like=false,$stockwhere);
+			$orderby = array('stock_name','ASC');
+			$stockwhere = array("supplier_id"=>$supplier);
+			$data['stocksResponse'] = $this->project_model->select('stockitem',$like=false,$stockwhere,$orderby);
 			
-			foreach ($stocks as $stock) {
-				echo $stock->stock_name .'<br>';
-			}
-			
-			foreach ($data as $value) {
-				// echo $value->order_name .'-'. $value->order_qty .'<br>';
-			}
+			$data['property']= $this->project_model->select('property_info');
+
+			$this->load->view('admin/header',$data);
+			$this->load->view('reports/printProdReports',$data);
+			$this->load->view('admin/footer',$data);
 		}
 	function testFunction(){
 		$date = '2021-11-9';

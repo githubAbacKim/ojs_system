@@ -9,7 +9,7 @@
         <div class="col-lg-12">
             <button id="btnPrint" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right:5px;"><i class="fa fa-print"></i> Report by Payment Type</button>
             <button id="btnPrint2" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right:5px;"><i class="fa fa-print"></i> Report by Discount Type</button>
-			<button id="btnPrint3" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right:5px;"><i class="fa fa-print"></i> Vat Sales</button>
+			      <button id="btnPrint3" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right:5px;"><i class="fa fa-print"></i> Vat Sales</button>
             <button id="btnsoldByItem" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right:5px;"><i class="fa fa-search"></i> Find Item</button>
             <button id="refresh" class="btn btn-default pull pull-left" style="margin-top: 15px;margin-right:5px;"><i class="fa fa-refresh"></i> Refresh</button>
         </div>
@@ -192,45 +192,45 @@
         <h4 class="modal-title">Title</h4>
       </div>
 
-          <div class="modal-body">
-            <div class="row">
-            <form id="printForm3" action="" method="post">
-                 <div class="col-md-6">
-                    <fieldset>
-                        <legend>Record Month</legend>
-                        <div class="form-group">
-                            <select class="form-control" id="mon" name="mon" required>
-                                <option value="">Select</option>
-                                <?php
-									$mon = date('m');
-									$months = array('01' => 'January', '02' => 'Febuary', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
-									foreach ($months as $key => $value) {
-										if ($mon == $key) {
-								?>
-									<option value="<?php echo $key?>" selected><?php echo $value?></option>
-								<?php
-										}else{
-								?>
-									<option value="<?php echo $key?>"><?php echo $value?></option>
-								<?php
-										}
-									}
-								?>
-                            </select>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Record Year</legend>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
-                        </div>
-                    </fieldset>
-                </div>
-            </form>
+      <div class="modal-body">
+        <div class="row">
+        <form id="printForm3" action="" method="post">                
+            <div class="col-md-6">
+              <fieldset>
+                  <legend>Month</legend>
+                  <div class="form-group">
+                      <select class="form-control" id="mon" name="mon" required>
+                          <option value="">Select</option>
+                          <?php
+                            $mon = date('m');
+                            $months = array('01' => 'January', '02' => 'Febuary', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
+                            foreach ($months as $key => $value) {
+                              if ($mon == $key) {
+                          ?>
+                            <option value="<?php echo $key?>" selected><?php echo $value?></option>
+                          <?php
+                              }else{
+                          ?>
+                            <option value="<?php echo $key?>"><?php echo $value?></option>
+                          <?php
+                              }
+                            }
+                          ?>
+                      </select>
+                  </div>
+              </fieldset>
             </div>
-          </div>
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Year</legend>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+        </div>
+      </div>
 
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -240,7 +240,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" tabindex="-1" role="dialog" id="searchItem">
+<div class="modal fade" tabindex="-1" role="dialog" id="printModal4">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -248,34 +248,59 @@
         <h4 class="modal-title">Title</h4>
       </div>
 
-          <div class="modal-body">
-            <div class="row">
-            <form id="searchForm" action="" method="post">
-                 <div class="col-md-6">
-                    <fieldset>
-                        <legend>Find Item</legend>
-                        <div class="form-group">                            
-                            <select class="form-control" id="mon" name="mon" required>
-                                <option value="">Select</option>                               
-                            </select>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <fieldset>
-                        <legend>Record Year</legend>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="year" name="year" value="<?php echo date('Y')?>" required autofocus />
-                        </div>
-                    </fieldset>
-                </div>
-            </form>
+      <div class="modal-body">
+        <div class="row">
+        <form id="printForm4" action="" method="post">                
+            <div class="col-md-4">
+              <fieldset>
+                  <legend>Month</legend>
+                  <div class="form-group">
+                      <select class="form-control" id="prodMon" name="prodMon" required>
+                          <option value="">Select</option>
+                          <?php
+                            $mon = date('m');
+                            $months = array('01' => 'January', '02' => 'Febuary', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
+                            foreach ($months as $key => $value) {
+                              if ($mon == $key) {
+                          ?>
+                            <option value="<?php echo $key?>" selected><?php echo $value?></option>
+                          <?php
+                              }else{
+                          ?>
+                            <option value="<?php echo $key?>"><?php echo $value?></option>
+                          <?php
+                              }
+                            }
+                          ?>
+                      </select>
+                  </div>
+              </fieldset>
             </div>
-          </div>
+            <div class="col-md-4">
+                <fieldset>
+                    <legend>Year</legend>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="prodYear" name="prodYear" value="<?php echo date('Y')?>" required autofocus />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-4">
+              <fieldset>
+                <legend>Supplier</legend>
+                <template id="supplierTemplate">
+                    <option value="{{id}}">{{name}}</option>
+                  </template>
+                <select class="form-control" id="supplierCont" name="supplier" required>                  
+                </select>
+              </fieldset>
+            </div>
+        </form>
+        </div>
+      </div>
 
       <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="conPrint3" class="btn btn-primary">Print File</button>
+            <button type="button" id="conPrint4" class="btn btn-primary">Print File</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -320,13 +345,16 @@
 <script type="text/javascript">
     let tableDataurl = '<?php echo site_url("admin/getRestoReceipt")?>';
     let defaultUrl = '<?php echo base_url("admin/");?>';
-    let printSalesListUrl = '<?php echo base_url("admin/printSalesList");?>';
-    let printSalesItemList = '<?php echo base_url("admin/printSalesItemList");?>';
+    let printSalesListUrl = '<?php echo base_url("admin/printSalesList")?>';
+    let printSalesItemList = '<?php echo base_url("admin/printSalesItemList")?>';
     let printSalesDiscListUrl  = '<?php echo base_url("admin/printSalesDiscList")?>';
     let printVatSalesUrl = '<?php echo base_url("admin/printVatSales")?>';
     let deleteSalesUrl = '<?php echo base_url("admin/deleteSales")?>';
     let voidOrderUrl = '<?php echo base_url("admin/voidOrder")?>';
     let fetchtCashierUrl = '<?php echo base_url("admin/fetchCashier")?>';
+    let fetchSupplierUrl = '<?php echo base_url("admin/getSupplier")?>';
+    let printProductUrl = '<?php echo base_url("admin/printProductReport");?>';
 </script>
 
+<script src="<?php echo base_url('assets/js/main.js')?>"></script>
 <script src="<?php echo base_url('assets/js/salereport/salesreport.js')?>"></script>
