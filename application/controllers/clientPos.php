@@ -1334,6 +1334,10 @@ class ClientPos extends CI_Controller {
 		echo json_encode($result);
 	}
 
+	function showSelectedItems(){
+		
+	}
+
 // *************************** end
 
 	function test(){

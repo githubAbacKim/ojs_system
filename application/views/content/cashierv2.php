@@ -158,18 +158,22 @@
                         <tr data-id="1" role="button">
                             <td>Torta Small</td>
                             <td class="text-end">P20.00</td>
+                            <td><div class="addQty"><i class="fa fa-plus" aria-hidden="true"></i></div></td>
                         </tr>
                         <tr role="button">
                             <td>Torta Small</td>
                             <td class="text-end">P20.00</td>
+                            <td><div class="addQty"><i class="fa fa-plus" aria-hidden="true"></i></div></td>
                         </tr>
                         <tr data-id="1" role="button">
                             <td>Torta Small</td>
                             <td class="text-end">P20.00</td>
+                            <td><div class="addQty"><i class="fa fa-plus" aria-hidden="true"></i></div></td>
                         </tr>
                         <tr role="button">
                             <td>Torta Small</td>
                             <td class="text-end">P20.00</td>
+                            <td><div class="addQty"><i class="fa fa-plus" aria-hidden="true"></i></div></td>
                         </tr>
                     </tbody>
                 </table>
